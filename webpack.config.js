@@ -1,26 +1,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
     entry: {
         app: './src/index.jsx',
-        // vendor: [
-        //     'babel-polyfill',
-        //     'is_js',
-        //     'react',
-        //     'react-dom',
-        //     'react-redux',
-        //     'react-router',
-        //     'react-router-redux',
-        //     'redux',
-        //     'redux-actions',
-        //     'redux-thunk',
-        // ],
+        vendor: [
+            'is_js',
+            'axios',
+            'react',
+            'react-dom',
+            'react-redux',
+            'react-router',
+            'react-router-redux',
+            'redux',
+            'redux-actions',
+            'redux-thunk',
+        ],
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        // filename: '[name].bundle.js',
+        filename: '[name].bundle.js',
     },
     module: {
         rules: [
@@ -44,12 +45,31 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.jsx', '.css']
     },
+    optimization: {
+        minimizer: [
+            new UglifyJSPlugin({
+                cache: true,
+                parallel: true,
+                uglifyOptions: {
+                    compress: false,
+                    ecma: 8,
+                    warnings: false,
+                    mangle: true
+                },
+                sourceMap: false
+            })
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'youtube',
-            template: 'dist/index.html',
+            template: 'src/index.html',
             filename: 'index.html',
         }),
+        new CompressionPlugin()
     ],
     devServer: {
         port: 8080,
