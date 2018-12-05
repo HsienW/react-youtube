@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as AuthActionsCreator from '../../Redux/Modules/Auth/AuthActionsCreator';
 
 
-class AuthView extends Component {
+class Upload extends Component {
     constructor() {
         super();
         this.state = {};
@@ -14,23 +14,23 @@ class AuthView extends Component {
     render() {
         return (
             <div>
-                AuthView
+                UploadView
             </div>
         );
     }
 }
 
-AuthView.propTypes = {
-    AuthActionsCreator: PropTypes.object.isRequired,
-};
+// UploadView.propTypes = {
+//     AuthActionsCreator: PropTypes.object.isRequired,
+// };
 
 export default connect(
     (state) => {
-        return {actionType: state.AuthReducer.actionType};
+        return {actionType: state.UploadReducer.actionType};
     },
     (dispatch) => {
         return {
             AuthActionsCreator: bindActionCreators(AuthActionsCreator, dispatch)
         };
     }
-)(AuthView);
+)(Upload);

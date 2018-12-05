@@ -1,4 +1,4 @@
-// const GET_AUTH_START = 'src/Redux/Modules/Auth/AuthActions';
+const GET_AUTH_START = 'src/Redux/Modules/Auth/AuthActions';
 const GET_AUTH_SUCCESS = 'src/Redux/Modules/Auth/AuthActions';
 const GET_AUTH_FAILED = 'src/Redux/Modules/Auth/AuthActions';
 
@@ -10,9 +10,8 @@ const GET_AUTH_FAILED = 'src/Redux/Modules/Auth/AuthActions';
 
 export default function AuthReducer (state = {actionType: ''}, action) {
     switch (action.type) {
+        case GET_AUTH_START:
         case GET_AUTH_SUCCESS:
-            return {actionType: action.type};
-
         case GET_AUTH_FAILED:
             return {actionType: action.type};
 
@@ -20,18 +19,3 @@ export default function AuthReducer (state = {actionType: ''}, action) {
             return state;
     }
 }
-
-// export function getAuthSuccess() {
-//     return { type: GET_AUTH_SUCCESS };
-// }
-
-
-
-
-
-
-// export {
-//     GET_AUTH_START,
-//     GET_AUTH_SUCCESS,
-//     GET_AUTH_FAILED
-// };

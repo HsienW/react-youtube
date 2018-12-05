@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
 import {bindActionCreators} from 'redux';
+// import PropTypes from 'prop-types';
+import connect from 'react-redux/es/connect/connect';
 import * as AuthActions from '../../Redux/Modules/Auth/AuthActions';
 
 
-class MyChannelView extends Component {
+class MyChannel extends Component {
 
     render() {
         return (
@@ -14,9 +14,9 @@ class MyChannelView extends Component {
     }
 }
 
-MyChannelView.propTypes = {
-    dataSource: PropTypes.array.isRequired,
-};
+// MyChannelView.propTypes = {
+//     dataSource: PropTypes.array.isRequired,
+// };
 
 export default connect(
     (state) => {
@@ -27,4 +27,4 @@ export default connect(
             AuthActions: bindActionCreators(AuthActions, dispatch)
         };
     }
-)(MyChannelView);
+)(MyChannel);

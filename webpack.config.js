@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: {
@@ -36,6 +37,14 @@ module.exports = {
                 use: 'eslint-loader'
             },
             {
+                test: /\.(css|scss)$/,
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
                 test: /\.(png|jpg|gif|svg)$/,
                 exclude: /node_modules/,
                 use: 'url-loader?limit=8192'
@@ -43,7 +52,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.json', '.jsx', '.css']
+        extensions: ['.js', '.json', '.jsx']
     },
     optimization: {
         minimizer: [
@@ -68,6 +77,9 @@ module.exports = {
             title: 'youtube',
             template: 'src/index.html',
             filename: 'index.html',
+        }),
+        new MiniCssExtractPlugin({
+            filename: 'app.bundle.css',
         }),
         new CompressionPlugin()
     ],

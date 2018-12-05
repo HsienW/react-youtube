@@ -1,10 +1,11 @@
 import React from 'react';
+import createHistory from 'history/createHashHistory';
+import ReduxStore from './Redux/ReduxStore';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import ReduxStore from './Redux/ReduxStore';
 import {HashRouter, Router, Switch, Route} from 'react-router-dom';
-import createHistory from 'history/createHashHistory';
 import {Auth, Home, Upload, Search, Play, Channel} from '../src/Containers/index';
+import 'antd/dist/antd.css';
 
 const history = createHistory();
 
