@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
-import AuthReducer from '../Redux/Modules/Auth/AuthReducer';
+import AuthReducer from '../Redux/Modules/Auth/ReduxWidgets';
+// import AuthReducer from '../Redux/Modules/Auth/AuthReducer';
 import ChannelReducer from '../Redux/Modules/Channel/ChannelReducer';
 import HomeReducer from '../Redux/Modules/Home/HomeReducer';
 import PlayReducer from '../Redux/Modules/Play/PlayReducer';
