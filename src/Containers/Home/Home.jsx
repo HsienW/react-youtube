@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as HomeActions from '../../Redux/Modules/Home/HomeActions';
-import Header from '../../Components/Layout/Header/Header';
+// import PropTypes from 'prop-types';
+import Video from '../../Components/Modules/Video/Video';
+import styled from 'styled-components';
+
+const HomeView = styled.div`
+    padding: 0 10%;
+`;
 
 
-class HomeView extends Component {
+class Home extends Component {
     constructor() {
         super();
         this.state = {};
@@ -14,17 +19,16 @@ class HomeView extends Component {
 
     render() {
         return (
-            <div>
-                <Header data={this.props}/>
-                HomeView
-            </div>
+            <HomeView>
+                <Video></Video>
+            </HomeView>
         );
     }
 }
 
-HomeView.propTypes = {
-    HomeActions: PropTypes.object.isRequired,
-};
+// HomeView.propTypes = {
+//     HomeActions: PropTypes.object.isRequired,
+// };
 
 export default connect(
     (state) => {
@@ -35,4 +39,4 @@ export default connect(
             HomeActions: bindActionCreators(HomeActions, dispatch)
         };
     }
-)(HomeView);
+)(Home);

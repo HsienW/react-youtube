@@ -1,9 +1,10 @@
-import Auth from './Auth/AuthView';
-import Home from './Home/HomeView';
-import Channel from './MyChannel/MyChannelView';
-import Play from './Play/PlayView';
-import Search from './Search/SearchView';
-import Upload from './Upload/UploadView';
+import Auth from './Auth/Auth';
+import Home from './Home/Home';
+import Channel from './MyChannel/MyChannel';
+import Play from './Play/Play';
+import Search from './Search/Search';
+import Upload from './Upload/Upload';
+import 'antd/dist/antd.css';
 
 /**
  統一匯出各功能組件
