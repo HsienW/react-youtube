@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 // import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
-import * as AuthActions from '../../Redux/Modules/Auth/AuthActions';
+import {ChannelActionsCreator} from '../../Redux/Modules/Channel/ChannelRedux';
 import Video from '../../Components/Modules/Video/Video';
 import styled from 'styled-components';
 
@@ -27,11 +27,11 @@ class MyChannel extends Component {
 
 export default connect(
     (state) => {
-        return {actionType: state.AuthReducer.actionType};
+        return {actionType: state.ChannelReducer.actionType};
     },
     (dispatch) => {
         return {
-            AuthActions: bindActionCreators(AuthActions, dispatch)
+            AuthActions: bindActionCreators(ChannelActionsCreator, dispatch)
         };
     }
 )(MyChannel);

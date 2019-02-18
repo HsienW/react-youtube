@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as HomeActions from '../../Redux/Modules/Home/HomeActions';
-// import PropTypes from 'prop-types';
-import Video from '../../Components/Modules/Video/Video';
+import {HomeActionsCreator} from '../../Redux/Modules/Home/HomeRedux';
+import {PageTitle, Video} from '../../Components/Modules/index';
+import {Header} from '../../Components/Layout/index';
 import styled from 'styled-components';
+// import PropTypes from 'prop-types';
 
 const HomeView = styled.div`
     padding: 0 10%;
@@ -19,9 +20,13 @@ class Home extends Component {
 
     render() {
         return (
-            <HomeView>
-                <Video></Video>
-            </HomeView>
+            <div>
+                <Header />
+                <HomeView>
+                    <PageTitle />
+                    <Video />
+                </HomeView>
+            </div>
         );
     }
 }
@@ -36,7 +41,7 @@ export default connect(
     },
     (dispatch) => {
         return {
-            HomeActions: bindActionCreators(HomeActions, dispatch)
+            HomeActions: bindActionCreators(HomeActionsCreator, dispatch)
         };
     }
 )(Home);
