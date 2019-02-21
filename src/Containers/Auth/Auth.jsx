@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Input, Button} from 'antd';
 import {GoogleLogin} from 'react-google-login';
-import {AuthActionsCreator} from '../../Redux/Modules/Auth/AuthRedux';
+import * as AuthRedux from '../../Redux/Modules/Auth/AuthRedux';
 import * as Config from '../../../config';
 import * as Style from '../../Common/Style';
 
@@ -28,21 +28,32 @@ const btnStyle = {
 
 class Auth extends Component {
 
-    // componentDidUpdate() {
-    //
-    // }
+    state = {
+        test: false
+    };
 
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
-    //     console.log(nextProps, prevState);
-    //     if (prevState !== nextProps) {
-    //         return Promise.resolve(this.test(nextProps));
-    //     }
-    //     return null;
-    // }
+    componentDidUpdate() {
+        if (this.state.test) {
+            this.test();
+        }
+    }
+
+    static getDerivedStateFromProps(nextProps) {
+        switch (nextProps.actionType) {
+            case AuthRedux.AuthActions.getAuthSuccess:
+                return {test: true};
+
+            case AuthRedux.AuthActions.getAuthFailed:
+                return null;
+
+            default:
+                break;
+        }
+        return null;
+    }
 
     test = () => {
-        console.log('7777777777777777777777777');
+        this.props.AuthActionsCreator.getTest('97498449');
     };
 
     getAuthSuccess = () => {
@@ -81,7 +92,7 @@ export default connect(
     },
     (dispatch) => {
         return {
-            AuthActionsCreator: bindActionCreators(AuthActionsCreator, dispatch)
+            AuthActionsCreator: bindActionCreators(AuthRedux.AuthActionsCreator, dispatch)
         };
     }
 )(Auth);

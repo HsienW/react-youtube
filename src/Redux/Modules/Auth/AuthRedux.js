@@ -12,13 +12,21 @@ const getAuthSuccess = (userId) => {
     };
 };
 
+const getTest = () => {
+    return (dispatch) => {
+        dispatch(createAction(AuthActions.getAuthFailed)());
+    };
+};
+
 export const AuthActionsCreator = {
     getAuthSuccess,
+    getTest
 };
 
 export default function AuthReducer(state = {actionType: ''}, action) {
     switch (action.type) {
         case AuthActions.getAuthSuccess:
+        case AuthActions.getAuthFailed:
             return {actionType: action.type};
 
         default:

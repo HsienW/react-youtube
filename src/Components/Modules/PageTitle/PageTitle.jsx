@@ -11,7 +11,7 @@ export default class PageTitle extends Component {
     render() {
         return (
             <PageTitleView>
-                <Divider orientation="left">Left Text</Divider>
+                <Divider orientation="left">Recommend</Divider>
             </PageTitleView>
         );
     }
