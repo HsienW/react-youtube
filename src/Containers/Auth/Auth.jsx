@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Input, Button} from 'antd';
-import {GoogleLogin} from 'react-google-login';
-import * as AuthRedux from '../../Redux/Modules/Auth/AuthRedux';
+import {GoogleAuthorize} from 'react-google-authorize';
+import {AuthRedux, PortalRedux} from  '../../Redux/Modules';
 import * as Config from '../../../config';
 import * as Style from '../../Common/Style';
 
@@ -28,39 +28,12 @@ const btnStyle = {
 
 class Auth extends Component {
 
-    state = {
-        test: false
+    authSuccess = (response) => {
+        this.props.AuthActionsCreator.getAuthSuccess(response.access_token);
+        this.props.PortalActionsCreator.changeToPage('home');
     };
 
-    componentDidUpdate() {
-        if (this.state.test) {
-            this.test();
-        }
-    }
-
-    static getDerivedStateFromProps(nextProps) {
-        switch (nextProps.actionType) {
-            case AuthRedux.AuthActions.getAuthSuccess:
-                return {test: true};
-
-            case AuthRedux.AuthActions.getAuthFailed:
-                return null;
-
-            default:
-                break;
-        }
-        return null;
-    }
-
-    test = () => {
-        this.props.AuthActionsCreator.getTest('97498449');
-    };
-
-    getAuthSuccess = () => {
-        this.props.AuthActionsCreator.getAuthSuccess('8888888');
-    };
-
-    getAuthFailed = (response) => {
+    authFailed = (response) => {
         console.log(response);
     };
 
@@ -70,12 +43,13 @@ class Auth extends Component {
                 <div>Youtube</div>
                 <Input placeholder="Account"/>
                 <Input type="password" placeholder="Password"/>
-                <Button style={btnStyle} onClick={this.getAuthSuccess}>Login</Button>
-                <GoogleLogin
+                <Button style={btnStyle} onClick={this.authSuccess}>Login</Button>
+                <GoogleAuthorize
                     clientId={Config.googleAuthKey}
+                    scope={Config.googleAuthScope}
                     render={renderProps => (<Button style={btnStyle} onClick={renderProps.onClick}>Google</Button>)}
-                    onSuccess={this.getAuthSuccess}
-                    onFailure={this.getAuthFailed}
+                    onSuccess={this.authSuccess}
+                    onFailure={this.authFailed}
                 />
             </AuthView>
         );
@@ -84,6 +58,7 @@ class Auth extends Component {
 
 Auth.propTypes = {
     AuthActionsCreator: PropTypes.object.isRequired,
+    PortalActionsCreator: PropTypes.object.isRequired
 };
 
 export default connect(
@@ -92,7 +67,8 @@ export default connect(
     },
     (dispatch) => {
         return {
-            AuthActionsCreator: bindActionCreators(AuthRedux.AuthActionsCreator, dispatch)
+            AuthActionsCreator: bindActionCreators(AuthRedux.AuthActionsCreator, dispatch),
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
         };
     }
 )(Auth);

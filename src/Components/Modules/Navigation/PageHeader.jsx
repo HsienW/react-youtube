@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {Divider} from 'antd';
-
 import styled from 'styled-components';
 
-const PageTitleView = styled.div`
-    height: 50px;
+const PageHeaderView = styled.div`
+    height: 4vh;
+    minHeight: 60px;
 `;
 
-export default class PageTitle extends Component {
+export default class PageHeader extends Component {
     render() {
         return (
-            <PageTitleView>
+            <PageHeaderView>
                 <Divider orientation="left">Recommend</Divider>
-            </PageTitleView>
+            </PageHeaderView>
         );
     }
 }

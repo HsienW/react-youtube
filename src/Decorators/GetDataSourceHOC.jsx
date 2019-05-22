@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {callApi} from '../ApiCenter/Api/callApi';
 
-export const AsyncDataSourceHOC = (apiURL, request) => (WrappedComponent) => {
-    return class asyncDataSourceHOC extends Component {
+export const GetDataSourceHOC = (WrappedComponent) => {
+    return class getDataSourceHOC extends React.Component {
 
         constructor() {
             super();
@@ -14,7 +14,7 @@ export const AsyncDataSourceHOC = (apiURL, request) => (WrappedComponent) => {
             };
         }
 
-        componentDidMount() {
+        callApiGetData = (apiURL, request) => {
             callApi.get(apiURL, request)
                 .then((respond) => {
                     this.setState({
@@ -23,6 +23,7 @@ export const AsyncDataSourceHOC = (apiURL, request) => (WrappedComponent) => {
                         sourceData: respond,
                         stateMessage: '',
                     });
+                    return respond;
                 })
                 .catch((error) => {
                     this.setState({
@@ -31,14 +32,14 @@ export const AsyncDataSourceHOC = (apiURL, request) => (WrappedComponent) => {
                         sourceData: [],
                         stateMessage: error
                     });
+                    return error;
                 });
-        }
+        };
 
         render() {
             return (
-                <WrappedComponent {...this.state} {...this.props}/>
+                <WrappedComponent {...this.state} {...this.props} callApi={this.callApiGetData}/>
             );
         }
     };
 };
-

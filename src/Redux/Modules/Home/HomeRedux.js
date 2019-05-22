@@ -1,4 +1,7 @@
 import {createAction} from 'redux-actions';
+import {CallApi} from '../../../ApiCenter/Api/CallApi';
+import {AuthActions} from '../Auth/AuthRedux';
+import * as apiData from '../../../ApiCenter/Api/Api';
 
 export const HomeActions = {
     getHomeStart: 'GET_HOME_START',
@@ -6,20 +9,29 @@ export const HomeActions = {
     getHomeFailed: 'GET_HOME_FAILED',
 };
 
-const getHomeSuccess = () => {
+const getHomeData = (request) => {
     return (dispatch) => {
-        dispatch(createAction(HomeActions.getHomeStart));
+        dispatch(createAction(HomeActions.getHomeStart)());
+        CallApi.get(apiData.videoURL, request)
+            .then((respond) => {
+                dispatch(createAction(HomeActions.getHomeSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(HomeActions.getHomeFailed)(error));
+            });
     };
 };
 
 export const HomeActionsCreator = {
-    getHomeSuccess,
+    getHomeData,
 };
 
-export default function HomeReducer(state = {actionType: ''}, action) {
+export default function HomeReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case HomeActions.getHomeStart:
-            return {actionType: action.type};
+        case AuthActions.getAuthSuccess:
+        case HomeActions.getHomeSuccess:
+        case HomeActions.getHomeFailed:
+            return {action: action};
 
         default:
             return state;

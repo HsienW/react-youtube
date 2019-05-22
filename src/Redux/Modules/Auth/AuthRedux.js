@@ -1,4 +1,5 @@
 import {createAction} from 'redux-actions';
+import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
 
 export const AuthActions = {
     getAuthStart: 'GET_AUTH_START',
@@ -6,28 +7,24 @@ export const AuthActions = {
     getAuthFailed: 'GET_AUTH_FAILED',
 };
 
-const getAuthSuccess = (userId) => {
+const getAuthSuccess = (accessToken) => {
     return (dispatch) => {
-        dispatch(createAction(AuthActions.getAuthSuccess)(userId));
-    };
-};
-
-const getTest = () => {
-    return (dispatch) => {
-        dispatch(createAction(AuthActions.getAuthFailed)());
+        dispatch(createAction(AuthActions.getAuthSuccess)(accessToken));
     };
 };
 
 export const AuthActionsCreator = {
     getAuthSuccess,
-    getTest
 };
 
-export default function AuthReducer(state = {actionType: ''}, action) {
+export default function AuthReducer(state = {action: ''}, action) {
     switch (action.type) {
         case AuthActions.getAuthSuccess:
+            WebStorage.setSessionStorage(WebStorageKeys.ACCESS_TOKEN, action.payload);
+            return {action: action.type};
+
         case AuthActions.getAuthFailed:
-            return {actionType: action.type};
+            return {action: action.type};
 
         default:
             return state;

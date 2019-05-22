@@ -7,9 +7,21 @@ import axios from 'axios';
 
  **/
 
-export default class callApi {
-    get(url) {
-        axios.get(url)
+
+export const CallApi = {
+    get(url, request) {
+        return axios.get(url, {params: request})
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                console.log(error);
+                return error;
+            });
+
+    },
+    post(url, request) {
+        axios.post(url, request)
             .then((response) => {
                 console.log(response);
                 return response;
@@ -18,19 +30,5 @@ export default class callApi {
                 console.log(error);
                 return error;
             });
-
     }
-
-    post(url, requestJson) {
-        axios.post(url, requestJson)
-            .then((response) => {
-                console.log(response);
-                return response;
-            })
-            .catch((error) => {
-                console.log(error);
-                return error;
-            });
-    }
-
-}
+};

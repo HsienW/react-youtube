@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
 // import PropTypes from 'prop-types';
-import connect from 'react-redux/es/connect/connect';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {ChannelActionsCreator} from '../../Redux/Modules/Channel/ChannelRedux';
-import Video from '../../Components/Modules/Video/Video';
+import {VideoItem} from '../../Components/Modules/index';
 import styled from 'styled-components';
 
 const MyChannelView = styled.div`
@@ -15,7 +15,7 @@ class MyChannel extends Component {
     render() {
         return (
             <MyChannelView>
-                <Video></Video>
+                <VideoItem></VideoItem>
             </MyChannelView>
         );
     }

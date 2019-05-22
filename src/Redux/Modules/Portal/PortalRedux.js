@@ -5,28 +5,28 @@ export const PortalActions = {
     stopPortal : 'STOP_PORTAL'
 };
 
-const goToPage = () => {
+const changeToPage = (url) => {
     return (dispatch) => {
-        dispatch(createAction(PortalActions.goToPage));
+        dispatch(createAction(PortalActions.goToPage)(url));
     };
 };
 
 const stopPortal = () => {
     return (dispatch) => {
-        dispatch(createAction(PortalActions.stopPortal));
+        dispatch(createAction(PortalActions.stopPortal)());
     };
 };
 
 export const PortalActionsCreator = {
-    goToPage,
+    changeToPage,
     stopPortal
 };
 
-export default function PortalReducer(state = {actionType: ''}, action) {
+export default function PortalReducer(state = {action: ''}, action) {
     switch (action.type) {
         case PortalActions.goToPage:
         case PortalActions.stopPortal:
-            return {actionType: action.type};
+            return {action: action};
 
         default:
             return state;

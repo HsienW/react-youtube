@@ -4,6 +4,7 @@ import Channel from './MyChannel/MyChannel';
 import Play from './Play/Play';
 import Search from './Search/Search';
 import Upload from './Upload/Upload';
+import Portal from './Portal/Portal';
 import 'antd/dist/antd.css';
 
 /**
@@ -16,5 +17,6 @@ export {
     Channel,
     Play,
     Search,
-    Upload
+    Upload,
+    Portal
 };
