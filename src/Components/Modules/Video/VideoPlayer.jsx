@@ -1,27 +1,56 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
-import {VideoPlayerItem} from '../../../Common/ComponentConfig';
-import {Button, Progress} from 'antd';
+import {VideoPlayerConfig} from '../../../Common/ComponentConfig';
+import {Button, Slider} from 'antd';
 import styled from 'styled-components';
-import * as Style from '../../../Common/Style';
+// import * as Style from '../../../Common/Style';
 
 const ControlArea = styled.div`
     height: 10%;
-    width: 54vw;
+    width: 100%;
+    padding: 1% 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
+
+const ControlBtn = styled.div`
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+`;
+
+const videoSliderStyle = {
+    width: '80%',
+    maxWidth: '80%',
+    minWidth: '300px',
+    padding: '0 1%'
+};
+
+const volumeSliderStyle = {
+    width: '12px',
+    height: '60px',
+    position: 'absolute',
+    bottom: '150px',
+    left: '160px'
+};
 
 export default class VideoPlayer extends Component {
 
     state = {
         playing: true,
-        volume: 0.5,
-        progress: 0
+        videoVolume: 0.5,
+        videoProgress: 0
     };
 
-    // itemClick = () => {
-    //     this.props.itemClickAction(this.props.videoItemData);
-    // };
+    playClick = () => {
+        this.setState({
+            playing: !this.state.playing
+        });
+        // this.props.itemClickAction(this.props.videoItemData);
+    };
 
     render() {
         const {configData, playerData, playerInlineStyle} = {...this.props};
@@ -30,7 +59,7 @@ export default class VideoPlayer extends Component {
         return (
             <div>
                 <ReactPlayer
-                    url={VideoPlayerItem.basicURL + playerData.id}
+                    url={VideoPlayerConfig.basicURL + playerData.id}
                     width={configData.width}
                     height={configData.height}
                     style={playerInlineStyle}
@@ -41,17 +70,29 @@ export default class VideoPlayer extends Component {
                     progressInterval={this.state.progress}
                 />
                 <ControlArea>
-                    <Button icon="caret-right" onClick/>
-                    <Button icon="sound"/>
-                    <Progress
-                        percent={50}
-                        strokeWidth={2}
-                        showInfo={false}
-                        strokeColor={Style.FontStressColor}
-                        style={{width: '50%'}}
+                    <ControlBtn>
+                        <Button
+                            icon={this.state.playing ? 'pause' : 'caret-right'}
+                            onClick={this.playClick}
+                        />
+                        <Button icon="sound"/>
+                        <Slider
+                            style={volumeSliderStyle}
+                            defaultValue={50}
+                            tooltipVisible={false}
+                            vertical={true}
+                            value={this.state.videoVolume}
+                        />
+                    </ControlBtn>
+                    <Slider
+                        style={videoSliderStyle}
+                        defaultValue={0}
+                        tooltipVisible={false}
+                        value={this.state.videoProgress}
                     />
-                    <Button icon="fullscreen"/>
-
+                    <ControlBtn>
+                        <Button icon="fullscreen"/>
+                    </ControlBtn>
                 </ControlArea>
             </div>
         );
@@ -63,5 +104,3 @@ VideoPlayer.propTypes = {
     playerData: PropTypes.object.isRequired,
     playerInlineStyle: PropTypes.object.isRequired
 };
-
-// pause

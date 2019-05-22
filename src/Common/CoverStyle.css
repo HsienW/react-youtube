@@ -1,0 +1,13 @@
+.ant-slider-track {
+    background-color: #02BEC4 !important;
+}
+
+.ant-slider-handle {
+    border: solid 2px #02BEC4 !important;
+}
+
+.ant-btn:hover,
+.ant-btn:focus {
+    color: #02BEC4;
+    border-color: #02BEC4 !important;
+}

@@ -7,6 +7,7 @@ import {HashRouter, Router, Switch, Route} from 'react-router-dom';
 import {Auth, Home, Upload, Search, Play, Channel, Portal} from '../src/Containers/index';
 // import Header from './Components/Layout/Header/Header';
 import 'antd/dist/antd.css';
+import './Common/CoverStyle.css';
 
 const history = createHistory();
 

@@ -15,17 +15,22 @@ const PlayView = styled.div`
     width: 100%;
 `;
 
-const TitleArea = styled.div`
+const PlayInfoArea = styled.div`
     width: 54vw;
-    height: 10vh;
+    height: 100%;
     min-width: 640px;
     min-height: 60px;
-    font-size: 30px;
+`;
+
+const TitleArea = styled.div`
+    width: 100%;
+    height: 10vh;
+    font-size: 26px;
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
     align-content: center;
-    border-bottom: ${Style.FontMinorColor} 2px solid;
+    border-bottom: ${Style.FontMinorColor} 1.5px solid;
 `;
 
 const playerConfig = {
@@ -69,12 +74,14 @@ class Play extends Component {
             <div>
                 <Header/>
                 <PlayView>
-                    <VideoPlayer
-                        playerData={this.state.playData}
-                        configData={playerConfig}
-                        playerInlineStyle={playerInlineStyle}
-                    />
-                    <TitleArea>{this.state.playData.title}</TitleArea>
+                    <PlayInfoArea>
+                        <VideoPlayer
+                            playerData={this.state.playData}
+                            configData={playerConfig}
+                            playerInlineStyle={playerInlineStyle}
+                        />
+                        <TitleArea>{this.state.playData.title}</TitleArea>
+                    </PlayInfoArea>
                 </PlayView>
             </div>
         );

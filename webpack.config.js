@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.jsx',
+        index: './src/index.jsx',
         vendor: [
             'is_js',
             'axios',
@@ -79,7 +79,7 @@ module.exports = {
             filename: 'index.html',
         }),
         new MiniCssExtractPlugin({
-            filename: 'app.bundle.css',
+            filename: 'index.bundle.css',
         }),
         new CompressionPlugin()
     ],

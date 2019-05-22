@@ -6,11 +6,11 @@ const FontMinorColor = '#D1D2D4';
 
 const FontStressColor = '#808080';
 
-const textOverHandle = {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-};
+// const textOverHandle = {
+//     overflow: 'hidden',
+//     textOverflow: 'ellipsis',
+//     whiteSpace: 'nowrap',
+// };
 
 const SpinStyle = {
     display: 'block',
@@ -29,5 +29,5 @@ export {
     FontMinorColor,
     FontStressColor,
     SpinStyle,
-    textOverHandle,
+    // textOverHandle,
 };

@@ -87,7 +87,7 @@ const TypeSearchDropdown = {
     ]
 };
 
-const VideoPlayerItem = {
+const VideoPlayerConfig = {
     basicURL: 'https://www.youtube.com/watch?v='
 };
 
@@ -97,5 +97,5 @@ export {
     NoticeDropdown,
     DateSearchDropdown,
     TypeSearchDropdown,
-    VideoPlayerItem
+    VideoPlayerConfig
 };
