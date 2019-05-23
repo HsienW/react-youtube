@@ -26,7 +26,7 @@ const ContentArea = styled.div`
 `;
 
 const request = {
-    part: 'snippet',
+    part: 'snippet, contentDetails',
     mine: true,
     access_token: sessionStorage.getItem('ACCESS_TOKEN'),
     maxResults: 12,
