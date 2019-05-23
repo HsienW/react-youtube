@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
 import {Header} from '../../Components/Layout/index';
-import {VideoPlayer} from '../../Components/Modules';
+import {VideoPlayer, UserAvatar} from '../../Components/Modules';
 import * as Style from '../../Common/Style';
 
 const PlayView = styled.div`
@@ -33,6 +33,10 @@ const TitleArea = styled.div`
     border-bottom: ${Style.FontMinorColor} 1.5px solid;
 `;
 
+const DetailArea = styled.div`
+    width: 100%;
+`;
+
 const playerConfig = {
     width: '54vw',
     height: '66vh',
@@ -56,8 +60,6 @@ class Play extends Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
-        console.log('mmmmmmmmmmmmmmmmmmmmmmmm');
-        console.log(nextProps.action);
         switch (nextProps.action.type) {
             case PlayRedux.PlayActions.getPlaySuccess:
                 return {getPlayData: true, playData: nextProps.action.payload};
@@ -81,6 +83,9 @@ class Play extends Component {
                             playerInlineStyle={playerInlineStyle}
                         />
                         <TitleArea>{this.state.playData.title}</TitleArea>
+                        <DetailArea>
+                            <UserAvatar configData={{imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}}/>
+                        </DetailArea>
                     </PlayInfoArea>
                 </PlayView>
             </div>

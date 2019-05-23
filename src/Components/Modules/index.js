@@ -1,3 +1,4 @@
+import UserAvatar from './Avatar/UserAvatar';
 import ContentDropdown from './Dropdown/ContentDropdown';
 import ListDropdown from './Dropdown/ListDropdown';
 import PageHeader from './Navigation/PageHeader';
@@ -6,6 +7,7 @@ import VideoListItem from './Video/VideoListItem';
 import VideoPlayer from './Video/VideoPlayer';
 
 export {
+    UserAvatar,
     ContentDropdown,
     ListDropdown,
     PageHeader,
