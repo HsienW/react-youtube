@@ -62,6 +62,8 @@ class Play extends Component {
     }
 
     static getDerivedStateFromProps(nextProps) {
+        console.log('mmmmmmmmmmmmmmmmmmmmmmmm');
+        console.log(nextProps.action);
         switch (nextProps.action.type) {
             case PlayRedux.PlayActions.getPlaySuccess:
                 return {getPlayData: true, playData: nextProps.action.payload};
@@ -86,14 +88,7 @@ class Play extends Component {
                         />
                         <TitleArea>{this.state.playData.title}</TitleArea>
                         <DetailArea>
-                            <UserAvatar configData={
-                                {
-                                    imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                                    imgSize: 50
-                                }
-                            }/>
-                            <div>titletitletitletitletitletitletitletitletitletitletitle</div>
-                            <div>time: 2019-05-20</div>
+                            <UserAvatar configData={{imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'}}/>
                         </DetailArea>
                     </PlayInfoArea>
                 </PlayView>
