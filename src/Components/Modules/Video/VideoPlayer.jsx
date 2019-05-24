@@ -66,15 +66,19 @@ export default class VideoPlayer extends Component {
         });
     };
 
-    changeVideoProgress = (v) => {
-        console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
-        console.log(v);
+    changeVideoProgress = (newProgress) => {
+        console.log(newProgress);
     };
 
-    test = (onProgress) => {
+    getVideoProgress = (onProgress) => {
         this.setState({
             videoProgress: onProgress.playedSeconds
         });
+    };
+
+    fullScreenClick = () => {
+        const video = document.querySelector('#videoPlayer');
+        video.requestFullscreen();
     };
 
     render() {
@@ -82,6 +86,7 @@ export default class VideoPlayer extends Component {
         return (
             <div>
                 <ReactPlayer
+                    id={'videoPlayer'}
                     url={VideoPlayerConfig.basicURL + playerData.id}
                     width={configData.width}
                     height={configData.height}
@@ -90,7 +95,7 @@ export default class VideoPlayer extends Component {
                     playing={this.state.playing}
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
-                    onProgress={this.test}
+                    onProgress={this.getVideoProgress}
                 />
                 <ControlArea>
                     <ControlBtn>
@@ -120,7 +125,7 @@ export default class VideoPlayer extends Component {
                         onAfterChange={this.changeVideoProgress}
                     />
                     <ControlBtn>
-                        <Button icon="fullscreen"/>
+                        <Button icon="fullscreen" onClick={this.fullScreenClick}/>
                     </ControlBtn>
                 </ControlArea>
             </div>
