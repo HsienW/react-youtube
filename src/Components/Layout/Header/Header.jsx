@@ -34,7 +34,7 @@ const searchBarStyle = {
     width: '40vw'
 };
 
-const btnStyle = {
+const btnConfig = {
     color: `${Style.FontMainColor}`,
     backgroundColor: `${Style.MainColor}`,
     marginLeft: 8
@@ -81,7 +81,7 @@ class Header extends Component {
     render() {
         return (
             <HeaderView>
-                <Button style={btnStyle}>Home</Button>
+                <Button style={btnConfig}>Home</Button>
                 <Search
                     placeholder="Search"
                     onSearch={value => this.onSearch(value)}
@@ -90,18 +90,18 @@ class Header extends Component {
                 <div style={profileArea}>
                     <ListDropdown
                         configData={ComponentConfig.UploadDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
                     <ContentDropdown
                         configData={ComponentConfig.NoticeDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         contentBodyStyle={contentBodyStyle}
                         contentData={data}
                     />
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
                 </div>

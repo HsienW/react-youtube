@@ -27,6 +27,8 @@ export const HomeActionsCreator = {
 };
 
 export default function HomeReducer(state = {action: ''}, action) {
+    console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+    console.log(action.payload);
     switch (action.type) {
         case AuthActions.getAuthSuccess:
         case HomeActions.getHomeSuccess:

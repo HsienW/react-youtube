@@ -59,6 +59,7 @@ export default class VideoItem extends Component {
 }
 
 VideoItem.propTypes = {
+    // videoItemConfig: PropTypes.object.isRequired,
     videoItemData: PropTypes.object.isRequired,
     itemClickAction: PropTypes.func.isRequired
 };

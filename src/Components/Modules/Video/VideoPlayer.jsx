@@ -54,6 +54,11 @@ export default class VideoPlayer extends Component {
         // this.props.itemClickAction(this.props.videoItemData);
     };
 
+    fullScreenClick = () => {
+        const video = document.querySelector('#videoPlayer');
+        video.requestFullscreen();
+    };
+
     volumeClick = () => {
         this.setState({
             showVolumeSlider: !this.state.showVolumeSlider
@@ -76,22 +81,17 @@ export default class VideoPlayer extends Component {
         });
     };
 
-    fullScreenClick = () => {
-        const video = document.querySelector('#videoPlayer');
-        video.requestFullscreen();
-    };
-
     render() {
-        const {configData, playerData, playerInlineStyle} = {...this.props};
+        const {playerConfig, playerData, playerInlineStyle} = {...this.props};
         return (
             <div>
                 <ReactPlayer
                     id={'videoPlayer'}
                     url={VideoPlayerConfig.basicURL + playerData.id}
-                    width={configData.width}
-                    height={configData.height}
+                    width={playerConfig.width}
+                    height={playerConfig.height}
                     style={playerInlineStyle}
-                    controls={configData.controls}
+                    controls={playerConfig.controls}
                     playing={this.state.playing}
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
@@ -134,7 +134,7 @@ export default class VideoPlayer extends Component {
 }
 
 VideoPlayer.propTypes = {
-    configData: PropTypes.object.isRequired,
     playerData: PropTypes.object.isRequired,
-    playerInlineStyle: PropTypes.object.isRequired
+    playerConfig: PropTypes.object.isRequired,
+    playerInlineConfig: PropTypes.object.isRequired
 };

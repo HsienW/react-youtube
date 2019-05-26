@@ -1,25 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Card} from 'antd';
-import styled from 'styled-components';
 
 const {Meta} = Card;
-
-const ItemView = styled.div`
-    width: 100%;
-    height: 200px;
-    padding: 0 10px 20px;
-`;
 
 const videoItemStyle = {
     width: '100%',
     height: '100%',
     display: 'flex',
     border: 0
-};
-
-const ContentStyle = {
-    width: 'calc(100% - 320px)',
 };
 
 const DescriptionStyle = {
@@ -41,13 +30,15 @@ const textOverStyle = {
 
 export default class VideoListItem extends Component {
     render() {
-        const {videoItemData} = {...this.props};
+        const {videoListItemConfig, videoItemData} = {...this.props};
         return (
-            <ItemView>
+            <div style={videoListItemConfig}>
                 <Card
                     hoverable
                     style={videoItemStyle}
-                    bodyStyle={ContentStyle}
+                    bodyStyle={{
+                        width: `calc(100% - ${videoListItemConfig.imgWidth}px)`
+                    }}
                     cover={<img alt={videoItemData.title} src={videoItemData.imgURL}/>}
                 >
                     <Meta
@@ -60,11 +51,12 @@ export default class VideoListItem extends Component {
                         }
                     />
                 </Card>
-            </ItemView>
+            </div>
         );
     }
 }
 
 VideoListItem.propTypes = {
-    videoItemData: PropTypes.object.isRequired,
+    videoListItemConfig: PropTypes.object.isRequired,
+    videoItemData: PropTypes.object.isRequired
 };

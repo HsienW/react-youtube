@@ -6,49 +6,86 @@ import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
 import {Header} from '../../Components/Layout/index';
-import {VideoPlayer, UserAvatar} from '../../Components/Modules';
-import * as Style from '../../Common/Style';
+import {VideoPlayer, VideoDescription, VideoListItem, UserAvatar} from '../../Components/Modules';
 
 const PlayView = styled.div`
     width: 100%;
     height: 90vh;
     padding: 2% 8% 0 8%;
-`;
-
-const PlayInfoArea = styled.div`
-    width: 54vw;
-    height: 100%;
-    min-width: 640px;
-    min-height: 60px;
-`;
-
-const TitleArea = styled.div`
-    width: 100%;
-    height: 10vh;
-    font-size: 26px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
     align-content: center;
-    border-bottom: ${Style.FontMinorColor} 1.5px solid;
 `;
 
-const DetailArea = styled.div`
+const PlayInfo = styled.div`
+    width: 70%;
+    min-width: 640px;
+    min-height: 600px;
+`;
+
+const RelatedVideo = styled.div`
+    width: 30%;
+    padding: 0 2%;
+    min-width: 360px;
+    min-height: 600px;
+    max-height: 100%;
+    overflow: auto;
+`;
+
+const PlayContent = styled.div`
     width: 100%;
     height: 100%;
     padding: 2% 0
 `;
 
+const VideoTitle = styled.div`
+    width: 100%;
+    height: 10vh;
+    font-size: 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-content: center;
+`;
+
+const VideoDetail = styled.div`
+    width: 100%;
+    height: 50%;
+    padding: 2% 0;
+    display: flex;
+    justify-content: start;
+    align-content: center;
+`;
+
+const VideoOwnerAvatar = styled.div`
+    width: 50px;
+    height: 100%;
+`;
+
 const playerConfig = {
-    width: '54vw',
+    width: '100%',
     height: '66vh',
     controls: false,
     onReady: true,
 };
 
-const playerInlineStyle = {
+const playerInlineConfig = {
     minWidth: '640px',
     minHeight: '360px'
+};
+
+const videoListItemConfig = {
+    width: '100%',
+    height: '90px',
+    marginBottom: '2%',
+    imgWidth: 120
+};
+
+const videoItemData = {
+    id: '123',
+    title: 'test',
+    imgURL: 'https://i.ytimg.com/vi/zymgtV99Rko/default.jpg',
+    description: 'testtesttesttesttest'
 };
 
 class Play extends Component {
@@ -78,24 +115,42 @@ class Play extends Component {
             <div>
                 <Header/>
                 <PlayView>
-                    <PlayInfoArea>
+                    <PlayInfo>
                         <VideoPlayer
                             playerData={this.state.playData}
-                            configData={playerConfig}
-                            playerInlineStyle={playerInlineStyle}
+                            playerConfig={playerConfig}
+                            playerInlineConfig={playerInlineConfig}
                         />
-                        <TitleArea>{this.state.playData.title}</TitleArea>
-                        <DetailArea>
-                            <UserAvatar configData={
-                                {
-                                    imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                                    imgSize: 50
-                                }
-                            }/>
-                            <div>titletitletitletitletitletitletitletitletitletitletitle</div>
-                            <div>time: 2019-05-20</div>
-                        </DetailArea>
-                    </PlayInfoArea>
+                        <PlayContent>
+                            <VideoTitle>{this.state.playData.title}</VideoTitle>
+                            <VideoDetail>
+                                <VideoOwnerAvatar>
+                                    <UserAvatar avatarData={
+                                        {
+                                            imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                                            imgSize: 50
+                                        }
+                                    }/>
+                                </VideoOwnerAvatar>
+                                <VideoDescription
+                                    descriptionData={
+                                        {
+                                            title: 'Name',
+                                            release: '2020-05-26',
+                                            contentInfo: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+                                        }
+                                    }
+                                />
+                            </VideoDetail>
+                        </PlayContent>
+                    </PlayInfo>
+                    <RelatedVideo>
+                        <VideoListItem
+                            key={videoItemData.id}
+                            videoItemData={videoItemData}
+                            videoListItemConfig={videoListItemConfig}
+                        />
+                    </RelatedVideo>
                 </PlayView>
             </div>
         );

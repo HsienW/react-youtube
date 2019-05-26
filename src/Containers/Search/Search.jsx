@@ -18,7 +18,7 @@ const SearchView = styled.div`
     width: 100%;
 `;
 
-const ContentArea = styled.div`
+const SearchContent = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
@@ -26,7 +26,7 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
-const AdvancedSearchArea = styled.div`
+const AdvancedSearch = styled.div`
     height: 4vh;
     minHeight: 60px;
 `;
@@ -38,10 +38,15 @@ const videoItemData = {
     description: 'testtesttesttesttest'
 };
 
-const btnStyle = {
+const btnConfig = {
     color: `${Style.FontStressColor}`,
     border: 0,
     marginLeft: 8
+};
+
+const videoListItemConfig = {
+    width: '100%',
+    height: '160px',
 };
 
 class Search extends Component {
@@ -70,24 +75,25 @@ class Search extends Component {
             <div>
                 <Header/>
                 <SearchView>`
-                    <AdvancedSearchArea>
+                    <AdvancedSearch>
                         <ListDropdown
                             configData={ComponentConfig.DateSearchDropdown}
-                            btnStyle={btnStyle}
+                            btnConfig={btnConfig}
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                         <ListDropdown
                             configData={ComponentConfig.TypeSearchDropdown}
-                            btnStyle={btnStyle}
+                            btnConfig={btnConfig}
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
-                    </AdvancedSearchArea>
-                    <ContentArea>
+                    </AdvancedSearch>
+                    <SearchContent>
                         <VideoListItem
                             key={videoItemData.id}
                             videoItemData={videoItemData}
+                            videoListItemConfig={videoListItemConfig}
                         />
-                    </ContentArea>
+                    </SearchContent>
                 </SearchView>
             </div>
         );
