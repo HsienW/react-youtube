@@ -6,6 +6,7 @@ import {PortalActionsCreator} from '../../../Redux/Modules/Portal/PortalRedux';
 import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {googleApiKey} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -25,16 +26,18 @@ const HeaderView = styled.div`
 
 const profileArea = {
     width: '16%',
+    minWidth: '300px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
 };
 
 const searchBarStyle = {
-    width: '40vw'
+    width: '40%',
+    minWidth: '500px'
 };
 
-const btnStyle = {
+const btnConfig = {
     color: `${Style.FontMainColor}`,
     backgroundColor: `${Style.MainColor}`,
     marginLeft: 8
@@ -67,41 +70,42 @@ class Header extends Component {
         super(props);
     }
 
-    onSearch = () => {
-        // const request = {
-        //     part: 'snippet',
-        //     q: searchKey,
-        //     type: 'video',
-        //     maxResults: 30
-        // };
-        // this.props.SearchActionsCreator.getSearchDataStart(request);
+    onSearch = (searchKey) => {
+        const request = {
+            part: 'snippet',
+            maxResults: 20,
+            q: searchKey,
+            type: 'video',
+            key: googleApiKey
+        };
+        this.props.SearchActionsCreator.getSearchResultData(request);
         this.props.PortalActionsCreator.changeToPage('search');
     };
 
     render() {
         return (
             <HeaderView>
-                <Button style={btnStyle}>Home</Button>
+                <Button style={btnConfig}>Home</Button>
                 <Search
                     placeholder="Search"
-                    onSearch={value => this.onSearch(value)}
+                    onSearch={searchKey => this.onSearch(searchKey)}
                     style={searchBarStyle}
                 />
                 <div style={profileArea}>
                     <ListDropdown
                         configData={ComponentConfig.UploadDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
                     <ContentDropdown
                         configData={ComponentConfig.NoticeDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         contentBodyStyle={contentBodyStyle}
                         contentData={data}
                     />
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
-                        btnStyle={btnStyle}
+                        btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
                 </div>

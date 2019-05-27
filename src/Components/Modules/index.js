@@ -5,6 +5,9 @@ import PageHeader from './Navigation/PageHeader';
 import VideoItem from './Video/VideoItem';
 import VideoListItem from './Video/VideoListItem';
 import VideoPlayer from './Video/VideoPlayer';
+import VideoDescription from './Video/VideoDescription';
+import VideoComment from './Video/VideoComment';
+import VideoListPlayItem from './Video/VideoListPlayItem';
 
 export {
     UserAvatar,
@@ -13,5 +16,8 @@ export {
     PageHeader,
     VideoItem,
     VideoListItem,
-    VideoPlayer
+    VideoListPlayItem,
+    VideoPlayer,
+    VideoDescription,
+    VideoComment
 };

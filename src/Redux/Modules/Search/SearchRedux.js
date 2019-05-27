@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {CallApi} from '../../../ApiCenter/Api/CallApi';
+import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/Api';
 
 export const SearchActions = {
@@ -8,10 +8,10 @@ export const SearchActions = {
     getSearchFailed: 'GET_SEARCH_FAILED',
 };
 
-const getSearchDataStart = (request) => {
+const getSearchResultData = (request) => {
     return (dispatch) => {
         dispatch(createAction(SearchActions.getSearchStart)());
-        CallApi.get(apiData.searchURL, request)
+        callApi.get(apiData.searchURL, request)
             .then((respond) => {
                 dispatch(createAction(SearchActions.getSearchSuccess)(respond));
             })
@@ -22,7 +22,7 @@ const getSearchDataStart = (request) => {
 };
 
 export const SearchActionsCreator = {
-    getSearchDataStart,
+    getSearchResultData,
 };
 
 export default function SearchReducer(state = {action: ''}, action) {

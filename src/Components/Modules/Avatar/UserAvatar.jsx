@@ -10,11 +10,11 @@ export default class UserAvatar extends Component {
     };
 
     render() {
-        const {configData} = {...this.props};
+        const {avatarData} = {...this.props};
         return (
             <Avatar
-                size={configData.imgSize}
-                src={configData.imgURL}
+                size={avatarData.imgSize}
+                src={avatarData.imgURL}
                 onClick={this.avatarClick}
             />
         );
@@ -22,7 +22,7 @@ export default class UserAvatar extends Component {
 }
 
 UserAvatar.propTypes = {
-    configData: PropTypes.object.isRequired,
+    avatarData: PropTypes.object.isRequired,
     // avatarClick: PropTypes.func.isRequired
 };
 

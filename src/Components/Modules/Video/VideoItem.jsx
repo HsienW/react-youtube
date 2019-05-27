@@ -11,7 +11,7 @@ const ItemView = styled.div`
     padding: 10px;
 `;
 
-const videoItemStyle = {
+const ItemStyle = {
     width: '320px',
     height: '180px',
 };
@@ -40,7 +40,7 @@ export default class VideoItem extends Component {
             <ItemView>
                 <Card
                     hoverable
-                    style={videoItemStyle}
+                    style={ItemStyle}
                     cover={<img alt={videoItemData.title} src={videoItemData.imgURL}/>}
                     onClick={this.itemClick}
                 >
@@ -59,6 +59,7 @@ export default class VideoItem extends Component {
 }
 
 VideoItem.propTypes = {
+    // videoItemConfig: PropTypes.object.isRequired,
     videoItemData: PropTypes.object.isRequired,
     itemClickAction: PropTypes.func.isRequired
 };

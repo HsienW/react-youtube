@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 import {VideoPlayerConfig} from '../../../Common/ComponentConfig';
 import {Button, Slider} from 'antd';
+import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
 // import * as Style from '../../../Common/Style';
 
-const ControlArea = styled.div`
+const PlayerControl = styled.div`
     height: 10%;
     width: 100%;
     padding: 1% 0;
@@ -23,9 +24,16 @@ const ControlBtn = styled.div`
     justify-content: space-around;
 `;
 
+const PlayerTime = styled.div`
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const videoSliderStyle = {
-    width: '80%',
-    maxWidth: '80%',
+    width: '72%',
+    maxWidth: '72%',
     minWidth: '300px',
     margin: '0 2%'
 };
@@ -42,16 +50,22 @@ export default class VideoPlayer extends Component {
 
     state = {
         playing: true,
+        playSeek: false,
         showVolumeSlider: false,
         videoVolume: 0.5,
-        videoProgress: 0
+        videoProgress: 0,
+        videoNewProgress: 0
     };
 
     playClick = () => {
         this.setState({
             playing: !this.state.playing
         });
-        // this.props.itemClickAction(this.props.videoItemData);
+    };
+
+    fullScreenClick = () => {
+        const video = document.querySelector('#' + this.player.props.id);
+        video.requestFullscreen();
     };
 
     volumeClick = () => {
@@ -66,75 +80,103 @@ export default class VideoPlayer extends Component {
         });
     };
 
-    changeVideoProgress = (newProgress) => {
-        console.log(newProgress);
-    };
-
     getVideoProgress = (onProgress) => {
         this.setState({
             videoProgress: onProgress.playedSeconds
         });
     };
 
-    fullScreenClick = () => {
-        const video = document.querySelector('#videoPlayer');
-        video.requestFullscreen();
+    changeVideoProgress = (newProgress) => {
+        this.setState({
+            playSeek: true,
+            videoNewProgress: parseInt(newProgress)
+        }, () => {
+            this.player.seekTo(parseInt(newProgress));
+        });
+    };
+
+    getVideoPlayEnded = () => {
+        this.setState({
+            playing: false
+        });
+    };
+
+    getVideoDefaultPlay = () => {
+        if (!this.props.playerConfig.defaultPlay) {
+            this.setState({
+                playing: false
+            });
+        }
+    };
+
+    refPlayer = (player) => {
+        this.player = player;
     };
 
     render() {
-        const {configData, playerData, playerInlineStyle} = {...this.props};
+        const {playerConfig, playerData, playerInlineStyle} = {...this.props};
         return (
             <div>
                 <ReactPlayer
-                    id={'videoPlayer'}
+                    id={playerData.id}
+                    ref={this.refPlayer}
                     url={VideoPlayerConfig.basicURL + playerData.id}
-                    width={configData.width}
-                    height={configData.height}
+                    width={playerConfig.width}
+                    height={playerConfig.height}
+                    muted={playerConfig.mute}
                     style={playerInlineStyle}
-                    controls={configData.controls}
+                    controls={playerConfig.defaultControls}
                     playing={this.state.playing}
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
+                    onBuffer={this.getVideoDefaultPlay}
                     onProgress={this.getVideoProgress}
+                    onEnded={this.getVideoPlayEnded}
                 />
-                <ControlArea>
-                    <ControlBtn>
-                        <Button
-                            icon={this.state.playing ? 'pause' : 'caret-right'}
-                            onClick={this.playClick}
-                        />
-                        <Button icon="sound" onClick={this.volumeClick}/>
-                        {
-                            this.state.showVolumeSlider
-                                ? <Slider
-                                    style={volumeSliderStyle}
-                                    defaultValue={50}
-                                    tooltipVisible={false}
-                                    vertical={true}
-                                    onAfterChange={this.changeVolume}
-                                /> : null
-                        }
-                    </ControlBtn>
-                    <Slider
-                        style={videoSliderStyle}
-                        defaultValue={0}
-                        min={0}
-                        max={playerData.totalTime}
-                        value={this.state.videoProgress}
-                        tooltipVisible={false}
-                        onAfterChange={this.changeVideoProgress}
-                    />
-                    <ControlBtn>
-                        <Button icon="fullscreen" onClick={this.fullScreenClick}/>
-                    </ControlBtn>
-                </ControlArea>
+                {
+                    playerConfig.showControl
+                        ? <PlayerControl>
+                            <ControlBtn>
+                                <Button
+                                    icon={this.state.playing ? 'pause' : 'caret-right'}
+                                    onClick={this.playClick}
+                                />
+                                <Button icon="sound" onClick={this.volumeClick}/>
+                                {
+                                    this.state.showVolumeSlider
+                                        ? <Slider
+                                            style={volumeSliderStyle}
+                                            defaultValue={50}
+                                            tooltipVisible={false}
+                                            vertical={true}
+                                            onAfterChange={this.changeVolume}
+                                        /> : null
+                                }
+                            </ControlBtn>
+                            <Slider
+                                style={videoSliderStyle}
+                                min={0}
+                                max={playerData.totalTime}
+                                value={this.state.videoProgress}
+                                tooltipVisible={false}
+                                onChange={this.changeVideoProgress}
+                            />
+                            <PlayerTime>
+                                {formatData.videoPlayerTime(parseInt(this.state.videoProgress))} / {formatData.videoPlayerTime(playerData.totalTime)}
+                            </PlayerTime>
+                            <ControlBtn>
+                                <Button icon="fullscreen" onClick={this.fullScreenClick}/>
+                            </ControlBtn>
+                        </PlayerControl>
+                        : null
+                }
             </div>
         );
     }
 }
 
 VideoPlayer.propTypes = {
-    configData: PropTypes.object.isRequired,
     playerData: PropTypes.object.isRequired,
-    playerInlineStyle: PropTypes.object.isRequired
+    playerConfig: PropTypes.object.isRequired,
+    playerInlineConfig: PropTypes.object.isRequired
 };

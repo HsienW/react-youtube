@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import {CallApi} from '../../../ApiCenter/Api/CallApi';
+import {callApi} from '../../../ApiCenter/Api/CallApi';
 import {AuthActions} from '../Auth/AuthRedux';
 import * as apiData from '../../../ApiCenter/Api/Api';
 
@@ -12,7 +12,7 @@ export const HomeActions = {
 const getHomeData = (request) => {
     return (dispatch) => {
         dispatch(createAction(HomeActions.getHomeStart)());
-        CallApi.get(apiData.videoURL, request)
+        callApi.get(apiData.videoURL, request)
             .then((respond) => {
                 dispatch(createAction(HomeActions.getHomeSuccess)(respond));
             })

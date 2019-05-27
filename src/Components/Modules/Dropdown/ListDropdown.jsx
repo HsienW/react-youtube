@@ -9,7 +9,7 @@ export default class ListDropdown extends Component {
     };
 
     render() {
-        const {configData, btnStyle} = {...this.props};
+        const {configData, btnConfig} = {...this.props};
         const list = (
             <Menu onClick={this.listItemClick}>
                 {
@@ -26,7 +26,7 @@ export default class ListDropdown extends Component {
         );
         return (
             <Dropdown overlay={list}>
-                <Button style={btnStyle}>
+                <Button style={btnConfig}>
                     {configData.dropdownName} <Icon type={configData.iconType}/>
                 </Button>
             </Dropdown>
@@ -36,7 +36,7 @@ export default class ListDropdown extends Component {
 
 ListDropdown.propTypes = {
     configData: PropTypes.object.isRequired,
-    btnStyle: PropTypes.object.isRequired,
+    btnConfig: PropTypes.object.isRequired,
     itemClickAction: PropTypes.func.isRequired
 };
 

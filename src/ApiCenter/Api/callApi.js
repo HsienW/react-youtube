@@ -7,8 +7,7 @@ import axios from 'axios';
 
  **/
 
-
-export const CallApi = {
+export const callApi = {
     get(url, request) {
         return axios.get(url, {params: request})
             .then((response) => {

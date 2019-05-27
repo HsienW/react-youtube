@@ -25,14 +25,6 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
-const request = {
-    part: 'snippet, contentDetails',
-    mine: true,
-    access_token: sessionStorage.getItem('ACCESS_TOKEN'),
-    maxResults: 12,
-    chart: 'mostPopular'
-};
-
 @CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
@@ -58,15 +50,12 @@ class Home extends Component {
     }
 
     componentDidUpdate() {
-        if (!this.state.getHomeData) {
-            this.props.HomeActionsCreator.getHomeData(request);
-        }
         if (this.state.getHomeData) {
             this.props.toggleShowLoading(false);
         }
     }
 
-    handleVideoItemClick = (videoItemInfo) => {
+    videoItemClick = (videoItemInfo) => {
         this.props.PlayActionsCreator.getPlayDataStart(videoItemInfo);
         this.props.PortalActionsCreator.changeToPage('play');
     };
@@ -79,17 +68,17 @@ class Home extends Component {
                     <PageHeader/>
                     <ContentArea>
                         {
-                            this.state.homeData.length === 0
-                                ? <div>No-Data</div>
-                                : formatData.videoRespondData(this.state.homeData.items).map((item) => {
+                            this.state.getHomeData
+                                ? formatData.videoItemRespond(this.state.homeData.items).map((item) => {
                                     return (
                                         <VideoItem
                                             key={item.id}
                                             videoItemData={item}
-                                            itemClickAction={this.handleVideoItemClick}
+                                            itemClickAction={this.videoItemClick}
                                         />
                                     );
                                 })
+                                : <div>No-Data</div>
                         }
                     </ContentArea>
                 </HomeView>

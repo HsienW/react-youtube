@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {VideoPlayer} from '../index';
 import {Card} from 'antd';
 
 const {Meta} = Card;
@@ -28,25 +29,31 @@ const textOverStyle = {
     lineHeight: '1.5rem',
 };
 
-export default class VideoListItem extends Component {
+export default class VideoListPlayItem extends Component {
     render() {
-        const {videoListItemConfig, videoListItemData} = {...this.props};
+        const {VideoListPlayItemConfig, VideoListPlayItemData} = {...this.props};
         return (
-            <div style={videoListItemConfig}>
+            <div style={VideoListPlayItemConfig}>
                 <Card
                     hoverable
                     style={ItemStyle}
                     bodyStyle={{
-                        width: `calc(100% - ${videoListItemConfig.imgWidth}px)`
+                        width: `calc(100% - ${VideoListPlayItemConfig.videoWidth}px)`
                     }}
-                    cover={<img alt={videoListItemData.title} src={videoListItemData.imgURL}/>}
+                    cover={
+                        <VideoPlayer
+                            playerData={VideoListPlayItemData.playData}
+                            playerConfig={VideoListPlayItemConfig.playerConfig}
+                            playerInlineConfig={VideoListPlayItemConfig.playerInlineConfig}
+                        />
+                    }
                 >
                     <Meta
                         style={DescriptionStyle}
-                        title={videoListItemData.title}
+                        title={VideoListPlayItemData.title}
                         description={
                             <div style={textOverStyle}>
-                                {videoListItemData.description}
+                                {VideoListPlayItemData.description}
                             </div>
                         }
                     />
@@ -56,7 +63,7 @@ export default class VideoListItem extends Component {
     }
 }
 
-VideoListItem.propTypes = {
-    videoListItemConfig: PropTypes.object.isRequired,
-    videoListItemData: PropTypes.object.isRequired
+VideoListPlayItem.propTypes = {
+    VideoListPlayItemConfig: PropTypes.object.isRequired,
+    VideoListPlayItemData: PropTypes.object.isRequired
 };

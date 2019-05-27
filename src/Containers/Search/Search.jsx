@@ -2,47 +2,58 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {Header} from '../../Components/Layout';
-import {VideoListItem, ListDropdown} from '../../Components/Modules';
+import {VideoListPlayItem, ListDropdown} from '../../Components/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalActionsCreator} from '../../Redux/Modules/Portal/PortalRedux';
+import {formatData} from '../../Common/BasicService';
 import * as SearchRedux from '../../Redux/Modules/Search/SearchRedux';
 import * as ComponentConfig from '../../Common/ComponentConfig';
 import * as Style from '../../Common/Style';
-// import {AsyncDataSourceHOC} from '../../Decorators/index';
-// import {formatData} from '../../Common/BasicService';
 
 const SearchView = styled.div`
-    padding: 0 8%;
-    height: 90vh;
     width: 100%;
+    height: 90vh;
+    padding: 0 8%;
 `;
 
-const ContentArea = styled.div`
+const SearchContent = styled.div`
     width: 100%;
     height: 100%;
+    padding: 2% 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 `;
 
-const AdvancedSearchArea = styled.div`
+const AdvancedSearch = styled.div`
     height: 4vh;
     minHeight: 60px;
 `;
 
-const videoItemData = {
-    id: '123',
-    title: 'test',
-    imgURL: 'https://i.ytimg.com/vi/zymgtV99Rko/mqdefault.jpg',
-    description: 'testtesttesttesttest'
-};
-
-const btnStyle = {
+const btnConfig = {
     color: `${Style.FontStressColor}`,
     border: 0,
     marginLeft: 8
 };
+
+const VideoListPlayItemConfig = {
+    width: '100%',
+    marginBottom: '2rem',
+    playerConfig: {
+        width: '100%',
+        height: '200px',
+        defaultControls: false,
+        showControl: false,
+        defaultPlay: false,
+        mute: true
+    },
+    playerInlineConfig: {
+        minWidth: '600px',
+        minHeight: '18px'
+    }
+};
+
 
 class Search extends Component {
 
@@ -57,7 +68,7 @@ class Search extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case SearchRedux.SearchActions.getSearchSuccess:
-                return {getSearchData: true, searchResultData: nextProps.action.payload};
+                return {getSearchData: true, searchResultData: nextProps.action.payload.data};
 
             default:
                 break;
@@ -70,24 +81,39 @@ class Search extends Component {
             <div>
                 <Header/>
                 <SearchView>`
-                    <AdvancedSearchArea>
+                    <AdvancedSearch>
                         <ListDropdown
                             configData={ComponentConfig.DateSearchDropdown}
-                            btnStyle={btnStyle}
+                            btnConfig={btnConfig}
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                         <ListDropdown
                             configData={ComponentConfig.TypeSearchDropdown}
-                            btnStyle={btnStyle}
+                            btnConfig={btnConfig}
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
-                    </AdvancedSearchArea>
-                    <ContentArea>
-                        <VideoListItem
-                            key={videoItemData.id}
-                            videoItemData={videoItemData}
-                        />
-                    </ContentArea>
+                    </AdvancedSearch>
+                    <SearchContent>
+                        {
+                            this.state.getSearchData
+                                ? formatData.videoListPlayItemRespond(this.state.searchResultData.items).map((item) => {
+                                    return (
+                                        <VideoListPlayItem
+                                            key={item.id}
+                                            VideoListPlayItemConfig={VideoListPlayItemConfig}
+                                            VideoListPlayItemData={
+                                                {
+                                                    title: item.title,
+                                                    description: item.description,
+                                                    playData: item.playData
+                                                }
+                                            }
+                                        />
+                                    );
+                                })
+                                : <div>No Date</div>
+                        }
+                    </SearchContent>
                 </SearchView>
             </div>
         );
@@ -108,16 +134,3 @@ export default connect(
         };
     }
 )(Search);
-
-// {
-//                             this.state.searchResultData.length === 0
-//                                 ? <div>No Date</div>
-//                                 : formatData.videoRespondData(this.state.searchResultData).map((item) => {
-//                                     return (
-//                                         <VideoListItem
-//                                             key={item.id}
-//                                             videoItemData={item}
-//                                         />
-//                                     );
-//                                 })
-//                         }

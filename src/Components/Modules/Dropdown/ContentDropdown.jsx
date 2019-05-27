@@ -4,7 +4,7 @@ import {Dropdown, Button, Icon, Card, List, Avatar} from 'antd';
 
 export default class ContentDropdown extends Component {
     render() {
-        const {configData, contentData ,btnStyle, contentBodyStyle} = {...this.props};
+        const {configData, contentData ,btnConfig, contentBodyStyle} = {...this.props};
         const list = (
             <Card style={contentBodyStyle}>
                 <List
@@ -24,7 +24,7 @@ export default class ContentDropdown extends Component {
         );
         return (
             <Dropdown overlay={list}>
-                <Button style={btnStyle}>
+                <Button style={btnConfig}>
                     {configData.dropdownName} <Icon type={configData.iconType}/>
                 </Button>
             </Dropdown>
@@ -35,7 +35,7 @@ export default class ContentDropdown extends Component {
 ContentDropdown.propTypes = {
     configData: PropTypes.object.isRequired,
     contentData: PropTypes.array.isRequired,
-    btnStyle: PropTypes.object.isRequired,
+    btnConfig: PropTypes.object.isRequired,
     contentBodyStyle: PropTypes.object.isRequired,
 };
 
