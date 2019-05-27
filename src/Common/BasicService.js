@@ -14,6 +14,12 @@ const formatData = {
         });
         return newData;
     },
+    videoPlayerTime(seconds) {
+        if(seconds > 3600) {
+            return moment().startOf('day').seconds(seconds).format('H:mm:ss');
+        }
+        return moment().startOf('day').seconds(seconds).format('mm:ss');
+    },
     isoTimeToSecondData(isoTime) {
         return moment.duration(isoTime, moment.ISO_8601).asSeconds();
     }

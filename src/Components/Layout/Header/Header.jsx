@@ -25,13 +25,15 @@ const HeaderView = styled.div`
 
 const profileArea = {
     width: '16%',
+    minWidth: '300px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
 };
 
 const searchBarStyle = {
-    width: '40vw'
+    width: '40%',
+    minWidth: '500px'
 };
 
 const btnConfig = {
@@ -67,14 +69,14 @@ class Header extends Component {
         super(props);
     }
 
-    onSearch = () => {
-        // const request = {
-        //     part: 'snippet',
-        //     q: searchKey,
-        //     type: 'video',
-        //     maxResults: 30
-        // };
-        // this.props.SearchActionsCreator.getSearchDataStart(request);
+    onSearch = (searchKey) => {
+        const request = {
+            part: 'snippet',
+            maxResults: 30,
+            q: searchKey,
+            type: 'video'
+        };
+        this.props.SearchActionsCreator.getSearchResultData(request);
         this.props.PortalActionsCreator.changeToPage('search');
     };
 
@@ -84,7 +86,7 @@ class Header extends Component {
                 <Button style={btnConfig}>Home</Button>
                 <Search
                     placeholder="Search"
-                    onSearch={value => this.onSearch(value)}
+                    onSearch={searchKey => this.onSearch(searchKey)}
                     style={searchBarStyle}
                 />
                 <div style={profileArea}>

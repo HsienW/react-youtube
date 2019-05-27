@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 import {VideoPlayerConfig} from '../../../Common/ComponentConfig';
 import {Button, Slider} from 'antd';
+import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
 // import * as Style from '../../../Common/Style';
 
-const ControlArea = styled.div`
+const PlayerControl = styled.div`
     height: 10%;
     width: 100%;
     padding: 1% 0;
@@ -23,9 +24,16 @@ const ControlBtn = styled.div`
     justify-content: space-around;
 `;
 
+const PlayerTime = styled.div`
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const videoSliderStyle = {
-    width: '80%',
-    maxWidth: '80%',
+    width: '72%',
+    maxWidth: '72%',
     minWidth: '300px',
     margin: '0 2%'
 };
@@ -42,16 +50,17 @@ export default class VideoPlayer extends Component {
 
     state = {
         playing: true,
+        playSeek: false,
         showVolumeSlider: false,
         videoVolume: 0.5,
-        videoProgress: 0
+        videoProgress: 0,
+        videoNewProgress: 0
     };
 
     playClick = () => {
         this.setState({
             playing: !this.state.playing
         });
-        // this.props.itemClickAction(this.props.videoItemData);
     };
 
     fullScreenClick = () => {
@@ -71,14 +80,29 @@ export default class VideoPlayer extends Component {
         });
     };
 
-    changeVideoProgress = (newProgress) => {
-        console.log(newProgress);
-    };
-
     getVideoProgress = (onProgress) => {
         this.setState({
             videoProgress: onProgress.playedSeconds
         });
+    };
+
+    changeVideoProgress = (newProgress) => {
+        this.setState({
+            playSeek: true,
+            videoNewProgress: parseInt(newProgress)
+        }, () => {
+            this.player.seekTo(parseInt(newProgress));
+        });
+    };
+
+    getVideoPlayEnded = () => {
+        this.setState({
+            playing: false
+        });
+    };
+
+    refPlayer = (player) => {
+        this.player = player;
     };
 
     render() {
@@ -87,6 +111,7 @@ export default class VideoPlayer extends Component {
             <div>
                 <ReactPlayer
                     id={'videoPlayer'}
+                    ref={this.refPlayer}
                     url={VideoPlayerConfig.basicURL + playerData.id}
                     width={playerConfig.width}
                     height={playerConfig.height}
@@ -96,8 +121,9 @@ export default class VideoPlayer extends Component {
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
                     onProgress={this.getVideoProgress}
+                    onEnded={this.getVideoPlayEnded}
                 />
-                <ControlArea>
+                <PlayerControl>
                     <ControlBtn>
                         <Button
                             icon={this.state.playing ? 'pause' : 'caret-right'}
@@ -117,17 +143,19 @@ export default class VideoPlayer extends Component {
                     </ControlBtn>
                     <Slider
                         style={videoSliderStyle}
-                        defaultValue={0}
                         min={0}
                         max={playerData.totalTime}
                         value={this.state.videoProgress}
                         tooltipVisible={false}
-                        onAfterChange={this.changeVideoProgress}
+                        onChange={this.changeVideoProgress}
                     />
+                    <PlayerTime>
+                        {formatData.videoPlayerTime(parseInt(this.state.videoProgress))} / {formatData.videoPlayerTime(playerData.totalTime)}
+                    </PlayerTime>
                     <ControlBtn>
                         <Button icon="fullscreen" onClick={this.fullScreenClick}/>
                     </ControlBtn>
-                </ControlArea>
+                </PlayerControl>
             </div>
         );
     }

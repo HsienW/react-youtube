@@ -25,7 +25,7 @@ const PlayInfo = styled.div`
 
 const RelatedVideo = styled.div`
     width: 30%;
-    padding: 0 2%;
+    padding: 0 1%;
     min-width: 360px;
     min-height: 600px;
     max-height: 100%;

@@ -5,7 +5,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Input, Button} from 'antd';
 import {GoogleAuthorize} from 'react-google-authorize';
-import {AuthRedux, PortalRedux} from  '../../Redux/Modules';
+import {AuthRedux, PortalRedux, HomeRedux} from  '../../Redux/Modules';
+import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import * as Config from '../../../config';
 import * as Style from '../../Common/Style';
 
@@ -26,15 +27,25 @@ const btnStyle = {
     backgroundColor: `${Style.MinorColor}`
 };
 
+const homeDefaultRequest = {
+    part: 'snippet, contentDetails',
+    mine: true,
+    access_token: sessionStorage.getItem('ACCESS_TOKEN'),
+    maxResults: 20,
+    chart: 'mostPopular'
+};
+
 class Auth extends Component {
 
     authSuccess = (response) => {
-        this.props.AuthActionsCreator.getAuthSuccess(response.access_token);
+        WebStorage.setSessionStorage(WebStorageKeys.ACCESS_TOKEN, response.access_token);
+        this.props.AuthActionsCreator.getAuthSuccess();
+        this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
         this.props.PortalActionsCreator.changeToPage('home');
     };
 
-    authFailed = (response) => {
-        console.log(response);
+    authFailed = () => {
+        this.props.AuthActionsCreator.getAuthFailed();
     };
 
     render() {
@@ -58,7 +69,8 @@ class Auth extends Component {
 
 Auth.propTypes = {
     AuthActionsCreator: PropTypes.object.isRequired,
-    PortalActionsCreator: PropTypes.object.isRequired
+    PortalActionsCreator: PropTypes.object.isRequired,
+    HomeActionsCreator: PropTypes.object.isRequired
 };
 
 export default connect(
@@ -68,7 +80,8 @@ export default connect(
     (dispatch) => {
         return {
             AuthActionsCreator: bindActionCreators(AuthRedux.AuthActionsCreator, dispatch),
-            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
+            HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch)
         };
     }
 )(Auth);

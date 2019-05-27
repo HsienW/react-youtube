@@ -46,7 +46,7 @@ const btnConfig = {
 
 const videoListItemConfig = {
     width: '100%',
-    height: '160px',
+    height: '180px',
 };
 
 class Search extends Component {
