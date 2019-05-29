@@ -73,12 +73,12 @@ class Header extends Component {
     onSearch = (searchKey) => {
         const request = {
             part: 'snippet',
-            maxResults: 20,
+            maxResults: 5,
             q: searchKey,
             type: 'video',
             key: googleApiKey
         };
-        this.props.SearchActionsCreator.getSearchResultData(request);
+        this.props.SearchActionsCreator.getSearchResultData(request, searchKey);
         this.props.PortalActionsCreator.changeToPage('search');
     };
 

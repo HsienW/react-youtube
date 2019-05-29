@@ -49,7 +49,7 @@ const volumeSliderStyle = {
 export default class VideoPlayer extends Component {
 
     state = {
-        playing: true,
+        playing: false,
         playSeek: false,
         showVolumeSlider: false,
         videoVolume: 0.5,
@@ -102,9 +102,9 @@ export default class VideoPlayer extends Component {
     };
 
     getVideoDefaultPlay = () => {
-        if (!this.props.playerConfig.defaultPlay) {
+        if (this.props.playerConfig.defaultPlay) {
             this.setState({
-                playing: false
+                playing: true
             });
         }
     };
@@ -129,7 +129,7 @@ export default class VideoPlayer extends Component {
                     playing={this.state.playing}
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
-                    onBuffer={this.getVideoDefaultPlay}
+                    onReady={this.getVideoDefaultPlay}
                     onProgress={this.getVideoProgress}
                     onEnded={this.getVideoPlayEnded}
                 />

@@ -17,42 +17,59 @@ const DescriptionStyle = {
     height: '100%',
 };
 
-const textOverStyle = {
-    display: '-webkit-box',
-    maxHeight: '7.5rem',
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'normal',
-    WebkitLineClamp: 5,
-    fontSize: '14px',
-    lineHeight: '1.5rem',
-};
+// const textOverStyle = {
+//     display: '-webkit-box',
+//     maxHeight: '7.5rem',
+//     WebkitBoxOrient: 'vertical',
+//     overflow: 'hidden',
+//     textOverflow: 'ellipsis',
+//     whiteSpace: 'normal',
+//     WebkitLineClamp: 5,
+//     fontSize: '14px',
+//     lineHeight: '1.5rem',
+// };
 
 export default class VideoListPlayItem extends Component {
+
+    state = {
+        imgPlayToggle: false,
+    };
+
+    toggleItemImgPlay = () => {
+        this.setState({
+            imgPlayToggle: !this.state.imgPlayToggle
+        });
+    };
+
     render() {
         const {VideoListPlayItemConfig, VideoListPlayItemData} = {...this.props};
         return (
-            <div style={VideoListPlayItemConfig}>
+            <div
+                style={VideoListPlayItemConfig}
+                onMouseEnter={this.toggleItemImgPlay}
+                onMouseLeave={this.toggleItemImgPlay}
+            >
                 <Card
                     hoverable
                     style={ItemStyle}
                     bodyStyle={{
-                        width: `calc(100% - ${VideoListPlayItemConfig.videoWidth}px)`
+                        width: `calc(100% - ${VideoListPlayItemConfig.displayWidth}px)`
                     }}
                     cover={
-                        <VideoPlayer
-                            playerData={VideoListPlayItemData.playData}
-                            playerConfig={VideoListPlayItemConfig.playerConfig}
-                            playerInlineConfig={VideoListPlayItemConfig.playerInlineConfig}
-                        />
+                        this.state.imgPlayToggle
+                            ? <VideoPlayer
+                                playerData={VideoListPlayItemData.playData}
+                                playerConfig={VideoListPlayItemConfig.playerConfig}
+                                playerInlineConfig={VideoListPlayItemConfig.playerInlineConfig}
+                            />
+                            : <img src="https://i.ytimg.com/vi/rG06ycfSyAw/mqdefault.jpg" />
                     }
                 >
                     <Meta
                         style={DescriptionStyle}
                         title={VideoListPlayItemData.title}
                         description={
-                            <div style={textOverStyle}>
+                            <div>
                                 {VideoListPlayItemData.description}
                             </div>
                         }
