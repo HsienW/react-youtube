@@ -34,7 +34,7 @@ const formatData = {
                 id: item.id.videoId,
                 title: item.snippet.title,
                 description: item.snippet.description,
-                imgURL: item.snippet.thumbnails.high.url,
+                imgURL: item.snippet.thumbnails.medium.url,
                 playData: {
                     id: item.id.videoId,
                     totalTime: 100
