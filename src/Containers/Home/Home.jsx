@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
@@ -7,7 +8,6 @@ import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {formatData} from '../../Common/BasicService';
-import styled from 'styled-components';
 // import * as apiData from '../../ApiCenter/Api/api';
 // import * as dataCenter from '../../DataCenter';
 

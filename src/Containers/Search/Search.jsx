@@ -1,20 +1,20 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
-import {Header} from '../../Components/Layout';
-import {VideoListPlayItem, ListDropdown} from '../../Components/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PortalActionsCreator} from '../../Redux/Modules/Portal/PortalRedux';
+import {PortalRedux, SearchRedux} from '../../Redux/Modules';
+import {Header} from '../../Components/Layout';
+import {VideoListPlayItem, ListDropdown} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
-import * as SearchRedux from '../../Redux/Modules/Search/SearchRedux';
+import {googleApiKey} from '../../ApiCenter/Api/Api';
 import * as ComponentConfig from '../../Common/ComponentConfig';
 import * as Style from '../../Common/Style';
 
 const SearchView = styled.div`
     width: 100%;
     height: 90vh;
-    padding: 0 8%;
 `;
 
 const SearchContent = styled.div`
@@ -31,6 +31,13 @@ const AdvancedSearch = styled.div`
     minHeight: 60px;
 `;
 
+const infiniteScrollDomStyle = {
+    width: '100%',
+    height: '600px',
+    padding: '0 8%',
+    overflow: 'auto'
+};
+
 const btnConfig = {
     color: `${Style.FontStressColor}`,
     border: 0,
@@ -40,12 +47,13 @@ const btnConfig = {
 const VideoListPlayItemConfig = {
     width: '100%',
     marginBottom: '2rem',
+    displayWidth: 320,
     playerConfig: {
-        width: '100%',
-        height: '200px',
+        width: '320px',
+        height: '180px',
         defaultControls: false,
         showControl: false,
-        defaultPlay: false,
+        defaultPlay: true,
         mute: true
     },
     playerInlineConfig: {
@@ -61,6 +69,8 @@ class Search extends Component {
         super(props);
         this.state = {
             getSearchData: false,
+            searchKey: '',
+            nextPageToken: '',
             searchResultData: []
         };
     }
@@ -68,7 +78,12 @@ class Search extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case SearchRedux.SearchActions.getSearchSuccess:
-                return {getSearchData: true, searchResultData: nextProps.action.payload.data};
+                return {
+                    getSearchData: true,
+                    searchKey: 'you',
+                    nextPageToken: nextProps.action.payload.nextPageToken,
+                    searchResultData: nextProps.action.payload.items
+                };
 
             default:
                 break;
@@ -76,11 +91,23 @@ class Search extends Component {
         return null;
     }
 
+    getNextLoadSearchData = () => {
+        const request = {
+            part: 'snippet',
+            maxResults: 2,
+            q: this.state.searchKey,
+            type: 'video',
+            pageToken: this.state.nextPageToken,
+            key: googleApiKey
+        };
+        this.props.SearchActionsCreator.testSearchResultData(request);
+    };
+
     render() {
         return (
             <div>
                 <Header/>
-                <SearchView>`
+                <SearchView>
                     <AdvancedSearch>
                         <ListDropdown
                             configData={ComponentConfig.DateSearchDropdown}
@@ -93,27 +120,40 @@ class Search extends Component {
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                     </AdvancedSearch>
-                    <SearchContent>
-                        {
-                            this.state.getSearchData
-                                ? formatData.videoListPlayItemRespond(this.state.searchResultData.items).map((item) => {
-                                    return (
-                                        <VideoListPlayItem
-                                            key={item.id}
-                                            VideoListPlayItemConfig={VideoListPlayItemConfig}
-                                            VideoListPlayItemData={
-                                                {
-                                                    title: item.title,
-                                                    description: item.description,
-                                                    playData: item.playData
-                                                }
-                                            }
-                                        />
-                                    );
-                                })
-                                : <div>No Date</div>
-                        }
-                    </SearchContent>
+                    <div style={infiniteScrollDomStyle} ref={(ref) => this.scrollParentRef = ref}>
+                        <InfiniteScroll
+                            threshold={500}
+                            // isReverse={}
+                            hasMore={true}
+                            loadMore={this.getNextLoadSearchData}
+                            useWindow={false}
+                            getScrollParent={() => this.scrollParentRef}
+                            // loader={<div className="loader" key={0}>Loading ...</div>}
+                        >
+                            <SearchContent>
+                                {
+                                    this.state.getSearchData
+                                        ? formatData.videoListPlayItemRespond(this.state.searchResultData.items).map((item) => {
+                                            return (
+                                                <VideoListPlayItem
+                                                    key={item.id}
+                                                    VideoListPlayItemConfig={VideoListPlayItemConfig}
+                                                    VideoListPlayItemData={
+                                                        {
+                                                            title: item.title,
+                                                            description: item.description,
+                                                            playData: item.playData,
+                                                            thumbnailURL: item.imgURL
+                                                        }
+                                                    }
+                                                />
+                                            );
+                                        })
+                                        : <div>No-Data</div>
+                                }
+                            </SearchContent>
+                        </InfiniteScroll>
+                    </div>
                 </SearchView>
             </div>
         );
@@ -122,6 +162,7 @@ class Search extends Component {
 
 Search.propTypes = {
     PortalActionsCreator: PropTypes.object.isRequired,
+    SearchActionsCreator: PropTypes.object.isRequired,
 };
 
 export default connect(
@@ -130,7 +171,8 @@ export default connect(
     },
     (dispatch) => {
         return {
-            PortalActionsCreator: bindActionCreators(PortalActionsCreator, dispatch)
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
+            SearchActionsCreator: bindActionCreators(SearchRedux.SearchActionsCreator, dispatch),
         };
     }
 )(Search);

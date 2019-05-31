@@ -1,6 +1,7 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/Api';
+import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
 export const SearchActions = {
     getSearchStart: 'GET_SEARCH_START',
@@ -21,8 +22,17 @@ const getSearchResultData = (request) => {
     };
 };
 
+const testSearchResultData = (searchKey) => {
+    return (dispatch) => {
+        console.log(searchKey);
+        dispatch(createAction(SearchActions.getSearchStart)());
+        dispatch(createAction(SearchActions.getSearchSuccess)(ApiSimulation.getSearchData()));
+    };
+};
+
 export const SearchActionsCreator = {
     getSearchResultData,
+    testSearchResultData
 };
 
 export default function SearchReducer(state = {action: ''}, action) {

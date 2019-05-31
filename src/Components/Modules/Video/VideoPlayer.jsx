@@ -49,7 +49,7 @@ const volumeSliderStyle = {
 export default class VideoPlayer extends Component {
 
     state = {
-        playing: true,
+        playing: false,
         playSeek: false,
         showVolumeSlider: false,
         videoVolume: 0.5,
@@ -102,9 +102,9 @@ export default class VideoPlayer extends Component {
     };
 
     getVideoDefaultPlay = () => {
-        if (!this.props.playerConfig.defaultPlay) {
+        if (this.props.playerConfig.defaultPlay) {
             this.setState({
-                playing: false
+                playing: true
             });
         }
     };
@@ -129,7 +129,7 @@ export default class VideoPlayer extends Component {
                     playing={this.state.playing}
                     volume={this.state.videoVolume}
                     progressInterval={this.state.videoProgress}
-                    onBuffer={this.getVideoDefaultPlay}
+                    onReady={this.getVideoDefaultPlay}
                     onProgress={this.getVideoProgress}
                     onEnded={this.getVideoPlayEnded}
                 />
@@ -162,7 +162,8 @@ export default class VideoPlayer extends Component {
                                 onChange={this.changeVideoProgress}
                             />
                             <PlayerTime>
-                                {formatData.videoPlayerTime(parseInt(this.state.videoProgress))} / {formatData.videoPlayerTime(playerData.totalTime)}
+                                {formatData.videoPlayerTime(parseInt(this.state.videoProgress))}
+                                /{formatData.videoPlayerTime(playerData.totalTime)}
                             </PlayerTime>
                             <ControlBtn>
                                 <Button icon="fullscreen" onClick={this.fullScreenClick}/>
