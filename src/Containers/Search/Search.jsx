@@ -33,7 +33,7 @@ const AdvancedSearch = styled.div`
 
 const infiniteScrollDomStyle = {
     width: '100%',
-    height: '600px',
+    height: '90vh',
     padding: '0 8%',
     overflow: 'auto'
 };
@@ -62,7 +62,6 @@ const VideoListPlayItemConfig = {
     }
 };
 
-
 class Search extends Component {
 
     constructor(props) {
@@ -71,7 +70,8 @@ class Search extends Component {
             getSearchData: false,
             searchKey: '',
             nextPageToken: '',
-            searchResultData: []
+            searchResult: [],
+            currentShowSearchData: []
         };
     }
 
@@ -82,7 +82,7 @@ class Search extends Component {
                     getSearchData: true,
                     searchKey: 'you',
                     nextPageToken: nextProps.action.payload.nextPageToken,
-                    searchResultData: nextProps.action.payload.items
+                    searchResult: nextProps.action.payload.items
                 };
 
             default:
@@ -91,7 +91,22 @@ class Search extends Component {
         return null;
     }
 
+    componentDidUpdate() {
+        if (this.state.getSearchData) {
+            console.log('99999999999999999999999999999999');
+            this.setState({
+                getSearchData: false,
+            }, () => {
+                this.setState({
+                    currentShowSearchData: this.state.currentShowSearchData.concat(this.state.searchResult)
+                });
+            });
+        }
+    }
+
+
     getNextLoadSearchData = () => {
+        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
         const request = {
             part: 'snippet',
             maxResults: 2,
@@ -122,18 +137,19 @@ class Search extends Component {
                     </AdvancedSearch>
                     <div style={infiniteScrollDomStyle} ref={(ref) => this.scrollParentRef = ref}>
                         <InfiniteScroll
-                            threshold={500}
-                            // isReverse={}
+                            threshold={1000}
                             hasMore={true}
-                            loadMore={this.getNextLoadSearchData}
+                            initialLoad={false}
+                            isReverse={false}
                             useWindow={false}
+                            loadMore={this.getNextLoadSearchData}
                             getScrollParent={() => this.scrollParentRef}
                             // loader={<div className="loader" key={0}>Loading ...</div>}
                         >
                             <SearchContent>
                                 {
-                                    this.state.getSearchData
-                                        ? formatData.videoListPlayItemRespond(this.state.searchResultData.items).map((item) => {
+                                    this.state.currentShowSearchData.length !== 0
+                                        ? formatData.videoListPlayItemRespond(this.state.currentShowSearchData).map((item) => {
                                             return (
                                                 <VideoListPlayItem
                                                     key={item.id}

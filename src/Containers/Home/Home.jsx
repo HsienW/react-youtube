@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
+import {CheckAuthHOC} from '../../Decorators/index';
 import {formatData} from '../../Common/BasicService';
 // import * as apiData from '../../ApiCenter/Api/api';
 // import * as dataCenter from '../../DataCenter';
@@ -26,7 +26,7 @@ const ContentArea = styled.div`
 `;
 
 @CheckAuthHOC
-@LoadingDataHOC
+// @LoadingDataHOC
 class Home extends Component {
 
     constructor(props) {
@@ -40,7 +40,7 @@ class Home extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
-                return {getHomeData: true, homeData: nextProps.action.payload.data};
+                return {getHomeData: true, homeData: nextProps.action.payload.items};
 
             default:
                 break;
@@ -49,14 +49,15 @@ class Home extends Component {
         return null;
     }
 
-    componentDidUpdate() {
-        if (this.state.getHomeData) {
-            this.props.toggleShowLoading(false);
-        }
-    }
+    // componentDidUpdate() {
+    //     if (this.state.getHomeData) {
+    //         // this.props.toggleShowLoading(false);
+    //     }
+    // }
 
     videoItemClick = (videoItemInfo) => {
-        this.props.PlayActionsCreator.getPlayDataStart(videoItemInfo);
+        // this.props.PlayActionsCreator.getPlayDataStart(videoItemInfo);
+        this.props.PlayActionsCreator.testGetHomeData(videoItemInfo);
         this.props.PortalActionsCreator.changeToPage('play');
     };
 
@@ -68,8 +69,8 @@ class Home extends Component {
                     <PageHeader/>
                     <ContentArea>
                         {
-                            this.state.getHomeData
-                                ? formatData.videoItemRespond(this.state.homeData.items).map((item) => {
+                            this.state.homeData.length !== 0
+                                ? formatData.videoItemRespond(this.state.homeData).map((item) => {
                                     return (
                                         <VideoItem
                                             key={item.id}
