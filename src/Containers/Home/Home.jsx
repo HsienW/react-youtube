@@ -32,7 +32,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            getHomeData: false,
+            getHomeStatus: false,
             homeData: []
         };
     }
@@ -40,7 +40,7 @@ class Home extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
-                return {getHomeData: true, homeData: nextProps.action.payload.items};
+                return {getHomeStatus: true, homeData: nextProps.action.payload.items};
 
             default:
                 break;
@@ -50,7 +50,7 @@ class Home extends Component {
     }
 
     // componentDidUpdate() {
-    //     if (this.state.getHomeData) {
+    //     if (this.state.getHomeStatus) {
     //         // this.props.toggleShowLoading(false);
     //     }
     // }

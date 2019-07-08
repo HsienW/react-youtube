@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -14,7 +14,7 @@ import * as Style from '../../Common/Style';
 
 const SearchView = styled.div`
     width: 100%;
-    height: 90vh;
+    height: 80vh;
 `;
 
 const SearchContent = styled.div`
@@ -31,9 +31,9 @@ const AdvancedSearch = styled.div`
     minHeight: 60px;
 `;
 
-const infiniteScrollDomStyle = {
+const scrollContainerStyle = {
     width: '100%',
-    height: '90vh',
+    height: '80vh',
     padding: '0 8%',
     overflow: 'auto'
 };
@@ -66,56 +66,77 @@ class Search extends Component {
 
     constructor(props) {
         super(props);
+        this.searchContainerScroll = React.createRef();
         this.state = {
-            getSearchData: false,
+            searchStatus: false,
             searchKey: '',
             nextPageToken: '',
+            currentSearchDataIndex: 0,
             searchResult: [],
-            currentShowSearchData: []
         };
     }
 
     static getDerivedStateFromProps(nextProps) {
+        // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
             case SearchRedux.SearchActions.getSearchSuccess:
                 return {
-                    getSearchData: true,
-                    searchKey: 'you',
+                    searchStatus: true,
+                    searchKey: nextProps.payload.config.params.q,
                     nextPageToken: nextProps.action.payload.nextPageToken,
                     searchResult: nextProps.action.payload.items
                 };
 
+            case SearchRedux.NextSearchActions.getNextSearchSuccess:
+                console.log('6845641684168484684864848648');
+                console.log(nextProps.action);
+                return {
+                    searchStatus: true,
+                    searchKey: 'you',
+                    nextPageToken: Math.random().toString(36).substring(7),
+                    currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+                    searchResult: nextProps.action.payload.items
+                };
             default:
                 break;
         }
         return null;
     }
 
-    componentDidUpdate() {
-        if (this.state.getSearchData) {
-            console.log('99999999999999999999999999999999');
+    componentDidMount() {
+        this.searchContainerScroll.current.addEventListener('scroll', () => {
+            if (this.searchContainerScroll.current.scrollTop
+                + this.searchContainerScroll.current.clientHeight
+                >= this.searchContainerScroll.current.scrollHeight
+            ) {
+                this.getNextLoadSearchData();
+            }
+        });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+
+        if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
-                getSearchData: false,
-            }, () => {
-                this.setState({
-                    currentShowSearchData: this.state.currentShowSearchData.concat(this.state.searchResult)
-                });
+                searchStatus: true,
+                searchKey: 'you',
+                nextPageToken: prevProps.action.payload.nextPageToken,
+                currentSearchDataIndex: this.state.currentSearchDataIndex,
+                searchResult: [...this.state.searchResult, ...prevProps.action.payload.items]
             });
         }
     }
 
-
     getNextLoadSearchData = () => {
-        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
         const request = {
             part: 'snippet',
-            maxResults: 2,
+            maxResults: 10,
             q: this.state.searchKey,
             type: 'video',
             pageToken: this.state.nextPageToken,
             key: googleApiKey
         };
-        this.props.SearchActionsCreator.testSearchResultData(request);
+        this.props.SearchActionsCreator.testSearchResultData(request, this.state.currentSearchDataIndex);
     };
 
     render() {
@@ -135,41 +156,33 @@ class Search extends Component {
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                     </AdvancedSearch>
-                    <div style={infiniteScrollDomStyle} ref={(ref) => this.scrollParentRef = ref}>
-                        <InfiniteScroll
-                            threshold={1000}
-                            hasMore={true}
-                            initialLoad={false}
-                            isReverse={false}
-                            useWindow={false}
-                            loadMore={this.getNextLoadSearchData}
-                            getScrollParent={() => this.scrollParentRef}
-                            // loader={<div className="loader" key={0}>Loading ...</div>}
+                    <SearchContent>
+                        <div
+                            style={scrollContainerStyle}
+                            ref={this.searchContainerScroll}
                         >
-                            <SearchContent>
-                                {
-                                    this.state.currentShowSearchData.length !== 0
-                                        ? formatData.videoListPlayItemRespond(this.state.currentShowSearchData).map((item) => {
-                                            return (
-                                                <VideoListPlayItem
-                                                    key={item.id}
-                                                    VideoListPlayItemConfig={VideoListPlayItemConfig}
-                                                    VideoListPlayItemData={
-                                                        {
-                                                            title: item.title,
-                                                            description: item.description,
-                                                            playData: item.playData,
-                                                            thumbnailURL: item.imgURL
-                                                        }
+                            {
+                                this.state.searchStatus
+                                    ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
+                                        return (
+                                            <VideoListPlayItem
+                                                key={item.id}
+                                                VideoListPlayItemConfig={VideoListPlayItemConfig}
+                                                VideoListPlayItemData={
+                                                    {
+                                                        title: item.title,
+                                                        description: item.description,
+                                                        playData: item.playData,
+                                                        thumbnailURL: item.imgURL
                                                     }
-                                                />
-                                            );
-                                        })
-                                        : <div>No-Data</div>
-                                }
-                            </SearchContent>
-                        </InfiniteScroll>
-                    </div>
+                                                }
+                                            />
+                                        );
+                                    })
+                                    : <div>No-Data</div>
+                            }
+                        </div>
+                    </SearchContent>
                 </SearchView>
             </div>
         );
@@ -177,6 +190,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+    action: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired,
 };

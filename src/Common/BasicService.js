@@ -58,6 +58,10 @@ const formatData = {
             return 0;
         }
         return moment.duration(isoTime, moment.ISO_8601).asSeconds();
+    },
+    searchResultIndex(searchResult, searchDataIndex) {
+        searchResult.currentSearchDataIndex = searchDataIndex + 1;
+        return searchResult;
     }
 };
 
