@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -33,7 +33,7 @@ const AdvancedSearch = styled.div`
 
 const infiniteScrollDomStyle = {
     width: '100%',
-    height: '600px',
+    height: '90vh',
     padding: '0 8%',
     overflow: 'auto'
 };
@@ -65,31 +65,62 @@ const VideoListPlayItemConfig = {
 
 class Search extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
-            getSearchData: false,
+            getSearchData: true,
+            searchHasMoreData: true,
             searchKey: '',
             nextPageToken: '',
-            searchResultData: []
+            searchResultData: [],
         };
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        switch (nextProps.action.type) {
-            case SearchRedux.SearchActions.getSearchSuccess:
-                return {
-                    getSearchData: true,
-                    searchKey: 'you',
-                    nextPageToken: nextProps.action.payload.nextPageToken,
-                    searchResultData: nextProps.action.payload.items
-                };
+    // static getDerivedStateFromProps(props, state, snapshot) {
+    //     console.log('bbbbbbbbbbbbbbbbbb');
+    //     console.log(props);
+    //     console.log(state);
+    //     console.log(snapshot);
+    //     switch (props.action.type) {
+    //         case SearchRedux.SearchActions.getSearchSuccess:
+    //             return {
+    //                 getSearchData: true,
+    //                 searchHasMoreData: true,
+    //                 searchKey: 'you',
+    //                 nextPageToken: props.action.payload.nextPageToken,
+    //                 searchResultData: props.action.payload.items
+    //             };
+    //
+    //         default:
+    //             break;
+    //     }
+    //     return null;
+    // }
 
-            default:
-                break;
+    componentDidUpdate(prevProps, prevState) {
+
+        console.log('bbbbbbbbbbbbbbbbbb');
+        console.log(prevProps);
+        console.log(prevState);
+
+        if (this.state.getSearchData && this.state.nextPageToken !== prevProps.nextPageToken) {
+            // this.setState({
+            //     getSearchData: false,
+            //     searchHasMoreData: false,
+            //     searchKey: 'you',
+            //     nextPageToken: prevState.nextPageToken,
+            //     searchResultData: [...this.state.searchResultData, ...prevState.searchResultData]
+            // });
         }
-        return null;
     }
+
+    // stop = (event) => {
+    //     console.log('bbbbbbbbbbbbbbbbbb');
+    //     console.log(event);
+    //     // this.setState({
+    //     //     getSearchData: false,
+    //     // });
+    // };
 
     getNextLoadSearchData = () => {
         const request = {
@@ -120,20 +151,18 @@ class Search extends Component {
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                     </AdvancedSearch>
-                    <div style={infiniteScrollDomStyle} ref={(ref) => this.scrollParentRef = ref}>
+                    <div id="searchInfiniteScroll" style={infiniteScrollDomStyle}>
                         <InfiniteScroll
-                            threshold={500}
-                            // isReverse={}
-                            hasMore={true}
-                            loadMore={this.getNextLoadSearchData}
-                            useWindow={false}
-                            getScrollParent={() => this.scrollParentRef}
-                            // loader={<div className="loader" key={0}>Loading ...</div>}
+                            scrollThreshold={150}
+                            dataLength={this.state.searchResultData.length}
+                            next={this.getNextLoadSearchData}
+                            hasMore={this.state.searchHasMoreData}
+                            scrollableTarget="searchInfiniteScroll"
                         >
                             <SearchContent>
                                 {
                                     this.state.getSearchData
-                                        ? formatData.videoListPlayItemRespond(this.state.searchResultData.items).map((item) => {
+                                        ? formatData.videoListPlayItemRespond(this.state.searchResultData).map((item) => {
                                             return (
                                                 <VideoListPlayItem
                                                     key={item.id}

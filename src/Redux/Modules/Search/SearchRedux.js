@@ -32,7 +32,7 @@ const testSearchResultData = (searchKey) => {
 
 export const SearchActionsCreator = {
     getSearchResultData,
-    testSearchResultData
+    testSearchResultData,
 };
 
 export default function SearchReducer(state = {action: ''}, action) {

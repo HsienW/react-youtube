@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
+import {CheckAuthHOC} from '../../Decorators/index';
 import {formatData} from '../../Common/BasicService';
 // import * as apiData from '../../ApiCenter/Api/api';
 // import * as dataCenter from '../../DataCenter';
@@ -26,7 +26,7 @@ const ContentArea = styled.div`
 `;
 
 @CheckAuthHOC
-@LoadingDataHOC
+// @LoadingDataHOC
 class Home extends Component {
 
     constructor(props) {
@@ -49,11 +49,11 @@ class Home extends Component {
         return null;
     }
 
-    componentDidUpdate() {
-        if (this.state.getHomeData) {
-            this.props.toggleShowLoading(false);
-        }
-    }
+    // componentDidUpdate() {
+    //     if (this.state.getHomeData) {
+    //         this.props.toggleShowLoading(false);
+    //     }
+    // }
 
     videoItemClick = (videoItemInfo) => {
         this.props.PlayActionsCreator.getPlayDataStart(videoItemInfo);
@@ -80,7 +80,7 @@ class Home extends Component {
                                 })
                                 : <div>No-Data</div>
                         }
-                    </ContentArea>
+                    </ContentArea>.
                 </HomeView>
             </div>
         );

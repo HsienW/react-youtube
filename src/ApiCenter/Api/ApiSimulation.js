@@ -1,7 +1,7 @@
 const simulationSearch = {
     'kind': 'youtube#searchListResponse',
     'etag': '\'XpPGQXPnxQJhLgs6enD_n8JR4Qk/x62ritBo4SBpIeZs62VozZe6MmU\'',
-    'nextPageToken': 'CAUQAA',
+    'nextPageToken': randomNextPageToken(),
     'regionCode': 'TW',
     'pageInfo': {
         'totalResults': 1000000,
@@ -176,6 +176,9 @@ const simulationSearch = {
     ]
 };
 
+function randomNextPageToken() {
+    return Math.floor(Math.random()*(10-1));
+}
 
 export default class ApiSimulation {
     static getSearchData() {
