@@ -1,4 +1,4 @@
-const searchResult = {};
+let searchResult = [];
 
 export {
     searchResult

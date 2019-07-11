@@ -40,7 +40,8 @@ class Auth extends Component {
     authSuccess = (response) => {
         WebStorage.setSessionStorage(WebStorageKeys.ACCESS_TOKEN, response.access_token);
         this.props.AuthActionsCreator.getAuthSuccess();
-        this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
+        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
+        this.props.HomeActionsCreator.testGetHomeData(homeDefaultRequest);
         this.props.PortalActionsCreator.changeToPage('home');
     };
 

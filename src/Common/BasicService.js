@@ -32,11 +32,15 @@ const formatData = {
         data.forEach((item) => {
             newData.push({
                 id: item.id.videoId,
+                tags: item.tags,
+                channelId: item.snippet.channelId,
+                channelTitle: item.snippet.channelTitle,
                 title: item.snippet.title,
                 description: item.snippet.description,
+                publishedAt: item.snippet.publishedAt,
                 imgURL: item.snippet.thumbnails.medium.url,
                 playData: {
-                    id: item.id.videoId,
+                    id: item.id,
                     totalTime: 100
                 }
             });
@@ -54,6 +58,10 @@ const formatData = {
             return 0;
         }
         return moment.duration(isoTime, moment.ISO_8601).asSeconds();
+    },
+    searchResultIndex(searchResult, searchDataIndex) {
+        searchResult.currentSearchDataIndex = searchDataIndex + 1;
+        return searchResult;
     }
 };
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -14,34 +14,32 @@ import * as Style from '../../Common/Style';
 
 const SearchView = styled.div`
     width: 100%;
-    height: 90vh;
 `;
 
 const SearchContent = styled.div`
     width: 100%;
-    height: 100%;
-    padding: 2% 0;
+    padding: 1% 0 0 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 `;
 
 const AdvancedSearch = styled.div`
-    height: 4vh;
-    minHeight: 60px;
+    min-height: 32px;
+    padding: 0 8%;
 `;
 
-const infiniteScrollDomStyle = {
+const scrollContainerStyle = {
     width: '100%',
-    height: '90vh',
+    height: '86vh',
+    overflow: 'auto',
     padding: '0 8%',
-    overflow: 'auto'
 };
 
 const btnConfig = {
     color: `${Style.FontStressColor}`,
     border: 0,
-    marginLeft: 8
+    marginRight: 8
 };
 
 const VideoListPlayItemConfig = {
@@ -62,79 +60,82 @@ const VideoListPlayItemConfig = {
     }
 };
 
-
 class Search extends Component {
-
-    constructor() {
-        super();
+    
+    constructor(props) {
+        super(props);
+        this.searchContainerScroll = React.createRef();
         this.state = {
-            getSearchData: true,
-            searchHasMoreData: true,
+            searchStatus: false,
             searchKey: '',
             nextPageToken: '',
-            searchResultData: [],
+            currentSearchDataIndex: 0,
+            searchResult: [],
         };
     }
-
-    // static getDerivedStateFromProps(props, state, snapshot) {
-    //     console.log('bbbbbbbbbbbbbbbbbb');
-    //     console.log(props);
-    //     console.log(state);
-    //     console.log(snapshot);
-    //     switch (props.action.type) {
-    //         case SearchRedux.SearchActions.getSearchSuccess:
-    //             return {
-    //                 getSearchData: true,
-    //                 searchHasMoreData: true,
-    //                 searchKey: 'you',
-    //                 nextPageToken: props.action.payload.nextPageToken,
-    //                 searchResultData: props.action.payload.items
-    //             };
-    //
-    //         default:
-    //             break;
-    //     }
-    //     return null;
-    // }
-
+    
+    static getDerivedStateFromProps(nextProps) {
+        // nextProps.action.payload.config.params.q
+        switch (nextProps.action.type) {
+            case SearchRedux.SearchActions.getSearchSuccess:
+                return {
+                    searchStatus: true,
+                    searchKey: nextProps.payload.config.params.q,
+                    nextPageToken: nextProps.action.payload.nextPageToken,
+                    searchResult: nextProps.action.payload.items
+                };
+            
+            case SearchRedux.NextSearchActions.getNextSearchSuccess:
+                return {
+                    searchStatus: true,
+                    searchKey: 'you',
+                    nextPageToken: Math.random().toString(36).substring(7),
+                    currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+                    searchResult: nextProps.action.payload.items
+                };
+            default:
+                break;
+        }
+        return null;
+    }
+    
+    componentDidMount() {
+        this.searchContainerScroll.current.addEventListener('scroll', () => {
+            if (this.searchContainerScroll.current.scrollTop
+                + this.searchContainerScroll.current.clientHeight
+                >= this.searchContainerScroll.current.scrollHeight
+            ) {
+                this.getNextLoadSearchData();
+            }
+        });
+    }
+    
     componentDidUpdate(prevProps, prevState) {
-
-        console.log('bbbbbbbbbbbbbbbbbb');
-        console.log(prevProps);
-        console.log(prevState);
-
-        if (this.state.getSearchData && this.state.nextPageToken !== prevProps.nextPageToken) {
-            // this.setState({
-            //     getSearchData: false,
-            //     searchHasMoreData: false,
-            //     searchKey: 'you',
-            //     nextPageToken: prevState.nextPageToken,
-            //     searchResultData: [...this.state.searchResultData, ...prevState.searchResultData]
-            // });
+        if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
+            this.setState({
+                searchStatus: true,
+                searchKey: 'you',
+                nextPageToken: prevProps.action.payload.nextPageToken,
+                currentSearchDataIndex: this.state.currentSearchDataIndex,
+                searchResult: [...prevProps.action.payload.items.reverse(), ...this.state.searchResult]
+            });
         }
     }
-
-    // stop = (event) => {
-    //     console.log('bbbbbbbbbbbbbbbbbb');
-    //     console.log(event);
-    //     // this.setState({
-    //     //     getSearchData: false,
-    //     // });
-    // };
-
+    
     getNextLoadSearchData = () => {
         const request = {
             part: 'snippet',
-            maxResults: 2,
+            maxResults: 10,
             q: this.state.searchKey,
             type: 'video',
             pageToken: this.state.nextPageToken,
             key: googleApiKey
         };
-        this.props.SearchActionsCreator.testSearchResultData(request);
+        this.props.SearchActionsCreator.testSearchResultData(request, this.state.currentSearchDataIndex);
     };
-
+    
     render() {
+        const {searchStatus, searchResult} = this.state;
         return (
             <div>
                 <Header/>
@@ -151,38 +152,31 @@ class Search extends Component {
                             itemClickAction={this.props.PortalActionsCreator.changeToPage}
                         />
                     </AdvancedSearch>
-                    <div id="searchInfiniteScroll" style={infiniteScrollDomStyle}>
-                        <InfiniteScroll
-                            scrollThreshold={150}
-                            dataLength={this.state.searchResultData.length}
-                            next={this.getNextLoadSearchData}
-                            hasMore={this.state.searchHasMoreData}
-                            scrollableTarget="searchInfiniteScroll"
+                    <SearchContent>
+                        <div
+                            style={scrollContainerStyle}
+                            ref={this.searchContainerScroll}
                         >
-                            <SearchContent>
-                                {
-                                    this.state.getSearchData
-                                        ? formatData.videoListPlayItemRespond(this.state.searchResultData).map((item) => {
-                                            return (
-                                                <VideoListPlayItem
-                                                    key={item.id}
-                                                    VideoListPlayItemConfig={VideoListPlayItemConfig}
-                                                    VideoListPlayItemData={
-                                                        {
-                                                            title: item.title,
-                                                            description: item.description,
-                                                            playData: item.playData,
-                                                            thumbnailURL: item.imgURL
-                                                        }
-                                                    }
-                                                />
-                                            );
-                                        })
-                                        : <div>No-Data</div>
-                                }
-                            </SearchContent>
-                        </InfiniteScroll>
-                    </div>
+                            {
+                                searchStatus ? formatData.videoListPlayItemRespond(searchResult).map((item) => {
+                                    return (
+                                        <VideoListPlayItem
+                                            key={item.id}
+                                            VideoListPlayItemConfig={VideoListPlayItemConfig}
+                                            VideoListPlayItemData={
+                                                {
+                                                    title: item.title,
+                                                    description: item.description,
+                                                    playData: item.playData,
+                                                    thumbnailURL: item.imgURL
+                                                }
+                                            }
+                                        />
+                                    );
+                                }) : <div>No-Data</div>
+                            }
+                        </div>
+                    </SearchContent>
                 </SearchView>
             </div>
         );
@@ -190,6 +184,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
+    action: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired,
 };
