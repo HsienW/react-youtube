@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -14,11 +13,11 @@ import * as Style from '../../Common/Style';
 
 const SearchView = styled.div`
     width: 100%;
+    height: 94vh;
 `;
 
 const SearchContent = styled.div`
     width: 100%;
-    padding: 1% 0 0 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -26,12 +25,12 @@ const SearchContent = styled.div`
 
 const AdvancedSearch = styled.div`
     min-height: 32px;
-    padding: 0 8%;
+    margin-bottom: 1rem;
 `;
 
 const scrollContainerStyle = {
     width: '100%',
-    height: '86vh',
+    height: '88vh',
     overflow: 'auto',
     padding: '0 8%',
 };
@@ -44,7 +43,7 @@ const btnConfig = {
 
 const VideoListPlayItemConfig = {
     width: '100%',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
     displayWidth: 320,
     playerConfig: {
         width: '320px',
@@ -122,43 +121,59 @@ class Search extends Component {
         }
     }
     
-    getNextLoadSearchData = () => {
-        const request = {
-            part: 'snippet',
-            maxResults: 10,
+    createSearchRequest = (part, maxResults, type) => {
+        // const request = {
+        //     part: 'snippet',
+        //     maxResults: 10,
+        //     q: this.state.searchKey,
+        //     type: 'video',
+        //     pageToken: this.state.nextPageToken,
+        //     key: googleApiKey
+        // };
+        let request = {
+            part: part,
+            maxResults: maxResults,
             q: this.state.searchKey,
-            type: 'video',
+            type: type,
             pageToken: this.state.nextPageToken,
-            key: googleApiKey
+            key: googleApiKey,
+            publishedAfter: '',
+            publishedBefore: ''
         };
-        this.props.SearchActionsCreator.testSearchResultData(request, this.state.currentSearchDataIndex);
+        return request;
+    };
+    
+    getNextLoadSearchData = () => {
+        // this.props.SearchActionsCreator.testSearchResultData(
+        //     this.createSearchRequest('snippet', 10, 'video'),
+        //     this.state.currentSearchDataIndex
+        // );
     };
     
     render() {
-        const {searchStatus, searchResult} = this.state;
         return (
             <div>
                 <Header/>
                 <SearchView>
-                    <AdvancedSearch>
-                        <ListDropdown
-                            configData={ComponentConfig.DateSearchDropdown}
-                            btnConfig={btnConfig}
-                            itemClickAction={this.props.PortalActionsCreator.changeToPage}
-                        />
-                        <ListDropdown
-                            configData={ComponentConfig.TypeSearchDropdown}
-                            btnConfig={btnConfig}
-                            itemClickAction={this.props.PortalActionsCreator.changeToPage}
-                        />
-                    </AdvancedSearch>
                     <SearchContent>
                         <div
                             style={scrollContainerStyle}
                             ref={this.searchContainerScroll}
                         >
+                            <AdvancedSearch>
+                                <ListDropdown
+                                    configData={ComponentConfig.DateSearchDropdown}
+                                    btnConfig={btnConfig}
+                                    itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                                />
+                                <ListDropdown
+                                    configData={ComponentConfig.TypeSearchDropdown}
+                                    btnConfig={btnConfig}
+                                    itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                                />
+                            </AdvancedSearch>
                             {
-                                searchStatus ? formatData.videoListPlayItemRespond(searchResult).map((item) => {
+                                this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (
                                         <VideoListPlayItem
                                             key={item.id}

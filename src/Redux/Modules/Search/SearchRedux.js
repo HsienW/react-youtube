@@ -4,10 +4,16 @@ import {formatData} from '../../../Common/BasicService';
 import * as apiData from '../../../ApiCenter/Api/Api';
 import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
-export const SearchActions = {
-    getSearchStart: 'GET_SEARCH_START',
-    getSearchSuccess: 'GET_SEARCH_SUCCESS',
-    getSearchFailed: 'GET_SEARCH_FAILED',
+// export const SearchActions = {
+//     getSearchStart: 'GET_SEARCH_START',
+//     getSearchSuccess: 'GET_SEARCH_SUCCESS',
+//     getSearchFailed: 'GET_SEARCH_FAILED',
+// };
+
+export const InitialSearchActions = {
+    getInitialSearchStart: 'GET_INITIAL_SEARCH_START',
+    getInitialSearchSuccess: 'GET_INITIAL_SEARCH_SUCCESS',
+    getInitialSearchFailed: 'GET_INITIAL_SEARCH_FAILED',
 };
 
 export const NextSearchActions = {
@@ -16,51 +22,74 @@ export const NextSearchActions = {
     getNextSearchFailed: 'GET_NEXT_SEARCH_FAILED',
 };
 
-const getSearchResultData = (request) => {
+// const getSearchResultData = (request) => {
+//     return (dispatch) => {
+//         dispatch(createAction(SearchActions.getSearchStart)());
+//         callApi.get(apiData.searchURL, request)
+//             .then((respond) => {
+//                 dispatch(createAction(SearchActions.getSearchSuccess)(respond));
+//             })
+//             .catch((error) => {
+//                 dispatch(createAction(SearchActions.getSearchFailed)(error));
+//             });
+//     };
+// };
+
+const getInitialSearchResultData = (request) => {
     return (dispatch) => {
-        dispatch(createAction(SearchActions.getSearchStart)());
+        dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
         callApi.get(apiData.searchURL, request)
-            .then((respond) => {
-                dispatch(createAction(SearchActions.getSearchSuccess)(respond));
-            })
-            .catch((error) => {
-                dispatch(createAction(SearchActions.getSearchFailed)(error));
-            });
+        .then((respond) => {
+            dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(respond));
+        })
+        .catch((error) => {
+            dispatch(createAction(InitialSearchActions.getInitialSearchFailed)(error));
+        });
     };
 };
 
 const getNextSearchResultData = (request) => {
     return (dispatch) => {
-        dispatch(createAction(SearchActions.getSearchStart)());
+        dispatch(createAction(NextSearchActions.getNextSearchStart)());
         callApi.get(apiData.searchURL, request)
-            .then((respond) => {
-                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond));
-            })
-            .catch((error) => {
-                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
-            });
+        .then((respond) => {
+            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond));
+        })
+        .catch((error) => {
+            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
+        });
     };
 };
 
-const testSearchResultData = (searchKey, searchDataIndex) => {
+const testInitialSearchResultData = (searchKey, searchDataIndex) => {
     return (dispatch) => {
         console.log(searchKey);
-        dispatch(createAction(SearchActions.getSearchStart)());
+        dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
+        dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(
+            formatData.searchResultIndex(ApiSimulation.getSearchData(), searchDataIndex)));
+    };
+};
+
+const testNextSearchResultData = (searchKey, searchDataIndex) => {
+    return (dispatch) => {
+        console.log(searchKey);
+        dispatch(createAction(NextSearchActions.getNextSearchStart)());
         dispatch(createAction(NextSearchActions.getNextSearchSuccess)(
             formatData.searchResultIndex(ApiSimulation.getSearchData(), searchDataIndex)));
     };
 };
 
 export const SearchActionsCreator = {
-    getSearchResultData,
+    getInitialSearchResultData,
     getNextSearchResultData,
-    testSearchResultData,
+    testInitialSearchResultData,
+    testNextSearchResultData
 };
 
 export default function SearchReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case SearchActions.getSearchSuccess:
-        case SearchActions.getSearchFailed:
+        case InitialSearchActions.getInitialSearchSuccess:
+        case InitialSearchActions.getInitialSearchFailed:
         case NextSearchActions.getNextSearchSuccess:
         case NextSearchActions.getNextSearchFailed:
             return {action: action};
