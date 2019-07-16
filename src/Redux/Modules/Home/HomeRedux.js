@@ -1,6 +1,6 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
-import * as apiData from '../../../ApiCenter/Api/Api';
+import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
 export const HomeActions = {

@@ -7,7 +7,6 @@ import {PortalRedux, SearchRedux} from '../../Redux/Modules';
 import {Header} from '../../Components/Layout';
 import {VideoListPlayItem, ListDropdown} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
-import {googleApiKey} from '../../ApiCenter/Api/Api';
 import * as ComponentConfig from '../../Common/ComponentConfig';
 import * as Style from '../../Common/Style';
 
@@ -67,7 +66,10 @@ class Search extends Component {
         this.state = {
             searchStatus: false,
             searchKey: '',
+            searchType: '',
             nextPageToken: '',
+            publishedAfter: '',
+            publishedBefore: '',
             currentSearchDataIndex: 0,
             searchResult: [],
         };
@@ -76,14 +78,38 @@ class Search extends Component {
     static getDerivedStateFromProps(nextProps) {
         // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
-            case SearchRedux.SearchActions.getSearchSuccess:
+            // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.ac tion.payload.items
+            //     };
+            // case SearchRedux.NextSearchActions.getNextSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.action.payload.items
+            //     };
+            case SearchRedux.ClearSearchActions.clearSearchData:
+                return {
+                    searchStatus: false,
+                    searchKey: '',
+                    nextPageToken: 0,
+                    currentSearchDataIndex: 0,
+                    searchResult: []
+                };
+            case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
                 return {
                     searchStatus: true,
-                    searchKey: nextProps.payload.config.params.q,
-                    nextPageToken: nextProps.action.payload.nextPageToken,
+                    searchKey: 'you',
+                    nextPageToken: Math.random().toString(36).substring(7),
+                    currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
                     searchResult: nextProps.action.payload.items
                 };
-            
             case SearchRedux.NextSearchActions.getNextSearchSuccess:
                 return {
                     searchStatus: true,
@@ -104,12 +130,21 @@ class Search extends Component {
                 + this.searchContainerScroll.current.clientHeight
                 >= this.searchContainerScroll.current.scrollHeight
             ) {
-                this.getNextLoadSearchData();
+                // this.getNextLoadSearchData();
             }
         });
     }
     
     componentDidUpdate(prevProps, prevState) {
+        if (!this.state.searchStatus) {
+            this.setState({
+                searchStatus: false,
+                searchKey: '',
+                nextPageToken: 0,
+                currentSearchDataIndex: 0,
+                searchResult: []
+            });
+        }
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
                 searchStatus: true,
@@ -121,34 +156,30 @@ class Search extends Component {
         }
     }
     
-    createSearchRequest = (part, maxResults, type) => {
-        // const request = {
-        //     part: 'snippet',
-        //     maxResults: 10,
-        //     q: this.state.searchKey,
-        //     type: 'video',
-        //     pageToken: this.state.nextPageToken,
-        //     key: googleApiKey
-        // };
-        let request = {
-            part: part,
-            maxResults: maxResults,
-            q: this.state.searchKey,
-            type: type,
-            pageToken: this.state.nextPageToken,
-            key: googleApiKey,
-            publishedAfter: '',
-            publishedBefore: ''
-        };
-        return request;
+    onAdvancedSearch = (advancedCondition) => {
+        console.log('bbbbbbbbbbbbbbbbbbbbbbbbbb');
+        console.log(advancedCondition);
+        // part, maxResults, searchKey, pageToken, type, publishedAfter, publishedBefore
+        // this.props.SearchActionsCreator.getInitialSearchResultData(
+        //     searchApi.createRequest(
+        //         'snippet',
+        //         10,
+        //         this.state.searchKey,
+        //         '',
+        //         'video',
+        //         '',
+        //         ''
+        //     ), 0
+        // );
+        // this.props.SearchActionsCreator.testInitialSearchResultData(searchKey, 'video', 0);
     };
     
-    getNextLoadSearchData = () => {
-        // this.props.SearchActionsCreator.testSearchResultData(
-        //     this.createSearchRequest('snippet', 10, 'video'),
-        //     this.state.currentSearchDataIndex
-        // );
-    };
+    // getNextLoadSearchData = () => {
+    //     this.props.SearchActionsCreator.testNextSearchResultData(
+    //         this.createSearchRequest('snippet', 10, 'video', ),
+    //         this.state.currentSearchDataIndex
+    //     );
+    // };
     
     render() {
         return (
@@ -164,12 +195,12 @@ class Search extends Component {
                                 <ListDropdown
                                     configData={ComponentConfig.DateSearchDropdown}
                                     btnConfig={btnConfig}
-                                    itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                                    itemClickAction={this.onAdvancedSearch}
                                 />
                                 <ListDropdown
                                     configData={ComponentConfig.TypeSearchDropdown}
                                     btnConfig={btnConfig}
-                                    itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                                    itemClickAction={this.onAdvancedSearch}
                                 />
                             </AdvancedSearch>
                             {

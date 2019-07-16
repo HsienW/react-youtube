@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import {formatData} from '../../../Common/BasicService';
-import * as apiData from '../../../ApiCenter/Api/Api';
+import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
 // export const SearchActions = {
@@ -9,6 +9,10 @@ import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 //     getSearchSuccess: 'GET_SEARCH_SUCCESS',
 //     getSearchFailed: 'GET_SEARCH_FAILED',
 // };
+
+export const ClearSearchActions = {
+    clearSearchData: 'CLEAR_SEARCH_DATA',
+};
 
 export const InitialSearchActions = {
     getInitialSearchStart: 'GET_INITIAL_SEARCH_START',
@@ -35,33 +39,34 @@ export const NextSearchActions = {
 //     };
 // };
 
-const getInitialSearchResultData = (request) => {
+const getInitialSearchResultData = (request, searchDataIndex) => {
     return (dispatch) => {
         dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
         callApi.get(apiData.searchURL, request)
-        .then((respond) => {
-            dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(respond));
-        })
-        .catch((error) => {
-            dispatch(createAction(InitialSearchActions.getInitialSearchFailed)(error));
-        });
+            .then((respond) => {
+                dispatch(createAction(ClearSearchActions.clearSearchData));
+                dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(respond), searchDataIndex);
+            })
+            .catch((error) => {
+                dispatch(createAction(InitialSearchActions.getInitialSearchFailed)(error));
+            });
     };
 };
 
-const getNextSearchResultData = (request) => {
+const getNextSearchResultData = (request, searchDataIndex) => {
     return (dispatch) => {
         dispatch(createAction(NextSearchActions.getNextSearchStart)());
         callApi.get(apiData.searchURL, request)
-        .then((respond) => {
-            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond));
-        })
-        .catch((error) => {
-            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
-        });
+            .then((respond) => {
+                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond), searchDataIndex);
+            })
+            .catch((error) => {
+                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
+            });
     };
 };
 
-const testInitialSearchResultData = (searchKey, searchDataIndex) => {
+const testInitialSearchResultData = (searchKey, searchType, searchDataIndex) => {
     return (dispatch) => {
         console.log(searchKey);
         dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
@@ -88,12 +93,13 @@ export const SearchActionsCreator = {
 
 export default function SearchReducer(state = {action: ''}, action) {
     switch (action.type) {
+        case ClearSearchActions.clearSearchData:
         case InitialSearchActions.getInitialSearchSuccess:
         case InitialSearchActions.getInitialSearchFailed:
         case NextSearchActions.getNextSearchSuccess:
         case NextSearchActions.getNextSearchFailed:
             return {action: action};
-
+        
         default:
             return state;
     }

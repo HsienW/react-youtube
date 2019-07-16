@@ -66,5 +66,5 @@ const formatData = {
 };
 
 export {
-    formatData
+    formatData,
 };

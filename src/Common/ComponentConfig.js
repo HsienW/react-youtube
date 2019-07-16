@@ -5,6 +5,7 @@ const UploadDropdown = {
     item: [
         {
             key: 'upload',
+            type: 'upload',
             itemName: 'Upload',
             itemIcon: 'plus-square'
         }
@@ -18,11 +19,13 @@ const ProfileDropdown = {
     item: [
         {
             key: 'channel',
+            type: 'channel',
             itemName: 'My Channel',
             itemIcon: 'user'
         },
         {
             key: 'auth',
+            type: 'auth',
             itemName: 'Logout',
             itemIcon: 'logout'
         }
@@ -37,6 +40,7 @@ const NoticeDropdown = {
     item: [
         {
             key: 'notice',
+            type: 'notice',
             itemName: 'Notification',
             itemIcon: 'user'
         },
@@ -50,18 +54,22 @@ const DateSearchDropdown = {
     item: [
         {
             key: 'search-date-all',
+            type: 'Date',
             itemName: 'All',
         },
         {
             key: 'search-date-day',
+            type: 'Date',
             itemName: '24 hour',
         },
         {
             key: 'search-date-week',
+            type: 'Date',
             itemName: '7 day',
         },
         {
             key: 'search-date-month',
+            type: 'Date',
             itemName: '30 day',
         }
     ]
@@ -74,14 +82,17 @@ const TypeSearchDropdown = {
     item: [
         {
             key: 'search-type-all',
+            type: 'Type',
             itemName: 'All',
         },
         {
             key: 'search-type-video',
+            type: 'Type',
             itemName: 'Video',
         },
         {
             key: 'search-type-playlist',
+            type: 'Type',
             itemName: 'Play List',
         }
     ]

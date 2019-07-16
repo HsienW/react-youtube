@@ -6,7 +6,7 @@ import {PortalActionsCreator} from '../../../Redux/Modules/Portal/PortalRedux';
 import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {googleApiKey} from '../../../ApiCenter/Api/Api';
+// import {searchApi} from '../../../ApiCenter/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -69,20 +69,24 @@ class Header extends Component {
     constructor(props) {
         super(props);
     }
-
+    
     onSearch = (searchKey) => {
-        const request = {
-            part: 'snippet',
-            maxResults: 5,
-            q: searchKey,
-            type: 'video',
-            key: googleApiKey
-        };
-        this.props.SearchActionsCreator.testSearchResultData(request, 0);
-        // this.props.SearchActionsCreator.getSearchResultData(request, searchKey);
+        // searchKey, searchType, searchDataIndex
+        // this.props.SearchActionsCreator.getInitialSearchResultData(
+        //     searchApi.createRequest(
+        //         'snippet',
+        //         10,
+        //         searchKey,
+        //         '',
+        //         'video',
+        //         '',
+        //         ''
+        //     ), 0
+        // );
+        this.props.SearchActionsCreator.testInitialSearchResultData(searchKey, 'video', 0);
         this.props.PortalActionsCreator.changeToPage('search');
     };
-
+    
     render() {
         return (
             <HeaderView>
