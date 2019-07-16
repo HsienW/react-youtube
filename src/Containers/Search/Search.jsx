@@ -76,14 +76,38 @@ class Search extends Component {
     static getDerivedStateFromProps(nextProps) {
         // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
-            case SearchRedux.SearchActions.getSearchSuccess:
+            // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.ac tion.payload.items
+            //     };
+            // case SearchRedux.NextSearchActions.getNextSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.action.payload.items
+            //     };
+            case SearchRedux.ClearSearchActions.clearSearchData:
+                return {
+                    searchStatus: false,
+                    searchKey: '',
+                    nextPageToken: 0,
+                    currentSearchDataIndex: 0,
+                    searchResult: []
+                };
+            case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
                 return {
                     searchStatus: true,
-                    searchKey: nextProps.payload.config.params.q,
-                    nextPageToken: nextProps.action.payload.nextPageToken,
+                    searchKey: 'you',
+                    nextPageToken: Math.random().toString(36).substring(7),
+                    currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
                     searchResult: nextProps.action.payload.items
                 };
-            
             case SearchRedux.NextSearchActions.getNextSearchSuccess:
                 return {
                     searchStatus: true,
@@ -110,6 +134,15 @@ class Search extends Component {
     }
     
     componentDidUpdate(prevProps, prevState) {
+        if (!this.state.searchStatus) {
+            this.setState({
+                searchStatus: false,
+                searchKey: '',
+                nextPageToken: 0,
+                currentSearchDataIndex: 0,
+                searchResult: []
+            });
+        }
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
                 searchStatus: true,
@@ -121,7 +154,7 @@ class Search extends Component {
         }
     }
     
-    createSearchRequest = (part, maxResults, type) => {
+    createSearchRequest = (part, maxResults, type, publishedAfter, publishedBefore) => {
         // const request = {
         //     part: 'snippet',
         //     maxResults: 10,
@@ -137,18 +170,29 @@ class Search extends Component {
             type: type,
             pageToken: this.state.nextPageToken,
             key: googleApiKey,
-            publishedAfter: '',
-            publishedBefore: ''
+            publishedAfter: publishedAfter,
+            publishedBefore: publishedBefore
         };
         return request;
     };
     
-    getNextLoadSearchData = () => {
-        // this.props.SearchActionsCreator.testSearchResultData(
-        //     this.createSearchRequest('snippet', 10, 'video'),
-        //     this.state.currentSearchDataIndex
-        // );
+    onSearch = (searchKey) => {
+        const request = {
+            part: 'snippet',
+            maxResults: 5,
+            q: searchKey,
+            type: 'video',
+            key: googleApiKey
+        };
+        this.props.SearchActionsCreator.testInitialSearchResultData(request, 0);
     };
+    
+    // getNextLoadSearchData = () => {
+    //     this.props.SearchActionsCreator.testNextSearchResultData(
+    //         this.createSearchRequest('snippet', 10, 'video', ),
+    //         this.state.currentSearchDataIndex
+    //     );
+    // };
     
     render() {
         return (
@@ -164,7 +208,7 @@ class Search extends Component {
                                 <ListDropdown
                                     configData={ComponentConfig.DateSearchDropdown}
                                     btnConfig={btnConfig}
-                                    itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                                    itemClickAction={this.props.SearchActionsCreator.testInitialSearchResultData}
                                 />
                                 <ListDropdown
                                     configData={ComponentConfig.TypeSearchDropdown}

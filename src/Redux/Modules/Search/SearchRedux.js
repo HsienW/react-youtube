@@ -10,6 +10,10 @@ import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 //     getSearchFailed: 'GET_SEARCH_FAILED',
 // };
 
+export const ClearSearchActions = {
+    clearSearchData: 'CLEAR_SEARCH_DATA',
+};
+
 export const InitialSearchActions = {
     getInitialSearchStart: 'GET_INITIAL_SEARCH_START',
     getInitialSearchSuccess: 'GET_INITIAL_SEARCH_SUCCESS',
@@ -39,12 +43,13 @@ const getInitialSearchResultData = (request) => {
     return (dispatch) => {
         dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
         callApi.get(apiData.searchURL, request)
-        .then((respond) => {
-            dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(respond));
-        })
-        .catch((error) => {
-            dispatch(createAction(InitialSearchActions.getInitialSearchFailed)(error));
-        });
+            .then((respond) => {
+                dispatch(createAction(ClearSearchActions.clearSearchData));
+                dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(InitialSearchActions.getInitialSearchFailed)(error));
+            });
     };
 };
 
@@ -52,16 +57,16 @@ const getNextSearchResultData = (request) => {
     return (dispatch) => {
         dispatch(createAction(NextSearchActions.getNextSearchStart)());
         callApi.get(apiData.searchURL, request)
-        .then((respond) => {
-            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond));
-        })
-        .catch((error) => {
-            dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
-        });
+            .then((respond) => {
+                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(NextSearchActions.getNextSearchSuccess)(error));
+            });
     };
 };
 
-const testInitialSearchResultData = (searchKey, searchDataIndex) => {
+const testInitialSearchResultData = (searchKey, searchType, searchDataIndex) => {
     return (dispatch) => {
         console.log(searchKey);
         dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
@@ -88,12 +93,13 @@ export const SearchActionsCreator = {
 
 export default function SearchReducer(state = {action: ''}, action) {
     switch (action.type) {
+        case ClearSearchActions.clearSearchData:
         case InitialSearchActions.getInitialSearchSuccess:
         case InitialSearchActions.getInitialSearchFailed:
         case NextSearchActions.getNextSearchSuccess:
         case NextSearchActions.getNextSearchFailed:
             return {action: action};
-
+        
         default:
             return state;
     }

@@ -78,7 +78,7 @@ class Header extends Component {
             type: 'video',
             key: googleApiKey
         };
-        this.props.SearchActionsCreator.testSearchResultData(request, 0);
+        this.props.SearchActionsCreator.testInitialSearchResultData(request, 0);
         // this.props.SearchActionsCreator.getSearchResultData(request, searchKey);
         this.props.PortalActionsCreator.changeToPage('search');
     };

@@ -9,22 +9,6 @@ const playListURL = `${basicURL}playlists?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
 
-const serachApi = {
-    createRequest(part, maxResults, type, publishedAfter, publishedBefore) {
-        return {
-            part: part,
-            maxResults: maxResults,
-            q: this.state.searchKey,
-            type: type,
-            pageToken: this.state.nextPageToken,
-            key: googleApiKey,
-            publishedAfter: publishedAfter,
-            publishedBefore: publishedBefore
-        };
-    },
-};
-
-
 export {
     googleApiKey,
     activitiesURL,
@@ -33,6 +17,5 @@ export {
     commentURL,
     playListURL,
     searchURL,
-    subscriptionURL,
-    serachApi
+    subscriptionURL
 };
