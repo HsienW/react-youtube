@@ -1,6 +1,7 @@
 import UserAvatar from './Avatar/UserAvatar';
 import ContentDropdown from './Dropdown/ContentDropdown';
 import ListDropdown from './Dropdown/ListDropdown';
+import SelectDropdown from './Dropdown/SelectDropdown';
 import PageHeader from './Navigation/PageHeader';
 import InfiniteScroll from './Scroll/InfiniteScroll';
 import VideoItem from './Video/VideoItem';
@@ -14,6 +15,7 @@ export {
     UserAvatar,
     ContentDropdown,
     ListDropdown,
+    SelectDropdown,
     PageHeader,
     VideoItem,
     VideoListItem,

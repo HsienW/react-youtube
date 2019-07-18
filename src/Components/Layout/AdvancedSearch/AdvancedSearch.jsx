@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Form} from 'react-final-form';
-import {ListDropdown} from '../../Modules';
+import {ListDropdown, SelectDropdown} from '../../Modules';
 import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+// import {formatData} from '../../../Common/BasicService';
+// import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
+import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 
 const Advanced = styled.div`
@@ -13,12 +15,39 @@ const Advanced = styled.div`
     margin-bottom: 1rem;
 `;
 
-class AdvancedSearch extends Component {
+const btnConfig = {
+    width: 100,
+    color: `${Style.FontStressColor}`,
+    border: 0,
+    marginRight: 8
+};
 
-    onAdvancedSearch = () => {
+class AdvancedSearch extends Component {
+    
+    onAdvancedSearch = (condition) => {
+    
         console.log('bbbbbbbbbbbbbbbbbbbbbbbbbb');
-        console.log(this.props.SearchActionsCreator.testInitialSearchResultData);
-        // part, maxResults, searchKey, pageToken, type, publishedAfter, publishedBefore
+        console.log(condition);
+        
+        // let currentTime = '';
+        // let currentType = '';
+
+        // if (event.item.props.type === 'Date') {
+        //     currentTime = formatData.advancedSearchTime(event.item.props.children[1]);
+        // }
+        // currentType = formatData.advancedSearchType(event.item.props.children[1]);
+    
+    
+        // const request = searchApi.createRequest(
+        //     part,
+        //     maxResults,
+        //     searchKey,
+        //     pageToken,
+        //     type,
+        //     publishedAfter,
+        //     publishedBefore
+        // );
+        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
         // this.props.SearchActionsCreator.getInitialSearchResultData(
         //     searchApi.createRequest(
         //         'snippet',
@@ -34,28 +63,29 @@ class AdvancedSearch extends Component {
     };
     
     render() {
-        const {btnConfig} = {...this.props};
         return (
-            <Form render={() => (
-                <Advanced>
-                    <ListDropdown
-                        configData={ComponentConfig.DateSearchDropdown}
-                        btnConfig={btnConfig}
-                        itemClickAction={this.onAdvancedSearch}
-                    />
-                    <ListDropdown
-                        configData={ComponentConfig.TypeSearchDropdown}
-                        btnConfig={btnConfig}
-                        itemClickAction={this.onAdvancedSearch}
-                    />
-                </Advanced>
-            )}/>
+            <Advanced>
+                <SelectDropdown
+                    configData={ComponentConfig.DateSearchDropdown}
+                    btnConfig={btnConfig}
+                    itemClickAction={this.onAdvancedSearch}
+                />
+                <ListDropdown
+                    configData={ComponentConfig.DateSearchDropdown}
+                    btnConfig={btnConfig}
+                    itemClickAction={this.onAdvancedSearch}
+                />
+                <ListDropdown
+                    configData={ComponentConfig.TypeSearchDropdown}
+                    btnConfig={btnConfig}
+                    itemClickAction={this.onAdvancedSearch}
+                />
+            </Advanced>
         );
     }
 }
 
 AdvancedSearch.propTypes = {
-    btnConfig: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired,
 };
 

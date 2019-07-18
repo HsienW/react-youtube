@@ -1,6 +1,6 @@
 import {googleApiKey} from './ApiConfig';
 
-const serachApi = {
+const searchApi = {
     createRequest(part, maxResults, searchKey, pageToken, type, publishedAfter, publishedBefore) {
         return {
             part: part,
@@ -17,5 +17,5 @@ const serachApi = {
 
 
 export {
-    serachApi
+    searchApi
 };

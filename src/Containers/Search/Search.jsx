@@ -8,7 +8,6 @@ import {Header, AdvancedSearch} from '../../Components/Layout';
 import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
 // import * as ComponentConfig from '../../Common/ComponentConfig';
-import * as Style from '../../Common/Style';
 
 const SearchView = styled.div`
     width: 100%;
@@ -27,12 +26,6 @@ const scrollContainerStyle = {
     height: '88vh',
     overflow: 'auto',
     padding: '0 8%',
-};
-
-const btnConfig = {
-    color: `${Style.FontStressColor}`,
-    border: 0,
-    marginRight: 8
 };
 
 const VideoListPlayItemConfig = {
@@ -186,7 +179,7 @@ class Search extends Component {
                             style={scrollContainerStyle}
                             ref={this.searchContainerScroll}
                         >
-                            <AdvancedSearch btnConfig={btnConfig}/>
+                            <AdvancedSearch />
                             {
                                 this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (

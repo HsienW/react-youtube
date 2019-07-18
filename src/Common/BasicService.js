@@ -62,6 +62,32 @@ const formatData = {
     searchResultIndex(searchResult, searchDataIndex) {
         searchResult.currentSearchDataIndex = searchDataIndex + 1;
         return searchResult;
+    },
+    advancedSearchTime(timeCondition) {
+        switch (timeCondition) {
+            case 'All':
+                return ;
+            case '24 hour':
+                return moment.utc().subtract(1,'day').format('YYYY,MM-DD HH:mm:ss');
+            case '7 day':
+                return moment.utc().subtract(7,'day').format('YYYY,MM-DD HH:mm:ss');
+            case '30 day':
+                return moment.utc().subtract(30,'day').format('YYYY,MM-DD HH:mm:ss');
+            default:
+                return '';
+        }
+    },
+    advancedSearchType(timeCondition) {
+        switch (timeCondition) {
+            case 'All':
+                return ;
+            case 'Video':
+                return 'video';
+            case 'Play List':
+                return 'playlist';
+            default:
+                return 'video';
+        }
     }
 };
 
