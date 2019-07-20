@@ -6,15 +6,16 @@ const {Option} = Select;
 
 export default class SelectDropdown extends Component {
     
-    selectItemChange = (event) => {
-        this.props.itemClickAction(event);
+    selectItemChange = (event, condition) => {
+        const selectType = condition.props.type;
+        this.props.itemClickAction(event, selectType);
     };
     
     render() {
         const {configData, btnConfig} = {...this.props};
         return (
             <Select
-                defaultValue='All'
+                defaultValue={'All'}
                 style={btnConfig}
                 onChange={this.selectItemChange}
             >
@@ -23,6 +24,7 @@ export default class SelectDropdown extends Component {
                         return (
                             <Option
                                 key={item.key}
+                                type={item.type}
                                 value={item.itemName}
                             >
                                 {item.itemName}

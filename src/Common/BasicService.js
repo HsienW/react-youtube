@@ -63,7 +63,7 @@ const formatData = {
         searchResult.currentSearchDataIndex = searchDataIndex + 1;
         return searchResult;
     },
-    advancedSearchTime(timeCondition) {
+    advancedSearchDate(timeCondition) {
         switch (timeCondition) {
             case 'All':
                 return ;
