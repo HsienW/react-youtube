@@ -25,18 +25,15 @@
     "react-dom": "^16.4.2",
     "react-final-form": "^4.1.0",
     "react-google-authorize": "^1.0.4",
-    "react-infinite-scroll-component": "^4.5.2",
     "react-player": "^1.11.0",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
-    "react-waypoint": "^9.0.2",
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^3.4.6",
-    "uuid": "^3.3.2"
+    "styled-components": "^3.4.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

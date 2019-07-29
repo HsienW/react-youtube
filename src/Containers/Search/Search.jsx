@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -117,7 +116,7 @@ class Search extends Component {
                 searchKey: 'you',
                 nextPageToken: prevProps.action.payload.nextPageToken,
                 currentSearchDataIndex: this.state.currentSearchDataIndex,
-                searchResult: [...prevProps.action.payload.items.reverse(), ...this.state.searchResult]
+                searchResult: [...this.state.searchResult.reverse(), ...prevProps.action.payload.items,]
             });
         }
     }
@@ -135,7 +134,6 @@ class Search extends Component {
     };
     
     render() {
-        const {searchStatus, searchResult} = this.state;
         return (
             <div>
                 <Header/>
@@ -158,7 +156,7 @@ class Search extends Component {
                             ref={this.searchContainerScroll}
                         >
                             {
-                                searchStatus ? formatData.videoListPlayItemRespond(searchResult).map((item) => {
+                                this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (
                                         <VideoListPlayItem
                                             key={item.id}

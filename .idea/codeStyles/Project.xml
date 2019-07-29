@@ -1,7 +1,7 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="AUTODETECT_INDENTS" value="false" />
-    <JSCodeStyleSettings version="1">
+    <JSCodeStyleSettings>
       <option name="INDENT_CHAINED_CALLS" value="false" />
     </JSCodeStyleSettings>
     <editorconfig>
