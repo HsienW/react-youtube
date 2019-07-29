@@ -68,7 +68,6 @@ const getNextSearchResultData = (request, searchDataIndex) => {
 
 const testInitialSearchResultData = (searchKey, searchType, searchDataIndex) => {
     return (dispatch) => {
-        console.log(searchKey);
         dispatch(createAction(InitialSearchActions.getInitialSearchStart)());
         dispatch(createAction(InitialSearchActions.getInitialSearchSuccess)(
             formatData.searchResultIndex(ApiSimulation.getSearchData(), searchDataIndex)));
@@ -77,7 +76,6 @@ const testInitialSearchResultData = (searchKey, searchType, searchDataIndex) => 
 
 const testNextSearchResultData = (searchKey, searchDataIndex) => {
     return (dispatch) => {
-        console.log(searchKey);
         dispatch(createAction(NextSearchActions.getNextSearchStart)());
         dispatch(createAction(NextSearchActions.getNextSearchSuccess)(
             formatData.searchResultIndex(ApiSimulation.getSearchData(), searchDataIndex)));

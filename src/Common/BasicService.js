@@ -47,6 +47,19 @@ const formatData = {
         });
         return newData;
     },
+    videoItemDetailRespond(data) {
+        const newData = [];
+        data.forEach((item) => {
+            newData.push({
+                id: item.id,
+                title: item.snippet.title,
+                description: item.snippet.description,
+                imgURL: item.snippet.thumbnails.medium.url,
+                totalTime: this.isoTimeToSecondData(item.contentDetails.duration)
+            });
+        });
+        return newData;
+    },
     videoPlayerTime(seconds) {
         if (seconds > 3600) {
             return moment().startOf('day').seconds(seconds).format('H:mm:ss');
@@ -66,13 +79,13 @@ const formatData = {
     advancedSearchDate(timeCondition) {
         switch (timeCondition) {
             case 'All':
-                return ;
+                return '';
             case '24 hour':
-                return moment.utc().subtract(1,'day').format('YYYY,MM-DD HH:mm:ss');
+                return moment.utc().subtract(1,'day').format();
             case '7 day':
-                return moment.utc().subtract(7,'day').format('YYYY,MM-DD HH:mm:ss');
+                return moment.utc().subtract(7,'day').format();
             case '30 day':
-                return moment.utc().subtract(30,'day').format('YYYY,MM-DD HH:mm:ss');
+                return moment.utc().subtract(30,'day').format();
             default:
                 return '';
         }
@@ -80,7 +93,7 @@ const formatData = {
     advancedSearchType(timeCondition) {
         switch (timeCondition) {
             case 'All':
-                return ;
+                return 'video';
             case 'Video':
                 return 'video';
             case 'Play List':

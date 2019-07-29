@@ -6,7 +6,7 @@ import {PortalActionsCreator} from '../../../Redux/Modules/Portal/PortalRedux';
 import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-// import {searchApi} from '../../../ApiCenter/Api';
+import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -40,7 +40,7 @@ const searchBarStyle = {
 const btnConfig = {
     color: `${Style.FontMainColor}`,
     backgroundColor: `${Style.MainColor}`,
-    marginLeft: 8
+    marginRight: 8
 };
 
 const contentBodyStyle = {
@@ -71,19 +71,16 @@ class Header extends Component {
     }
     
     onSearch = (searchKey) => {
-        // searchKey, searchType, searchDataIndex
-        // this.props.SearchActionsCreator.getInitialSearchResultData(
-        //     searchApi.createRequest(
-        //         'snippet',
-        //         10,
-        //         searchKey,
-        //         '',
-        //         'video',
-        //         '',
-        //         ''
-        //     ), 0
-        // );
-        this.props.SearchActionsCreator.testInitialSearchResultData(searchKey, 'video', 0);
+        const request = searchApi.createRequest(
+            'snippet',
+            10,
+            searchKey,
+            '',
+            '',
+            '',
+        );
+        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
+        this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
         this.props.PortalActionsCreator.changeToPage('search');
     };
     

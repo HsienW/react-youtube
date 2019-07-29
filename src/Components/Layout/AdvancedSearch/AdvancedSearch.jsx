@@ -5,7 +5,7 @@ import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {formatData} from '../../../Common/BasicService';
-import {searchApi} from '../../../ApiCenter/Api/Api';
+// import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -53,32 +53,20 @@ class AdvancedSearch extends Component {
     };
     
     onAdvancedSearch = () => {
-        const request = searchApi.createRequest(
-            'snippet',
-            10,
-            'you',
-            '',
-            this.state.typeCondition,
-            this.state.dateCondition,
-            this.state.dateCondition,
-        );
-        
-        console.log('tttttttttttttttttttttttt');
-        console.log(request);
-        console.log(this.state);
-        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
-        // this.props.SearchActionsCreator.getInitialSearchResultData(
-        //     searchApi.createRequest(
-        //         'snippet',
-        //         10,
-        //         this.state.searchKey,
-        //         '',
-        //         'video',
-        //         '',
-        //         ''
-        //     ), 0
+        // const request = searchApi.createRequest(
+        //     'snippet',
+        //     10,
+        //     this.props.searchKey,
+        //     '',
+        //     this.state.typeCondition,
+        //     this.state.dateCondition,
         // );
-        // this.props.SearchActionsCreator.testInitialSearchResultData(searchKey, 'video', 0);
+        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
+        this.props.SearchActionsCreator.testInitialSearchResultData(
+            this.props.searchKey,
+            '',
+            0
+        );
     };
     
     render() {
@@ -106,7 +94,8 @@ class AdvancedSearch extends Component {
 }
 
 AdvancedSearch.propTypes = {
-    SearchActionsCreator: PropTypes.object.isRequired,
+    searchKey: PropTypes.string.isRequired,
+    SearchActionsCreator: PropTypes.object.isRequired
 };
 
 export default connect(

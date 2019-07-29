@@ -7,6 +7,7 @@ import {PortalRedux, SearchRedux} from '../../Redux/Modules';
 import {Header, AdvancedSearch} from '../../Components/Layout';
 import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
+// import {searchApi} from '../../ApiCenter/Api/Api';
 // import * as ComponentConfig from '../../Common/ComponentConfig';
 
 const SearchView = styled.div`
@@ -57,7 +58,6 @@ class Search extends Component {
             searchType: '',
             nextPageToken: '',
             publishedAfter: '',
-            publishedBefore: '',
             currentSearchDataIndex: 0,
             searchResult: [],
         };
@@ -86,7 +86,7 @@ class Search extends Component {
                 return {
                     searchStatus: false,
                     searchKey: '',
-                    nextPageToken: 0,
+                    nextPageToken: '',
                     currentSearchDataIndex: 0,
                     searchResult: []
                 };
@@ -118,7 +118,7 @@ class Search extends Component {
                 + this.searchContainerScroll.current.clientHeight
                 >= this.searchContainerScroll.current.scrollHeight
             ) {
-                // this.getNextLoadSearchData();
+                this.getNextLoadSearchData();
             }
         });
     }
@@ -144,30 +144,24 @@ class Search extends Component {
         }
     }
     
-    // onAdvancedSearch = (advancedCondition) => {
-    //     console.log('bbbbbbbbbbbbbbbbbbbbbbbbbb');
-    //     console.log(advancedCondition);
-    //     // part, maxResults, searchKey, pageToken, type, publishedAfter, publishedBefore
-    //     // this.props.SearchActionsCreator.getInitialSearchResultData(
-    //     //     searchApi.createRequest(
-    //     //         'snippet',
-    //     //         10,
-    //     //         this.state.searchKey,
-    //     //         '',
-    //     //         'video',
-    //     //         '',
-    //     //         ''
-    //     //     ), 0
-    //     // );
-    //     // this.props.SearchActionsCreator.testInitialSearchResultData(searchKey, 'video', 0);
-    // };
-    
-    // getNextLoadSearchData = () => {
-    //     this.props.SearchActionsCreator.testNextSearchResultData(
-    //         this.createSearchRequest('snippet', 10, 'video', ),
-    //         this.state.currentSearchDataIndex
-    //     );
-    // };
+    getNextLoadSearchData = () => {
+        // const request = searchApi.createRequest(
+        //     'snippet',
+        //     10,
+        //     this.state.searchKey,
+        //     this.state.nextPageToken,
+        //     this.state.searchType,
+        //     this.state.publishedAfter,
+        // );
+        // this.props.SearchActionsCreator.getNextSearchResultData(
+        //     request,
+        //     this.state.currentSearchDataIndex
+        // );
+        this.props.SearchActionsCreator.testNextSearchResultData(
+            this.state.searchKey,
+            this.state.currentSearchDataIndex
+        );
+    };
     
     render() {
         return (
@@ -179,7 +173,7 @@ class Search extends Component {
                             style={scrollContainerStyle}
                             ref={this.searchContainerScroll}
                         >
-                            <AdvancedSearch />
+                            <AdvancedSearch searchKey={this.state.searchKey}/>
                             {
                                 this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (

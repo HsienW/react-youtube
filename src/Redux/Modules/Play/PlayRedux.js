@@ -1,27 +1,66 @@
 import {createAction} from 'redux-actions';
-// import {callApi} from '../../../ApiCenter/Api/CallApi';
-// import * as apiData from '../../../ApiCenter/Api/Api';
+import {callApi} from '../../../ApiCenter/Api/CallApi';
+import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 
-export const PlayActions = {
-    getPlayStart: 'GET_PLAY_START',
-    getPlaySuccess: 'GET_PLAY_SUCCESS',
-    getPlayFailed: 'GET_PLAY_FAILED',
+export const PlayVideoActions = {
+    getPlayVideoStart: 'GET_PLAY_VIDEO_START',
+    getPlayVideoSuccess: 'GET_PLAY_VIDEO_SUCCESS',
+    getPlayVideoFailed: 'GET_PLAY_VIDEO_FAILED',
 };
 
-const getPlayDataStart = (videoItemInfo) => {
+export const PlayDetailActions = {
+    getPlayDetailStart: 'GET_PLAY_DETAIL_START',
+    getPlayDetailSuccess: 'GET_PLAY_DETAIL_SUCCESS',
+    getPlayDetailFailed: 'GET_PLAY_DETAIL_FAILED',
+};
+
+const getPlayData = (request, videoItemInfo) => {
     return (dispatch) => {
-        dispatch(createAction(PlayActions.getPlaySuccess)(videoItemInfo));
+        dispatch(createAction(PlayVideoActions.getPlayVideoStart)());
+        dispatch(createAction(PlayDetailActions.getPlayDetailStart)());
+        callApi.get(apiData.videoURL, request)
+            .then((respond) => {
+                dispatch(createAction(PlayDetailActions.getPlayDetailSuccess)(respond));
+                dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
+            })
+            .catch((error) => {
+                dispatch(createAction(PlayDetailActions.getPlayDetailFailed)(error));
+            });
+    };
+};
+
+const getPlayVideoData = (videoItemInfo) => {
+    return (dispatch) => {
+        dispatch(createAction(PlayVideoActions.getPlayVideoStart)());
+        dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
+    };
+};
+
+const getPlayDetailData = (request) => {
+    return (dispatch) => {
+        dispatch(createAction(PlayDetailActions.getPlayDetailStart)());
+        callApi.get(apiData.videoURL, request)
+            .then((respond) => {
+                dispatch(createAction(PlayDetailActions.getPlayDetailSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(PlayDetailActions.getPlayDetailFailed)(error));
+            });
     };
 };
 
 export const PlayActionsCreator = {
-    getPlayDataStart
+    getPlayData,
+    getPlayVideoData,
+    getPlayDetailData,
 };
 
 export default function PlayReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case PlayActions.getPlaySuccess:
-        case PlayActions.getPlayFailed:
+        case PlayVideoActions.getPlayVideoSuccess:
+        case PlayVideoActions.getPlayVideoFailed:
+        case PlayDetailActions.getPlayDetailSuccess:
+        case PlayDetailActions.getPlayDetailFailed:
             return {action: action};
 
         default:

@@ -2632,16 +2632,107 @@ const simulationSearch = {
     ]
 };
 
+// const simulationPlayVideoDetail = {
+//     "kind": "youtube#videoListResponse",
+//     "etag": "\"Bdx4f4ps3xCOOo1WZ91nTLkRZ_c/61mF7J1CoQYqSmRskzBqJszRX5U\"",
+//     "pageInfo": {
+//         "totalResults": 1,
+//         "resultsPerPage": 1
+//     },
+//     "items": [
+//         {
+//             "kind": "youtube#video",
+//             "etag": "\"Bdx4f4ps3xCOOo1WZ91nTLkRZ_c/FyskVVOMEkdSfGNgGIR5zuaSwlk\"",
+//             "id": "Ks-_Mh1QhMc",
+//             "snippet": {
+//                 "publishedAt": "2012-10-01T15:27:35.000Z",
+//                 "channelId": "UCAuUUnT6oDeKwE6v1NGQxug",
+//                 "title": "Your body language may shape who you are | Amy Cuddy",
+//                 "description": "Body language affects how others see us, but it may also change how we see ourselves. Social psychologist Amy Cuddy argues that \"power posing\" -- standing in a posture of confidence, even when we don't feel confident -- can boost feelings of confidence, and might have an impact on our chances for success. (Note: Some of the findings presented in this talk have been referenced in an ongoing debate among social scientists about robustness and reproducibility. Read Amy Cuddy's response here: http://ideas.ted.com/inside-the-debate-about-power-posing-a-q-a-with-amy-cuddy/)\n\nGet TED Talks recommended just for you! Learn more at https://www.ted.com/signup.\n\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and more.\n\nFollow TED on Twitter: http://www.twitter.com/TEDTalks\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: https://www.youtube.com/TED",
+//                 "thumbnails": {
+//                     "default": {
+//                         "url": "https://i.ytimg.com/vi/Ks-_Mh1QhMc/default.jpg",
+//                         "width": 120,
+//                         "height": 90
+//                     },
+//                     "medium": {
+//                         "url": "https://i.ytimg.com/vi/Ks-_Mh1QhMc/mqdefault.jpg",
+//                         "width": 320,
+//                         "height": 180
+//                     },
+//                     "high": {
+//                         "url": "https://i.ytimg.com/vi/Ks-_Mh1QhMc/hqdefault.jpg",
+//                         "width": 480,
+//                         "height": 360
+//                     },
+//                     "standard": {
+//                         "url": "https://i.ytimg.com/vi/Ks-_Mh1QhMc/sddefault.jpg",
+//                         "width": 640,
+//                         "height": 480
+//                     },
+//                     "maxres": {
+//                         "url": "https://i.ytimg.com/vi/Ks-_Mh1QhMc/maxresdefault.jpg",
+//                         "width": 1280,
+//                         "height": 720
+//                     }
+//                 },
+//                 "channelTitle": "TED",
+//                 "tags": [
+//                     "Amy Cuddy",
+//                     "TED",
+//                     "TEDTalk",
+//                     "TEDTalks",
+//                     "TED Talk",
+//                     "TED Talks",
+//                     "TEDGlobal",
+//                     "brain",
+//                     "business",
+//                     "psychology",
+//                     "self",
+//                     "success"
+//                 ],
+//                 "categoryId": "22",
+//                 "liveBroadcastContent": "none",
+//                 "defaultLanguage": "en",
+//                 "localized": {
+//                     "title": "Your body language may shape who you are | Amy Cuddy",
+//                     "description": "Body language affects how others see us, but it may also change how we see ourselves. Social psychologist Amy Cuddy argues that \"power posing\" -- standing in a posture of confidence, even when we don't feel confident -- can boost feelings of confidence, and might have an impact on our chances for success. (Note: Some of the findings presented in this talk have been referenced in an ongoing debate among social scientists about robustness and reproducibility. Read Amy Cuddy's response here: http://ideas.ted.com/inside-the-debate-about-power-posing-a-q-a-with-amy-cuddy/)\n\nGet TED Talks recommended just for you! Learn more at https://www.ted.com/signup.\n\nThe TED Talks channel features the best talks and performances from the TED Conference, where the world's leading thinkers and doers give the talk of their lives in 18 minutes (or less). Look for talks on Technology, Entertainment and Design -- plus science, business, global issues, the arts and more.\n\nFollow TED on Twitter: http://www.twitter.com/TEDTalks\nLike TED on Facebook: https://www.facebook.com/TED\n\nSubscribe to our channel: https://www.youtube.com/TED"
+//                 },
+//                 "defaultAudioLanguage": "en"
+//             },
+//             "contentDetails": {
+//                 "duration": "PT21M3S",
+//                 "dimension": "2d",
+//                 "definition": "hd",
+//                 "caption": "true",
+//                 "licensedContent": true,
+//                 "projection": "rectangular"
+//             },
+//             "statistics": {
+//                 "viewCount": "16686113",
+//                 "likeCount": "228281",
+//                 "dislikeCount": "4587",
+//                 "favoriteCount": "0",
+//                 "commentCount": "7655"
+//             }
+//         }
+//     ]
+// };
+
 function randomNextPageToken() {
-    return Math.floor(Math.random()*(10-1));
+    return Math.floor(Math.random() * (10 - 1));
 }
 
 export default class ApiSimulation {
     static getSearchData() {
         return simulationSearch;
     }
-
+    
     static getSearchHome() {
         return simulationHome;
     }
+    
+    // static getPlayVideoDetail() {
+    //     return simulationPlayVideoDetail;
+    // }
 }

@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
-import {Header} from '../../Components/Layout/index';
-import {VideoPlayer, VideoDescription, VideoListItem, UserAvatar} from '../../Components/Modules';
+import {Header, VideoDetail} from '../../Components/Layout/index';
+import {VideoPlayer, VideoListItem } from '../../Components/Modules';
 
 const PlayView = styled.div`
     width: 100%;
@@ -30,36 +30,6 @@ const RelatedVideo = styled.div`
     min-height: 600px;
     max-height: 100%;
     overflow: auto;
-`;
-
-const PlayContent = styled.div`
-    width: 100%;
-    height: 100%;
-    padding: 2% 0
-`;
-
-const VideoTitle = styled.div`
-    width: 100%;
-    height: 10vh;
-    font-size: 2.4rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-content: center;
-`;
-
-const VideoDetail = styled.div`
-    width: 100%;
-    height: 50%;
-    padding: 2% 0;
-    display: flex;
-    justify-content: start;
-    align-content: center;
-`;
-
-const VideoOwnerAvatar = styled.div`
-    width: 50px;
-    height: 100%;
 `;
 
 const playerConfig = {
@@ -96,14 +66,20 @@ class Play extends Component {
         super(props);
         this.state = {
             getPlayData: false,
-            playData: {}
+            playVideoData: {},
+            playDetailData: {}
         };
     }
 
     static getDerivedStateFromProps(nextProps) {
+        console.log('eeeeeeeeeeeeeeeeeeeee');
+        console.log(nextProps.action.type);
         switch (nextProps.action.type) {
-            case PlayRedux.PlayActions.getPlaySuccess:
-                return {getPlayData: true, playData: nextProps.action.payload};
+            case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
+                return {getPlayData: true, playVideoData: nextProps.action.payload};
+    
+            case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
+                return {getPlayData: true, playDetailData: nextProps.action.payload.data.items[0]};
 
             default:
                 break;
@@ -111,7 +87,7 @@ class Play extends Component {
 
         return null;
     }
-
+    
     render() {
         return (
             <div>
@@ -119,32 +95,11 @@ class Play extends Component {
                 <PlayView>
                     <PlayInfo>
                         <VideoPlayer
-                            playerData={this.state.playData}
+                            playerData={this.state.playVideoData}
                             playerConfig={playerConfig}
                             playerInlineConfig={playerInlineConfig}
                         />
-                        <PlayContent>
-                            <VideoTitle>{this.state.playData.title}</VideoTitle>
-                            <VideoDetail>
-                                <VideoOwnerAvatar>
-                                    <UserAvatar avatarData={
-                                        {
-                                            imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                                            imgSize: 50
-                                        }
-                                    }/>
-                                </VideoOwnerAvatar>
-                                <VideoDescription
-                                    descriptionData={
-                                        {
-                                            title: 'Name',
-                                            release: '2020-05-26',
-                                            contentInfo: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-                                        }
-                                    }
-                                />
-                            </VideoDetail>
-                        </PlayContent>
+                        <VideoDetail videoDetailData={this.state.playDetailData}/>
                     </PlayInfo>
                     <RelatedVideo>
                         <VideoListItem
