@@ -73,8 +73,11 @@ class Play extends Component {
 
     static getDerivedStateFromProps(nextProps) {
         console.log('eeeeeeeeeeeeeeeeeeeee');
-        console.log(nextProps.action.type);
+        console.log(nextProps.action);
         switch (nextProps.action.type) {
+            case PlayRedux.PlayDataActions.getPlayDataSuccess:
+                return {getPlayData: true, playVideoData: nextProps.action.payload};
+
             case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
                 return {getPlayData: true, playVideoData: nextProps.action.payload};
     

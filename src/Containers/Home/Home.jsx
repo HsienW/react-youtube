@@ -58,7 +58,7 @@ class Home extends Component {
 
     videoItemClick = (videoItemInfo) => {
         const request = videoApi.createDetailRequest('', videoItemInfo.id);
-        this.props.PlayActionsCreator.getPlayData(request, videoItemInfo);
+        this.props.PlayActionsCreator.getPlayDataInfo(request, videoItemInfo);
         // this.props.PlayActionsCreator.getPlayVideoData(videoItemInfo);
         // this.props.PlayActionsCreator.getPlayDetailData(request);
         this.props.PortalActionsCreator.changeToPage('play');

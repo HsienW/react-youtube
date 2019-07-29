@@ -2,6 +2,12 @@ import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 
+export const PlayDataActions = {
+    getPlayDataStart: 'GET_PLAY_DATA_START',
+    getPlayDataSuccess: 'GET_PLAY_DATA_SUCCESS',
+    getPlayDataFailed: 'GET_PLAY_DATA_FAILED',
+};
+
 export const PlayVideoActions = {
     getPlayVideoStart: 'GET_PLAY_VIDEO_START',
     getPlayVideoSuccess: 'GET_PLAY_VIDEO_SUCCESS',
@@ -14,17 +20,16 @@ export const PlayDetailActions = {
     getPlayDetailFailed: 'GET_PLAY_DETAIL_FAILED',
 };
 
-const getPlayData = (request, videoItemInfo) => {
+const getPlayDataInfo = (request, videoItemInfo) => {
     return (dispatch) => {
-        dispatch(createAction(PlayVideoActions.getPlayVideoStart)());
-        dispatch(createAction(PlayDetailActions.getPlayDetailStart)());
+        dispatch(createAction(PlayDataActions.getPlayDataStart)());
         callApi.get(apiData.videoURL, request)
             .then((respond) => {
-                dispatch(createAction(PlayDetailActions.getPlayDetailSuccess)(respond));
-                dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
+                console.log('ttttttttttttttt');
+                dispatch(createAction(PlayDataActions.getPlayDataSuccess)(respond), videoItemInfo);
             })
             .catch((error) => {
-                dispatch(createAction(PlayDetailActions.getPlayDetailFailed)(error));
+                dispatch(createAction(PlayDataActions.getPlayDataFailed)(error));
             });
     };
 };
@@ -50,13 +55,17 @@ const getPlayDetailData = (request) => {
 };
 
 export const PlayActionsCreator = {
-    getPlayData,
+    getPlayDataInfo,
     getPlayVideoData,
     getPlayDetailData,
 };
 
 export default function PlayReducer(state = {action: ''}, action) {
+    console.log('rrrrrrrrrrrrrrrrr');
+    console.log(action.type);
     switch (action.type) {
+        case PlayDataActions.getPlayDataSuccess:
+        case PlayDataActions.getPlayDataFailed:
         case PlayVideoActions.getPlayVideoSuccess:
         case PlayVideoActions.getPlayVideoFailed:
         case PlayDetailActions.getPlayDetailSuccess:
