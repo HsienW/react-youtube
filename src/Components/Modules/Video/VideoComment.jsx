@@ -27,7 +27,8 @@ const data = [
 export default class VideoComment extends Component {
 
     render() {
-        // const {commentData} = {...this.props};
+        const {commentItemData} = {...this.props};
+        console.log(commentItemData);
         return (
             <List
                 className="comment-list"
@@ -51,5 +52,5 @@ export default class VideoComment extends Component {
 }
 
 VideoComment.propTypes = {
-    commentData: PropTypes.object.isRequired,
+    commentItemData: PropTypes.object.isRequired,
 };

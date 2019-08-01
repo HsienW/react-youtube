@@ -60,6 +60,16 @@ const formatData = {
         });
         return newData;
     },
+    videoItemCommentRespond(data) {
+        const newData = {
+            items: [],
+            nextPageToken: data.nextPageToken
+        };
+        data.items.forEach((item) => {
+            newData.items.push(item);
+        });
+        return newData;
+    },
     videoPlayerTime(seconds) {
         if (seconds > 3600) {
             return moment().startOf('day').seconds(seconds).format('H:mm:ss');

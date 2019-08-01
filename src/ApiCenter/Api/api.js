@@ -24,9 +24,18 @@ const videoApi = {
     },
 };
 
-
+const commentApi = {
+    createGetCommentRequest(part, id) {
+        return {
+            part: part ? part : 'replies,snippet',
+            videoId: id,
+            key: googleApiKey,
+        };
+    },
+};
 
 export {
     searchApi,
-    videoApi
+    videoApi,
+    commentApi
 };

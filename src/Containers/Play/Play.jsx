@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
-import {Header, VideoDetail} from '../../Components/Layout/index';
+import {Header, VideoDetail, VideoCommentList} from '../../Components/Layout/index';
 import {VideoPlayer, VideoListItem} from '../../Components/Modules';
 
 const PlayView = styled.div`
@@ -67,8 +67,10 @@ class Play extends Component {
         this.state = {
             getVideoDataStatus: false,
             getDetailDataStatus: false,
+            getCommentDataStatus: false,
             playVideoData: {},
-            playDetailData: {}
+            playDetailData: {},
+            playCommentData: {}
         };
     }
     
@@ -78,7 +80,12 @@ class Play extends Component {
                 return {getVideoDataStatus: true, playVideoData: nextProps.action.payload};
             
             case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
+                console.log('xxxxxxxxxxxxxxx');
+                console.log(nextProps.action.payload.data.items[0]);
                 return {getDetailDataStatus: true, playDetailData: nextProps.action.payload.data.items[0]};
+    
+            case PlayRedux.PlayCommentActions.getPlayCommentSuccess:
+                return {getCommentDataStatus: true, playCommentData: nextProps.action.payload.data};
             
             default:
                 break;
@@ -92,7 +99,7 @@ class Play extends Component {
             <div>
                 <Header/>
                 {
-                    this.state.getVideoDataStatus && this.state.getDetailDataStatus ?
+                    this.state.getVideoDataStatus && this.state.getDetailDataStatus && this.state.getCommentDataStatus ?
                         <PlayView>
                             <PlayInfo>
                                 <VideoPlayer
@@ -101,17 +108,17 @@ class Play extends Component {
                                     playerInlineConfig={playerInlineConfig}
                                 />
                                 <VideoDetail videoDetailData={this.state.playDetailData}/>
+                                <VideoCommentList commentListData={this.state.playCommentData}/>
                             </PlayInfo>
                             <RelatedVideo>
                                 <VideoListItem
                                     key={videoListItemData.id}
                                     videoListItemData={videoListItemData}
                                     videoListItemConfig={videoListItemConfig}
-                                />;
+                                />
                             </RelatedVideo>
                         </PlayView>
                         : <div>No-Data</div>
-                    
                 }
             </div>
         );

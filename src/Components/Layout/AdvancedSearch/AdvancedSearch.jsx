@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 
-const Advanced = styled.div`
+const AdvancedView = styled.div`
     min-height: 70px;
     margin: 1rem 0;
     display: flex;
@@ -71,7 +71,7 @@ class AdvancedSearch extends Component {
     
     render() {
         return (
-            <Advanced>
+            <AdvancedView>
                 <AdvancedCondition>
                     <p>Date</p>
                     <SelectDropdown
@@ -88,7 +88,7 @@ class AdvancedSearch extends Component {
                         itemClickAction={this.onTypeSearchCondition}
                     />
                 </AdvancedCondition>
-            </Advanced>
+            </AdvancedView>
         );
     }
 }

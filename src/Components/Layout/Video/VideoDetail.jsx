@@ -21,6 +21,24 @@ const VideoTitle = styled.div`
     align-content: center;
 `;
 
+const VideoCount = styled.div`
+    width: 100%;
+    height: 6vh;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+`;
+
+const AdvancedCount = styled.div`
+    display: flex;
+`;
+
+const DisplayCount = styled.div`
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-right: 8px;
+`;
+
 const VideoOwnerAvatar = styled.div`
     width: 50px;
     height: 100%;
@@ -46,7 +64,7 @@ const DescRelease = styled.div`
 
 const DescInfo = styled.div`
     padding: 2% 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 2.1rem;
 `;
@@ -58,6 +76,13 @@ export default class VideoDetail extends Component {
         return (
             <VideoDetailView>
                 <VideoTitle>{videoDetailData.snippet.localized.title}</VideoTitle>
+                <VideoCount>
+                    <DisplayCount>ViewCount: {videoDetailData.statistics.viewCount}</DisplayCount>
+                    <AdvancedCount>
+                        <DisplayCount>Like: {videoDetailData.statistics.likeCount}</DisplayCount>
+                        <DisplayCount>Dislike: {videoDetailData.statistics.dislikeCount}</DisplayCount>
+                    </AdvancedCount>
+                </VideoCount>
                 <VideoDescription>
                     <VideoOwnerAvatar>
                         <UserAvatar avatarData={

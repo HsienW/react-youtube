@@ -2,12 +2,6 @@ import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 
-export const PlayDataActions = {
-    getPlayDataStart: 'GET_PLAY_DATA_START',
-    getPlayDataSuccess: 'GET_PLAY_DATA_SUCCESS',
-    getPlayDataFailed: 'GET_PLAY_DATA_FAILED',
-};
-
 export const PlayVideoActions = {
     getPlayVideoStart: 'GET_PLAY_VIDEO_START',
     getPlayVideoSuccess: 'GET_PLAY_VIDEO_SUCCESS',
@@ -20,20 +14,11 @@ export const PlayDetailActions = {
     getPlayDetailFailed: 'GET_PLAY_DETAIL_FAILED',
 };
 
-// const getPlayDataInfo = (request, videoItemInfo) => {
-//     return (dispatch) => {
-//         dispatch(createAction(PlayDataActions.getPlayDataStart)());
-//         callApi.get(apiData.videoURL, request)
-//             .then((respond) => {
-//                 dispatch(createAction(PlayDetailActions.getPlayDetailSuccess)(respond));
-//                 dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
-//                 dispatch(createAction(PlayRedux.PortalActions.goToPage)('play'));
-//             })
-//             .catch((error) => {
-//                 dispatch(createAction(PlayDataActions.getPlayDataFailed)(error));
-//             });
-//     };
-// };
+export const PlayCommentActions = {
+    getPlayCommentStart: 'GET_PLAY_COMMENT_START',
+    getPlayCommentSuccess: 'GET_PLAY_COMMENT_SUCCESS',
+    getPlayCommentFailed: 'GET_PLAY_COMMENT_FAILED',
+};
 
 const getPlayVideoData = (videoItemInfo) => {
     return (dispatch) => {
@@ -55,20 +40,33 @@ const getPlayDetailData = (request) => {
     };
 };
 
+const getPlayCommentData = (request) => {
+    return (dispatch) => {
+        dispatch(createAction(PlayCommentActions.getPlayCommentStart)());
+        callApi.get(apiData.commentURL, request)
+            .then((respond) => {
+                dispatch(createAction(PlayCommentActions.getPlayCommentSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(PlayCommentActions.getPlayCommentFailed)(error));
+            });
+    };
+};
+
 export const PlayActionsCreator = {
-    // getPlayDataInfo,
     getPlayVideoData,
     getPlayDetailData,
+    getPlayCommentData
 };
 
 export default function PlayReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case PlayDataActions.getPlayDataSuccess:
-        case PlayDataActions.getPlayDataFailed:
         case PlayVideoActions.getPlayVideoSuccess:
         case PlayVideoActions.getPlayVideoFailed:
         case PlayDetailActions.getPlayDetailSuccess:
         case PlayDetailActions.getPlayDetailFailed:
+        case PlayCommentActions.getPlayCommentSuccess:
+        case PlayCommentActions.getPlayCommentFailed:
             return {action: action};
 
         default:
