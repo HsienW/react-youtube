@@ -20,19 +20,20 @@ export const PlayDetailActions = {
     getPlayDetailFailed: 'GET_PLAY_DETAIL_FAILED',
 };
 
-const getPlayDataInfo = (request, videoItemInfo) => {
-    return (dispatch) => {
-        dispatch(createAction(PlayDataActions.getPlayDataStart)());
-        callApi.get(apiData.videoURL, request)
-            .then((respond) => {
-                console.log('ttttttttttttttt');
-                dispatch(createAction(PlayDataActions.getPlayDataSuccess)(respond), videoItemInfo);
-            })
-            .catch((error) => {
-                dispatch(createAction(PlayDataActions.getPlayDataFailed)(error));
-            });
-    };
-};
+// const getPlayDataInfo = (request, videoItemInfo) => {
+//     return (dispatch) => {
+//         dispatch(createAction(PlayDataActions.getPlayDataStart)());
+//         callApi.get(apiData.videoURL, request)
+//             .then((respond) => {
+//                 dispatch(createAction(PlayDetailActions.getPlayDetailSuccess)(respond));
+//                 dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
+//                 dispatch(createAction(PlayRedux.PortalActions.goToPage)('play'));
+//             })
+//             .catch((error) => {
+//                 dispatch(createAction(PlayDataActions.getPlayDataFailed)(error));
+//             });
+//     };
+// };
 
 const getPlayVideoData = (videoItemInfo) => {
     return (dispatch) => {
@@ -55,14 +56,12 @@ const getPlayDetailData = (request) => {
 };
 
 export const PlayActionsCreator = {
-    getPlayDataInfo,
+    // getPlayDataInfo,
     getPlayVideoData,
     getPlayDetailData,
 };
 
 export default function PlayReducer(state = {action: ''}, action) {
-    console.log('rrrrrrrrrrrrrrrrr');
-    console.log(action.type);
     switch (action.type) {
         case PlayDataActions.getPlayDataSuccess:
         case PlayDataActions.getPlayDataFailed:

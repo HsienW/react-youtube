@@ -72,6 +72,12 @@ const formatData = {
         }
         return moment.duration(isoTime, moment.ISO_8601).asSeconds();
     },
+    isoTimeToVideoDisplayData(isoTime) {
+        if (is.undefined(isoTime)) {
+            return 0;
+        }
+        return moment(isoTime).format('YYYY-MM-DD');
+    },
     searchResultIndex(searchResult, searchDataIndex) {
         searchResult.currentSearchDataIndex = searchDataIndex + 1;
         return searchResult;

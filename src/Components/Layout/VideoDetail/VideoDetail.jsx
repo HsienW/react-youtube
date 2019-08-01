@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {UserAvatar} from '../../../Components/Modules';
+import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 
@@ -25,6 +26,10 @@ const VideoOwnerAvatar = styled.div`
     height: 100%;
 `;
 
+const VideoDescription = styled.div`
+    display: flex;
+`;
+
 const VideoDesc = styled.div`
     width: 100%;
     height: 100%;
@@ -41,7 +46,7 @@ const DescRelease = styled.div`
 
 const DescInfo = styled.div`
     padding: 2% 0;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 400;
     line-height: 2.1rem;
 `;
@@ -50,26 +55,28 @@ export default class VideoDetail extends Component {
     
     render() {
         const {videoDetailData} = {...this.props};
-        console.log('555555555555555555555555555555555555');
-        console.log(this.props);
         return (
             <VideoDetailView>
                 <VideoTitle>{videoDetailData.snippet.localized.title}</VideoTitle>
-                <VideoOwnerAvatar>
-                    <UserAvatar avatarData={
-                        {
-                            imgURL: videoDetailData.snippet.thumbnails.default.url,
-                            imgSize: 50
-                        }
-                    }/>
-                </VideoOwnerAvatar>
-                <VideoDesc>
-                    <DescTitle>{videoDetailData.snippet.channelTitle}</DescTitle>
-                    <DescRelease>Release: {videoDetailData.snippet.publishedAt}</DescRelease>
-                    <DescInfo>
-                        {videoDetailData.snippet.localized.description}
-                    </DescInfo>
-                </VideoDesc>
+                <VideoDescription>
+                    <VideoOwnerAvatar>
+                        <UserAvatar avatarData={
+                            {
+                                imgURL: videoDetailData.snippet.thumbnails.default.url,
+                                imgSize: 50
+                            }
+                        }/>
+                    </VideoOwnerAvatar>
+                    <VideoDesc>
+                        <DescTitle>{videoDetailData.snippet.channelTitle}</DescTitle>
+                        <DescRelease>
+                            Release: {formatData.isoTimeToVideoDisplayData(videoDetailData.snippet.publishedAt)}
+                        </DescRelease>
+                        <DescInfo>
+                            {videoDetailData.snippet.localized.description}
+                        </DescInfo>
+                    </VideoDesc>
+                </VideoDescription>
             </VideoDetailView>
         );
     }

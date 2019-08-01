@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
 import {Header, VideoDetail} from '../../Components/Layout/index';
-import {VideoPlayer, VideoListItem } from '../../Components/Modules';
+import {VideoPlayer, VideoListItem} from '../../Components/Modules';
 
 const PlayView = styled.div`
     width: 100%;
@@ -61,33 +61,29 @@ const videoListItemData = {
 };
 
 class Play extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
-            getPlayData: false,
+            getVideoDataStatus: false,
+            getDetailDataStatus: false,
             playVideoData: {},
             playDetailData: {}
         };
     }
-
-    static getDerivedStateFromProps(nextProps) {
-        console.log('eeeeeeeeeeeeeeeeeeeee');
-        console.log(nextProps.action);
-        switch (nextProps.action.type) {
-            case PlayRedux.PlayDataActions.getPlayDataSuccess:
-                return {getPlayData: true, playVideoData: nextProps.action.payload};
-
-            case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
-                return {getPlayData: true, playVideoData: nextProps.action.payload};
     
+    static getDerivedStateFromProps(nextProps) {
+        switch (nextProps.action.type) {
+            case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
+                return {getVideoDataStatus: true, playVideoData: nextProps.action.payload};
+            
             case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
-                return {getPlayData: true, playDetailData: nextProps.action.payload.data.items[0]};
-
+                return {getDetailDataStatus: true, playDetailData: nextProps.action.payload.data.items[0]};
+            
             default:
                 break;
         }
-
+        
         return null;
     }
     
@@ -95,23 +91,28 @@ class Play extends Component {
         return (
             <div>
                 <Header/>
-                <PlayView>
-                    <PlayInfo>
-                        <VideoPlayer
-                            playerData={this.state.playVideoData}
-                            playerConfig={playerConfig}
-                            playerInlineConfig={playerInlineConfig}
-                        />
-                        <VideoDetail videoDetailData={this.state.playDetailData}/>
-                    </PlayInfo>
-                    <RelatedVideo>
-                        <VideoListItem
-                            key={videoListItemData.id}
-                            videoListItemData={videoListItemData}
-                            videoListItemConfig={videoListItemConfig}
-                        />
-                    </RelatedVideo>
-                </PlayView>
+                {
+                    this.state.getVideoDataStatus && this.state.getDetailDataStatus ?
+                        <PlayView>
+                            <PlayInfo>
+                                <VideoPlayer
+                                    playerData={this.state.playVideoData}
+                                    playerConfig={playerConfig}
+                                    playerInlineConfig={playerInlineConfig}
+                                />
+                                <VideoDetail videoDetailData={this.state.playDetailData}/>
+                            </PlayInfo>
+                            <RelatedVideo>
+                                <VideoListItem
+                                    key={videoListItemData.id}
+                                    videoListItemData={videoListItemData}
+                                    videoListItemConfig={videoListItemConfig}
+                                />;
+                            </RelatedVideo>
+                        </PlayView>
+                        : <div>No-Data</div>
+                    
+                }
             </div>
         );
     }
