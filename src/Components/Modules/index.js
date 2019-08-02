@@ -7,7 +7,6 @@ import InfiniteScroll from './Scroll/InfiniteScroll';
 import VideoItem from './Video/VideoItem';
 import VideoListItem from './Video/VideoListItem';
 import VideoPlayer from './Video/VideoPlayer';
-import VideoComment from './Video/VideoComment';
 import VideoListPlayItem from './Video/VideoListPlayItem';
 
 export {
@@ -20,6 +19,5 @@ export {
     VideoListItem,
     VideoListPlayItem,
     VideoPlayer,
-    VideoComment,
-    InfiniteScroll
+    InfiniteScroll,
 };
