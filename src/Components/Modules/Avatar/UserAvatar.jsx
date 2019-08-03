@@ -5,7 +5,6 @@ import {Avatar} from 'antd';
 export default class UserAvatar extends Component {
 
     avatarClick = () => {
-        console.log('4444444444444444444444444444444');
         // this.props.itemClickAction(event.key);
     };
 

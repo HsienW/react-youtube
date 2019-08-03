@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import {formatData} from '../../../Common/BasicService'
 import {Comment, List, Tooltip} from 'antd';
 import moment from 'moment';
-// import styled from 'styled-components';
-
-// const VideoCommentView = styled.div`
-// `;
 
 export default class VideoCommentList extends Component {
     
@@ -14,24 +9,16 @@ export default class VideoCommentList extends Component {
         const newCommentData = [];
     
         commentData.forEach((item) => {
-            console.log('eeeeeeeee');
-            console.log(item);
             newCommentData.push(
                 {
-                    key: '123',
+                    key: item.id,
                     actions: <span>Reply to</span>,
-                    author: 'Han Solo',
-                    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                    content: (
-                        <p>
-                            We supply a series of design principles, practical patterns and high quality design
-                            resources (Sketch and Axure), to help people create their product prototypes beautifully and
-                            efficiently.
-                        </p>
-                    ),
+                    author: item.snippet.topLevelComment.snippet.authorDisplayName,
+                    avatar: item.snippet.topLevelComment.snippet.authorProfileImageUrl,
+                    content: (<p>{item.snippet.topLevelComment.snippet.textDisplay}</p>),
                     datetime: (
-                        <Tooltip title={moment().subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss')}>
-                            <span>{moment().subtract(1, 'days').fromNow()}</span>
+                        <Tooltip title={moment(item.snippet.topLevelComment.snippet.publishedAt).format('YYYY-MM-DD HH:mm:ss')}>
+                            <span>{moment(item.snippet.topLevelComment.snippet.publishedAt).fromNow()}</span>
                         </Tooltip>
                     ),
                 }
@@ -43,12 +30,10 @@ export default class VideoCommentList extends Component {
     
     render() {
         const {commentListData} = {...this.props};
-        console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
-        console.log(commentListData);
         return (
             <List
                 className="comment-list"
-                header={'5 replies'}
+                header={'20 replies'}
                 itemLayout="horizontal"
                 dataSource={this.createCommentData(commentListData.items)}
                 renderItem={item => (

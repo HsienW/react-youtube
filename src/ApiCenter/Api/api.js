@@ -12,6 +12,15 @@ const searchApi = {
             publishedAfter: publishedAfter
         };
     },
+    createRelatedRequest(part, type, maxResults, relatedToVideoId) {
+        return {
+            part: part ? part : 'snippet',
+            type: type ? type : 'video',
+            maxResults: maxResults ? maxResults : 10,
+            relatedToVideoId: relatedToVideoId,
+            key: googleApiKey,
+        };
+    },
 };
 
 const videoApi = {
@@ -21,7 +30,7 @@ const videoApi = {
             id: id,
             key: googleApiKey,
         };
-    },
+    }
 };
 
 const commentApi = {

@@ -24,7 +24,7 @@ const textOverStyle = {
     textOverflow: 'ellipsis',
     whiteSpace: 'normal',
     WebkitLineClamp: 5,
-    fontSize: '14px',
+    fontSize: '12px',
     lineHeight: '1.5rem',
 };
 
@@ -37,11 +37,19 @@ export default class VideoListItem extends Component {
                     hoverable
                     style={ItemStyle}
                     bodyStyle={{
-                        width: `calc(100% - ${videoListItemConfig.imgWidth}px)`
+                        width: `calc(100% - ${videoListItemConfig.imgWidth}px)`,
+                        padding: '10px',
                     }}
-                    cover={<img alt={videoListItemData.title} src={videoListItemData.imgURL}/>}
+                    cover={
+                        <img
+                            alt={videoListItemData.title}
+                            src={videoListItemData.imgURL}
+                            style={{width: videoListItemConfig.imgWidth}}
+                        />
+                    }
                 >
                     <Meta
+                        className={videoListItemConfig.assignedListItem}
                         style={DescriptionStyle}
                         title={videoListItemData.title}
                         description={

@@ -20,6 +20,12 @@ export const PlayCommentActions = {
     getPlayCommentFailed: 'GET_PLAY_COMMENT_FAILED',
 };
 
+export const PlayRelatedActions = {
+    getPlayRelatedStart: 'GET_PLAY_RELATED_START',
+    getPlayRelatedSuccess: 'GET_PLAY_RELATED_SUCCESS',
+    getPlayRelatedFailed: 'GET_PLAY_RELATED_FAILED',
+};
+
 const getPlayVideoData = (videoItemInfo) => {
     return (dispatch) => {
         dispatch(createAction(PlayVideoActions.getPlayVideoStart)());
@@ -53,10 +59,24 @@ const getPlayCommentData = (request) => {
     };
 };
 
+const getPlayRelatedData = (request) => {
+    return (dispatch) => {
+        dispatch(createAction(PlayRelatedActions.getPlayRelatedStart)());
+        callApi.get(apiData.searchURL, request)
+            .then((respond) => {
+                dispatch(createAction(PlayRelatedActions.getPlayRelatedSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(PlayRelatedActions.getPlayRelatedFailed)(error));
+            });
+    };
+};
+
 export const PlayActionsCreator = {
     getPlayVideoData,
     getPlayDetailData,
-    getPlayCommentData
+    getPlayCommentData,
+    getPlayRelatedData
 };
 
 export default function PlayReducer(state = {action: ''}, action) {
@@ -67,8 +87,10 @@ export default function PlayReducer(state = {action: ''}, action) {
         case PlayDetailActions.getPlayDetailFailed:
         case PlayCommentActions.getPlayCommentSuccess:
         case PlayCommentActions.getPlayCommentFailed:
+        case PlayRelatedActions.getPlayRelatedSuccess:
+        case PlayRelatedActions.getPlayRelatedFailed:
             return {action: action};
-
+        
         default:
             return state;
     }
