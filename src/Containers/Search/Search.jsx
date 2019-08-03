@@ -4,46 +4,34 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, SearchRedux} from '../../Redux/Modules';
-import {Header} from '../../Components/Layout';
-import {VideoListPlayItem, ListDropdown} from '../../Components/Modules';
+import {Header, AdvancedSearch} from '../../Components/Layout';
+import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
-import {googleApiKey} from '../../ApiCenter/Api/Api';
-import * as ComponentConfig from '../../Common/ComponentConfig';
-import * as Style from '../../Common/Style';
+// import {searchApi} from '../../ApiCenter/Api/Api';
+// import * as ComponentConfig from '../../Common/ComponentConfig';
 
 const SearchView = styled.div`
     width: 100%;
+    height: 94vh;
 `;
 
 const SearchContent = styled.div`
     width: 100%;
-    padding: 1% 0 0 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 `;
 
-const AdvancedSearch = styled.div`
-    min-height: 32px;
-    padding: 0 8%;
-`;
-
 const scrollContainerStyle = {
     width: '100%',
-    height: '86vh',
+    height: '88vh',
     overflow: 'auto',
     padding: '0 8%',
 };
 
-const btnConfig = {
-    color: `${Style.FontStressColor}`,
-    border: 0,
-    marginRight: 8
-};
-
 const VideoListPlayItemConfig = {
     width: '100%',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
     displayWidth: 320,
     playerConfig: {
         width: '320px',
@@ -67,7 +55,9 @@ class Search extends Component {
         this.state = {
             searchStatus: false,
             searchKey: '',
+            searchType: '',
             nextPageToken: '',
+            publishedAfter: '',
             currentSearchDataIndex: 0,
             searchResult: [],
         };
@@ -76,14 +66,38 @@ class Search extends Component {
     static getDerivedStateFromProps(nextProps) {
         // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
-            case SearchRedux.SearchActions.getSearchSuccess:
+            // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.ac tion.payload.items
+            //     };
+            // case SearchRedux.NextSearchActions.getNextSearchSuccess:
+            //     return {
+            //         searchStatus: true,
+            //         searchKey: nextProps.payload.config.params.q,
+            //         nextPageToken: nextProps.action.payload.nextPageToken,
+            //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
+            //         searchResult: nextProps.action.payload.items
+            //     };
+            case SearchRedux.ClearSearchActions.clearSearchData:
+                return {
+                    searchStatus: false,
+                    searchKey: '',
+                    nextPageToken: '',
+                    currentSearchDataIndex: 0,
+                    searchResult: []
+                };
+            case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
                 return {
                     searchStatus: true,
-                    searchKey: nextProps.payload.config.params.q,
-                    nextPageToken: nextProps.action.payload.nextPageToken,
+                    searchKey: 'you',
+                    nextPageToken: Math.random().toString(36).substring(7),
+                    currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
                     searchResult: nextProps.action.payload.items
                 };
-            
             case SearchRedux.NextSearchActions.getNextSearchSuccess:
                 return {
                     searchStatus: true,
@@ -110,27 +124,43 @@ class Search extends Component {
     }
     
     componentDidUpdate(prevProps, prevState) {
+        if (!this.state.searchStatus) {
+            this.setState({
+                searchStatus: false,
+                searchKey: '',
+                nextPageToken: 0,
+                currentSearchDataIndex: 0,
+                searchResult: []
+            });
+        }
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
                 searchStatus: true,
                 searchKey: 'you',
                 nextPageToken: prevProps.action.payload.nextPageToken,
                 currentSearchDataIndex: this.state.currentSearchDataIndex,
-                searchResult: [...this.state.searchResult.reverse(), ...prevProps.action.payload.items,]
+                searchResult: [...prevProps.action.payload.items.reverse(), ...this.state.searchResult]
             });
         }
     }
     
     getNextLoadSearchData = () => {
-        const request = {
-            part: 'snippet',
-            maxResults: 10,
-            q: this.state.searchKey,
-            type: 'video',
-            pageToken: this.state.nextPageToken,
-            key: googleApiKey
-        };
-        this.props.SearchActionsCreator.testSearchResultData(request, this.state.currentSearchDataIndex);
+        // const request = searchApi.createRequest(
+        //     'snippet',
+        //     10,
+        //     this.state.searchKey,
+        //     this.state.nextPageToken,
+        //     this.state.searchType,
+        //     this.state.publishedAfter,
+        // );
+        // this.props.SearchActionsCreator.getNextSearchResultData(
+        //     request,
+        //     this.state.currentSearchDataIndex
+        // );
+        this.props.SearchActionsCreator.testNextSearchResultData(
+            this.state.searchKey,
+            this.state.currentSearchDataIndex
+        );
     };
     
     render() {
@@ -138,23 +168,12 @@ class Search extends Component {
             <div>
                 <Header/>
                 <SearchView>
-                    <AdvancedSearch>
-                        <ListDropdown
-                            configData={ComponentConfig.DateSearchDropdown}
-                            btnConfig={btnConfig}
-                            itemClickAction={this.props.PortalActionsCreator.changeToPage}
-                        />
-                        <ListDropdown
-                            configData={ComponentConfig.TypeSearchDropdown}
-                            btnConfig={btnConfig}
-                            itemClickAction={this.props.PortalActionsCreator.changeToPage}
-                        />
-                    </AdvancedSearch>
                     <SearchContent>
                         <div
                             style={scrollContainerStyle}
                             ref={this.searchContainerScroll}
                         >
+                            <AdvancedSearch searchKey={this.state.searchKey}/>
                             {
                                 this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (

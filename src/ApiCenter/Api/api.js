@@ -1,21 +1,41 @@
-const basicURL = 'https://www.googleapis.com/youtube/v3/';
-const googleApiKey = 'AIzaSyAL3Tp-ilQSP2XDVn0qljXjj5UO801WeOA';
+import {googleApiKey} from './ApiConfig';
 
-const activitiesURL = `${basicURL}activities?`;
-const videoURL = `${basicURL}videos?`;
-const channelURL = `${basicURL}channels?`;
-const commentURL = `${basicURL}comments?`;
-const playListURL = `${basicURL}playlists?`;
-const searchURL = `${basicURL}search?`;
-const subscriptionURL = `${basicURL}subscriptions?`;
+const searchApi = {
+    createRequest(part, maxResults, searchKey, pageToken, type, publishedAfter) {
+        return {
+            part: part,
+            maxResults: maxResults ? maxResults : 10,
+            q: searchKey,
+            type: type,
+            pageToken: pageToken,
+            key: googleApiKey,
+            publishedAfter: publishedAfter
+        };
+    },
+};
+
+const videoApi = {
+    createDetailRequest(part, id) {
+        return {
+            part: part ? part : 'snippet,contentDetails,statistics',
+            id: id,
+            key: googleApiKey,
+        };
+    },
+};
+
+const commentApi = {
+    createGetCommentRequest(part, id) {
+        return {
+            part: part ? part : 'replies,snippet',
+            videoId: id,
+            key: googleApiKey,
+        };
+    },
+};
 
 export {
-    googleApiKey,
-    activitiesURL,
-    videoURL,
-    channelURL,
-    commentURL,
-    playListURL,
-    searchURL,
-    subscriptionURL
+    searchApi,
+    videoApi,
+    commentApi
 };

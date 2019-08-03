@@ -8,6 +8,7 @@ import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
 import {CheckAuthHOC} from '../../Decorators/index';
 import {formatData} from '../../Common/BasicService';
+import {videoApi, commentApi} from '../../ApiCenter/Api/Api';
 // import * as apiData from '../../ApiCenter/Api/api';
 // import * as dataCenter from '../../DataCenter';
 
@@ -56,8 +57,11 @@ class Home extends Component {
     // }
 
     videoItemClick = (videoItemInfo) => {
-        // this.props.PlayActionsCreator.getPlayDataStart(videoItemInfo);
-        this.props.PlayActionsCreator.testGetHomeData(videoItemInfo);
+        const detailRequest = videoApi.createDetailRequest('', videoItemInfo.id);
+        const commentRequest = commentApi.createGetCommentRequest('', videoItemInfo.id);
+        this.props.PlayActionsCreator.getPlayVideoData(videoItemInfo);
+        this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
+        this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
         this.props.PortalActionsCreator.changeToPage('play');
     };
 

@@ -6,7 +6,7 @@ import {PortalActionsCreator} from '../../../Redux/Modules/Portal/PortalRedux';
 import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {googleApiKey} from '../../../ApiCenter/Api/Api';
+import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -40,7 +40,7 @@ const searchBarStyle = {
 const btnConfig = {
     color: `${Style.FontMainColor}`,
     backgroundColor: `${Style.MainColor}`,
-    marginLeft: 8
+    marginRight: 8
 };
 
 const contentBodyStyle = {
@@ -69,20 +69,21 @@ class Header extends Component {
     constructor(props) {
         super(props);
     }
-
+    
     onSearch = (searchKey) => {
-        const request = {
-            part: 'snippet',
-            maxResults: 5,
-            q: searchKey,
-            type: 'video',
-            key: googleApiKey
-        };
-        this.props.SearchActionsCreator.testSearchResultData(request, 0);
-        // this.props.SearchActionsCreator.getSearchResultData(request, searchKey);
+        const request = searchApi.createRequest(
+            'snippet',
+            10,
+            searchKey,
+            '',
+            '',
+            '',
+        );
+        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
+        this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
         this.props.PortalActionsCreator.changeToPage('search');
     };
-
+    
     render() {
         return (
             <HeaderView>

@@ -5,7 +5,7 @@ import {Menu, Dropdown, Button, Icon} from 'antd';
 export default class ListDropdown extends Component {
 
     listItemClick = (event) => {
-        this.props.itemClickAction(event.key);
+        this.props.itemClickAction(event);
     };
 
     render() {
@@ -15,7 +15,10 @@ export default class ListDropdown extends Component {
                 {
                     configData.item.map((item) => {
                         return (
-                            <Menu.Item key={item.key}>
+                            <Menu.Item
+                                key={item.key}
+                                type={item.type}
+                            >
                                 {configData.itemIconShow ? <Icon type={item.itemIcon}/> : null}
                                 {item.itemName}
                             </Menu.Item>

@@ -11,3 +11,10 @@
     color: #02BEC4;
     border-color: #02BEC4 !important;
 }
+
+.ant-select-focused .ant-select-selection,
+.ant-select-selection:focus,
+.ant-select-selection:active,
+.ant-select-selection:hover {
+    border-color: #02BEC4 !important;
+}

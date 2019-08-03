@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
-import {Header} from '../../Components/Layout/index';
-import {VideoPlayer, VideoDescription, VideoListItem, UserAvatar} from '../../Components/Modules';
+import {Header, VideoDetail, VideoCommentList} from '../../Components/Layout/index';
+import {VideoPlayer, VideoListItem} from '../../Components/Modules';
 
 const PlayView = styled.div`
     width: 100%;
@@ -30,36 +30,6 @@ const RelatedVideo = styled.div`
     min-height: 600px;
     max-height: 100%;
     overflow: auto;
-`;
-
-const PlayContent = styled.div`
-    width: 100%;
-    height: 100%;
-    padding: 2% 0
-`;
-
-const VideoTitle = styled.div`
-    width: 100%;
-    height: 10vh;
-    font-size: 2.4rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-content: center;
-`;
-
-const VideoDetail = styled.div`
-    width: 100%;
-    height: 50%;
-    padding: 2% 0;
-    display: flex;
-    justify-content: start;
-    align-content: center;
-`;
-
-const VideoOwnerAvatar = styled.div`
-    width: 50px;
-    height: 100%;
 `;
 
 const playerConfig = {
@@ -91,69 +61,65 @@ const videoListItemData = {
 };
 
 class Play extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
-            getPlayData: false,
-            playData: {}
+            getVideoDataStatus: false,
+            getDetailDataStatus: false,
+            getCommentDataStatus: false,
+            playVideoData: {},
+            playDetailData: {},
+            playCommentData: {}
         };
     }
-
+    
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
-            case PlayRedux.PlayActions.getPlaySuccess:
-                return {getPlayData: true, playData: nextProps.action.payload};
-
+            case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
+                return {getVideoDataStatus: true, playVideoData: nextProps.action.payload};
+            
+            case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
+                console.log('xxxxxxxxxxxxxxx');
+                console.log(nextProps.action.payload.data.items[0]);
+                return {getDetailDataStatus: true, playDetailData: nextProps.action.payload.data.items[0]};
+    
+            case PlayRedux.PlayCommentActions.getPlayCommentSuccess:
+                return {getCommentDataStatus: true, playCommentData: nextProps.action.payload.data};
+            
             default:
                 break;
         }
-
+        
         return null;
     }
-
+    
     render() {
         return (
             <div>
                 <Header/>
-                <PlayView>
-                    <PlayInfo>
-                        <VideoPlayer
-                            playerData={this.state.playData}
-                            playerConfig={playerConfig}
-                            playerInlineConfig={playerInlineConfig}
-                        />
-                        <PlayContent>
-                            <VideoTitle>{this.state.playData.title}</VideoTitle>
-                            <VideoDetail>
-                                <VideoOwnerAvatar>
-                                    <UserAvatar avatarData={
-                                        {
-                                            imgURL: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                                            imgSize: 50
-                                        }
-                                    }/>
-                                </VideoOwnerAvatar>
-                                <VideoDescription
-                                    descriptionData={
-                                        {
-                                            title: 'Name',
-                                            release: '2020-05-26',
-                                            contentInfo: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-                                        }
-                                    }
+                {
+                    this.state.getVideoDataStatus && this.state.getDetailDataStatus && this.state.getCommentDataStatus ?
+                        <PlayView>
+                            <PlayInfo>
+                                <VideoPlayer
+                                    playerData={this.state.playVideoData}
+                                    playerConfig={playerConfig}
+                                    playerInlineConfig={playerInlineConfig}
                                 />
-                            </VideoDetail>
-                        </PlayContent>
-                    </PlayInfo>
-                    <RelatedVideo>
-                        <VideoListItem
-                            key={videoListItemData.id}
-                            videoListItemData={videoListItemData}
-                            videoListItemConfig={videoListItemConfig}
-                        />
-                    </RelatedVideo>
-                </PlayView>
+                                <VideoDetail videoDetailData={this.state.playDetailData}/>
+                                <VideoCommentList commentListData={this.state.playCommentData}/>
+                            </PlayInfo>
+                            <RelatedVideo>
+                                <VideoListItem
+                                    key={videoListItemData.id}
+                                    videoListItemData={videoListItemData}
+                                    videoListItemConfig={videoListItemConfig}
+                                />
+                            </RelatedVideo>
+                        </PlayView>
+                        : <div>No-Data</div>
+                }
             </div>
         );
     }
