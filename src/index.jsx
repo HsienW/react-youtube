@@ -1,24 +1,32 @@
 import React from 'react';
+import createHistory from 'history/createHashHistory';
+import ReduxStore from './Redux/ReduxStore';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import ReduxStore from './Config/ReduxStore';
-import {HashRouter, Router} from 'react-router-dom';
-import createHistory from 'history/createHashHistory';
+import {HashRouter, Router, Switch, Route} from 'react-router-dom';
+import {Auth, Home, Upload, Search, Play, Channel, Portal} from '../src/Containers/index';
+// import Header from './Components/Layout/Header/Header';
+import 'antd/dist/antd.css';
+import './Common/CoverStyle.css';
 
 const history = createHistory();
-
-const MainStyle = {
-    width: '100%',
-    height: '100%',
-};
 
 render((
     <Provider store={ReduxStore}>
         <HashRouter>
             <Router history={history}>
-                <div style={MainStyle}>
+                <div style={{width: '100%', height: '100%'}}>
+                    <Route component={Portal}/>
+                    <Switch>
+                        <Route path='/auth' component={Auth}/>
+                        <Route path='/home' component={Home}/>
+                        <Route path='/upload' component={Upload}/>
+                        <Route path='/search' component={Search}/>
+                        <Route path='/play' component={Play}/>
+                        <Route path='/channel' component={Channel}/>
+                    </Switch>
                 </div>
             </Router>
         </HashRouter>
-    </>
+    </Provider>
 ), document.getElementById('app'));

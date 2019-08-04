@@ -1,0 +1,5 @@
+let searchResult = [];
+
+export {
+    searchResult
+}

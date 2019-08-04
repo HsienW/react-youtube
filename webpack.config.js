@@ -1,26 +1,28 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: {
-        app: './src/index.jsx',
-        // vendor: [
-        //     'babel-polyfill',
-        //     'is_js',
-        //     'react',
-        //     'react-dom',
-        //     'react-redux',
-        //     'react-router',
-        //     'react-router-redux',
-        //     'redux',
-        //     'redux-actions',
-        //     'redux-thunk',
-        // ],
+        index: './src/index.jsx',
+        vendor: [
+            'is_js',
+            'axios',
+            'react',
+            'react-dom',
+            'react-redux',
+            'react-router',
+            'react-router-redux',
+            'redux',
+            'redux-actions',
+            'redux-thunk',
+        ],
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        // filename: '[name].bundle.js',
+        filename: '[name].bundle.js',
     },
     module: {
         rules: [
@@ -35,6 +37,14 @@ module.exports = {
                 use: 'eslint-loader'
             },
             {
+                test: /\.(css|scss)$/,
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
                 test: /\.(png|jpg|gif|svg)$/,
                 exclude: /node_modules/,
                 use: 'url-loader?limit=8192'
@@ -42,14 +52,36 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.json', '.jsx', '.css']
+        extensions: ['.js', '.json', '.jsx']
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJSPlugin({
+                cache: true,
+                parallel: true,
+                uglifyOptions: {
+                    compress: false,
+                    ecma: 8,
+                    warnings: false,
+                    mangle: true
+                },
+                sourceMap: false
+            })
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'youtube',
-            template: 'dist/index.html',
+            template: 'src/index.html',
             filename: 'index.html',
         }),
+        new MiniCssExtractPlugin({
+            filename: 'index.bundle.css',
+        }),
+        new CompressionPlugin()
     ],
     devServer: {
         port: 8080,

@@ -1,0 +1,24 @@
+.ant-slider-track {
+    background-color: #02BEC4 !important;
+}
+
+.ant-slider-handle {
+    border: solid 2px #02BEC4 !important;
+}
+
+.ant-btn:hover,
+.ant-btn:focus {
+    color: #02BEC4;
+    border-color: #02BEC4 !important;
+}
+
+.ant-select-focused .ant-select-selection,
+.ant-select-selection:focus,
+.ant-select-selection:active,
+.ant-select-selection:hover {
+    border-color: #02BEC4 !important;
+}
+
+.related-video-list-item > .ant-card-meta-detail {
+    height: 100% !important;
+}
