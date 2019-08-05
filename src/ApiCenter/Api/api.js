@@ -1,5 +1,17 @@
 import {googleApiKey} from './ApiConfig';
 
+const homeApi = {
+    createRecommendRequest(part, mine, accessToken, maxResults, chart) {
+        return {
+            part: part ? part : 'snippet, contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken,
+            maxResults: maxResults ? maxResults : 20,
+            chart: chart ? chart : 'mostPopular'
+        };
+    }
+};
+
 const searchApi = {
     createRequest(part, maxResults, searchKey, pageToken, type, publishedAfter) {
         return {
@@ -44,6 +56,7 @@ const commentApi = {
 };
 
 export {
+    homeApi,
     searchApi,
     videoApi,
     commentApi

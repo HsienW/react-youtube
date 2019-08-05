@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PlayActionsCreator} from '../../Redux/Modules/Play/PlayRedux';
 import {PlayRedux} from '../../Redux/Modules';
 import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
 import {VideoPlayer} from '../../Components/Modules';
+import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
+import {formatCurry} from '../../Common/BasicService';
 
 const PlayView = styled.div`
     width: 100%;
@@ -59,6 +61,17 @@ class Play extends Component {
             playCommentData: {},
             playRelatedData: {}
         };
+    }
+    
+    componentDidMount() {
+        const videoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
+        const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(videoItemInfo).id);
+        const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(videoItemInfo).id);
+        const relatedRequest = searchApi.createRelatedRequest('', 'video', 10, formatCurry.objToParse(videoItemInfo).id);
+        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(videoItemInfo));
+        this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
+        this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
+        this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -114,6 +127,7 @@ class Play extends Component {
 }
 
 Play.propTypes = {
+    history: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
 };
 
@@ -123,7 +137,7 @@ export default connect(
     },
     (dispatch) => {
         return {
-            PlayActionsCreator: bindActionCreators(PlayActionsCreator, dispatch),
+            PlayActionsCreator: bindActionCreators(PlayRedux.PlayActionsCreator, dispatch),
         };
     }
 )(Play);

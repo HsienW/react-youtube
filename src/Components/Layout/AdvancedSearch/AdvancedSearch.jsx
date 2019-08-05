@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {SelectDropdown} from '../../Modules';
-import {SearchActionsCreator} from '../../../Redux/Modules/Search/SearchRedux';
+import {SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {formatData} from '../../../Common/BasicService';
@@ -53,7 +53,7 @@ class AdvancedSearch extends Component {
     };
     
     onAdvancedSearch = () => {
-        // const request = searchApi.createRequest(
+        // const advancedSearchRequest = searchApi.createRequest(
         //     'snippet',
         //     10,
         //     this.props.searchKey,
@@ -61,7 +61,7 @@ class AdvancedSearch extends Component {
         //     this.state.typeCondition,
         //     this.state.dateCondition,
         // );
-        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
+        // this.props.SearchActionsCreator.getInitialSearchResultData(advancedSearchRequest, 0);
         this.props.SearchActionsCreator.testInitialSearchResultData(
             this.props.searchKey,
             '',
@@ -104,7 +104,7 @@ export default connect(
     },
     (dispatch) => {
         return {
-            SearchActionsCreator: bindActionCreators(SearchActionsCreator, dispatch),
+            SearchActionsCreator: bindActionCreators(SearchRedux.SearchActionsCreator, dispatch),
         };
     }
 )(AdvancedSearch);

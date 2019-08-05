@@ -2,7 +2,6 @@ import {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PortalActionsCreator} from '../../Redux/Modules/Portal/PortalRedux';
 import {PortalRedux} from '../../Redux/Modules';
 
 class Portal extends Component {
@@ -53,7 +52,7 @@ export default connect(
     },
     (dispatch) => {
         return {
-            PortalActionsCreator: bindActionCreators(PortalActionsCreator, dispatch)
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
         };
     }
 )(Portal);

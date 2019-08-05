@@ -63,6 +63,17 @@ class Search extends Component {
         };
     }
     
+    componentDidMount() {
+        this.searchContainerScroll.current.addEventListener('scroll', () => {
+            if (this.searchContainerScroll.current.scrollTop
+                + this.searchContainerScroll.current.clientHeight
+                >= this.searchContainerScroll.current.scrollHeight
+            ) {
+                this.getNextLoadSearchData();
+            }
+        });
+    }
+    
     static getDerivedStateFromProps(nextProps) {
         // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
@@ -110,17 +121,6 @@ class Search extends Component {
                 break;
         }
         return null;
-    }
-    
-    componentDidMount() {
-        this.searchContainerScroll.current.addEventListener('scroll', () => {
-            if (this.searchContainerScroll.current.scrollTop
-                + this.searchContainerScroll.current.clientHeight
-                >= this.searchContainerScroll.current.scrollHeight
-            ) {
-                this.getNextLoadSearchData();
-            }
-        });
     }
     
     componentDidUpdate(prevProps, prevState) {

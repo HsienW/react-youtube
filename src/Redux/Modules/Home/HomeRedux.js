@@ -22,8 +22,7 @@ const getHomeData = (request) => {
     };
 };
 
-const testGetHomeData = (request) => {
-    console.log(request);
+const testGetHomeData = () => {
     return (dispatch) => {
         dispatch(createAction(HomeActions.getHomeStart)());
         dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));

@@ -120,6 +120,16 @@ const formatData = {
     }
 };
 
+const formatCurry = {
+    objToStringify(objItem) {
+        return JSON.stringify(objItem);
+    },
+    objToParse(stringItem) {
+        return JSON.parse(stringItem);
+    },
+};
+
 export {
     formatData,
+    formatCurry
 };

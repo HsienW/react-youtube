@@ -1,5 +1,6 @@
 const WebStorageKeys = {
-    ACCESS_TOKEN: 'ACCESS_TOKEN'
+    ACCESS_TOKEN: 'ACCESS_TOKEN',
+    VIDEO_ITEM_INFO: 'VIDEO_ITEM_INFO'
 };
 
 class WebStorage {

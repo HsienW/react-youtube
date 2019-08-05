@@ -7,6 +7,7 @@ import {Input, Button} from 'antd';
 import {GoogleAuthorize} from 'react-google-authorize';
 import {AuthRedux, PortalRedux, HomeRedux} from  '../../Redux/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+import {homeApi} from '../../ApiCenter/Api/Api';
 import * as Config from '../../../config';
 import * as Style from '../../Common/Style';
 
@@ -27,22 +28,21 @@ const btnStyle = {
     backgroundColor: `${Style.MinorColor}`
 };
 
-const homeDefaultRequest = {
-    part: 'snippet, contentDetails',
-    mine: true,
-    access_token: sessionStorage.getItem('ACCESS_TOKEN'),
-    maxResults: 20,
-    chart: 'mostPopular'
-};
-
 class Auth extends Component {
 
     authSuccess = (response) => {
+        const homeRecommendRequest = homeApi.createRecommendRequest(
+            'snippet, contentDetails',
+            true,
+            response.access_token,
+            20,
+            'mostPopular',
+        );
         WebStorage.setSessionStorage(WebStorageKeys.ACCESS_TOKEN, response.access_token);
         this.props.AuthActionsCreator.getAuthSuccess();
-        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
-        this.props.HomeActionsCreator.testGetHomeData(homeDefaultRequest);
+        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
         this.props.PortalActionsCreator.changeToPage('home');
+        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
     };
 
     authFailed = () => {

@@ -6,11 +6,9 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
-import {CheckAuthHOC} from '../../Decorators/index';
-import {formatData} from '../../Common/BasicService';
-import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
-// import * as apiData from '../../ApiCenter/Api/api';
-// import * as dataCenter from '../../DataCenter';
+import {LoadingDataHOC} from '../../Decorators/index';
+import {formatData, formatCurry} from '../../Common/BasicService';
+import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 
 const HomeView = styled.div`
     padding: 0 8%;
@@ -26,10 +24,10 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
-@CheckAuthHOC
-// @LoadingDataHOC
+// @CheckAuthHOC
+@LoadingDataHOC
 class Home extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -37,36 +35,31 @@ class Home extends Component {
             homeData: []
         };
     }
-
+    
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
                 return {getHomeStatus: true, homeData: nextProps.action.payload.items};
-
+            
             default:
                 break;
         }
-
+        
         return null;
     }
-
-    // componentDidUpdate() {
-    //     if (this.state.getHomeStatus) {
-    //         // this.props.toggleShowLoading(false);
-    //     }
-    // }
-
+    
+    componentDidUpdate() {
+        if (this.state.getHomeStatus) {
+            console.log('vvvvvvvvvvvvvvvvvvvvv');
+            this.props.toggleShowLoading(false);
+        }
+    }
+    
     videoItemClick = (videoItemInfo) => {
-        const detailRequest = videoApi.createDetailRequest('', videoItemInfo.id);
-        const commentRequest = commentApi.createGetCommentRequest('', videoItemInfo.id);
-        const relatedRequest = searchApi.createRelatedRequest('', 'video', 10, videoItemInfo.id);
-        this.props.PlayActionsCreator.getPlayVideoData(videoItemInfo);
-        this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
-        this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
-        this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
+        WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));
         this.props.PortalActionsCreator.changeToPage('play');
     };
-
+    
     render() {
         return (
             <div>
@@ -95,6 +88,7 @@ class Home extends Component {
 }
 
 Home.propTypes = {
+    history: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
