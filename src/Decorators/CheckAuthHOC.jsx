@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Auth} from '../../src/Containers/index';
 
 export const CheckAuthHOC = (WrappedComponent) => {
-    return class checkAuthHOC extends React.Component {
+    return class checkAuthHOC extends Component {
 
         constructor(props) {
             super(props);

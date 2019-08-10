@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
-import {LoadingDataHOC} from '../../Decorators/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+import {homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
     padding: 0 8%;
@@ -24,7 +25,7 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
-// @CheckAuthHOC
+@CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
     
@@ -34,6 +35,18 @@ class Home extends Component {
             getHomeStatus: false,
             homeData: []
         };
+    }
+    
+    componentDidMount() {
+        const homeRecommendRequest = homeApi.createRecommendRequest(
+            'snippet, contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            20,
+            'mostPopular',
+        );
+        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -46,13 +59,6 @@ class Home extends Component {
         }
         
         return null;
-    }
-    
-    componentDidUpdate() {
-        if (this.state.getHomeStatus) {
-            console.log('vvvvvvvvvvvvvvvvvvvvv');
-            this.props.toggleShowLoading(false);
-        }
     }
     
     videoItemClick = (videoItemInfo) => {
