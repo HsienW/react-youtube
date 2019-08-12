@@ -30,17 +30,9 @@ const btnStyle = {
 class Auth extends Component {
 
     authSuccess = (response) => {
-        // const homeRecommendRequest = homeApi.createRecommendRequest(
-        //     'snippet, contentDetails',
-        //     true,
-        //     response.access_token,
-        //     20,
-        //     'mostPopular',
-        // );
         WebStorage.setSessionStorage(WebStorageKeys.ACCESS_TOKEN, response.access_token);
         this.props.AuthActionsCreator.getAuthSuccess();
         this.props.PortalActionsCreator.changeToPage('home');
-        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
     };
 
     authFailed = () => {
@@ -53,7 +45,7 @@ class Auth extends Component {
                 <div>Youtube</div>
                 <Input placeholder="Account"/>
                 <Input type="password" placeholder="Password"/>
-                <Button style={btnStyle} onClick={this.authSuccess}>Login</Button>
+                <Button style={btnStyle}>Login</Button>
                 <GoogleAuthorize
                     clientId={Config.googleAuthKey}
                     scope={Config.googleAuthScope}

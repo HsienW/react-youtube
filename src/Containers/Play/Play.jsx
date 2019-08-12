@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+// import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PlayRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
 import {VideoPlayer} from '../../Components/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
-import {formatCurry} from '../../Common/BasicService';
+import {checkState, formatCurry} from '../../Common/BasicService';
 
 const PlayView = styled.div`
     width: 100%;
@@ -47,6 +49,8 @@ const videoListItemConfig = {
     assignedListItem: 'related-video-list-item'
 };
 
+@CheckAuthHOC
+@LoadingDataHOC
 class Play extends Component {
     
     constructor(props) {
@@ -64,11 +68,11 @@ class Play extends Component {
     }
     
     componentDidMount() {
-        const videoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
-        const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(videoItemInfo).id);
-        const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(videoItemInfo).id);
-        const relatedRequest = searchApi.createRelatedRequest('', 'video', 10, formatCurry.objToParse(videoItemInfo).id);
-        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(videoItemInfo));
+        const getVideoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
+        const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(getVideoItemInfo).id);
+        const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(getVideoItemInfo).id);
+        const relatedRequest = searchApi.createRelatedRequest('', 'video', 10, formatCurry.objToParse(getVideoItemInfo).id);
+        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(getVideoItemInfo));
         this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
         this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
         this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
@@ -81,10 +85,10 @@ class Play extends Component {
             
             case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
                 return {getDetailDataStatus: true, playDetailData: nextProps.action.payload.data.items[0]};
-    
+            
             case PlayRedux.PlayCommentActions.getPlayCommentSuccess:
                 return {getCommentDataStatus: true, playCommentData: nextProps.action.payload.data};
-    
+            
             case PlayRedux.PlayRelatedActions.getPlayRelatedSuccess:
                 return {getRelatedDataStatus: true, playRelatedData: nextProps.action.payload.data};
             
@@ -93,6 +97,12 @@ class Play extends Component {
         }
         
         return null;
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (checkState.allStateTruthy(prevState)) {
+            this.props.toggleShowLoading(false);
+        }
     }
     
     render() {
@@ -129,6 +139,7 @@ class Play extends Component {
 Play.propTypes = {
     history: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
+    toggleShowLoading: PropTypes.func
 };
 
 export default connect(

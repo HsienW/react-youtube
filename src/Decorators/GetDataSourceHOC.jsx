@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {callApi} from '../ApiCenter/Api/callApi';
 
 export const GetDataSourceHOC = (WrappedComponent) => {
-    return class getDataSourceHOC extends React.Component {
+    return class getDataSourceHOC extends Component {
 
         constructor() {
             super();

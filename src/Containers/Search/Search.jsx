@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, SearchRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, AdvancedSearch} from '../../Components/Layout';
 import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
@@ -47,6 +48,8 @@ const VideoListPlayItemConfig = {
     }
 };
 
+@CheckAuthHOC
+@LoadingDataHOC
 class Search extends Component {
     
     constructor(props) {

@@ -129,7 +129,17 @@ const formatCurry = {
     },
 };
 
+const checkState = {
+    allStateTruthy(state) {
+        let allState = Object.values(state);
+        console.log('ppppppppppppppp');
+        console.log(allState);
+        return is.all.truthy(allState);
+    }
+};
+
 export {
     formatData,
-    formatCurry
+    formatCurry,
+    checkState
 };

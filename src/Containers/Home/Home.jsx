@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {PageHeader, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
-import {LoadingDataHOC} from '../../Decorators/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {homeApi} from '../../ApiCenter/Api/Api';
@@ -25,7 +26,7 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
-// @CheckAuthHOC
+@CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
     
@@ -46,6 +47,7 @@ class Home extends Component {
             'mostPopular',
         );
         this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -60,19 +62,11 @@ class Home extends Component {
         return null;
     }
     
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextState.getHomeStatus) {
+    componentDidUpdate(prevProps, prevState) {
+        if (is.all.truthy(prevState)) {
             this.props.toggleShowLoading(false);
         }
     }
-    
-    // componentDidUpdate() {
-    //     console.log('vvvvvvvvvvvvvvvvvvvvv');
-    //     console.log(this.state.getHomeStatus);
-    //     if (this.state.getHomeStatus) {
-    //         this.props.toggleShowLoading(false);
-    //     }
-    // }
     
     videoItemClick = (videoItemInfo) => {
         WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));

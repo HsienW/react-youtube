@@ -4,8 +4,8 @@ const UploadDropdown = {
     itemIconShow: true,
     item: [
         {
-            key: 'upload',
-            type: 'upload',
+            key: 'on-upload',
+            type: 'Upload',
             itemName: 'Upload',
             itemIcon: 'plus-square'
         }
@@ -18,14 +18,14 @@ const ProfileDropdown = {
     itemIconShow: true,
     item: [
         {
-            key: 'channel',
-            type: 'channel',
+            key: 'on-my-channel',
+            type: 'Channel',
             itemName: 'My Channel',
             itemIcon: 'user'
         },
         {
-            key: 'auth',
-            type: 'auth',
+            key: 'on-logout',
+            type: 'Auth',
             itemName: 'Logout',
             itemIcon: 'logout'
         }
@@ -40,7 +40,7 @@ const NoticeDropdown = {
     item: [
         {
             key: 'notice',
-            type: 'notice',
+            type: 'Notice',
             itemName: 'Notification',
             itemIcon: 'user'
         },

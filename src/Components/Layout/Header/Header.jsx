@@ -5,7 +5,8 @@ import {ContentDropdown, ListDropdown} from '../../Modules';
 import {PortalRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {homeApi, searchApi} from '../../../ApiCenter/Api/Api';
+import {searchApi} from '../../../ApiCenter/Api/Api';
+import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -70,15 +71,6 @@ class Header extends Component {
     }
     
     onGoHome = () => {
-        const homeRecommendRequest = homeApi.createRecommendRequest(
-            'snippet, contentDetails',
-            true,
-            sessionStorage.getItem('ACCESS_TOKEN'),
-            20,
-            'mostPopular',
-        );
-        // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
-        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
         this.props.PortalActionsCreator.changeToPage('home');
     };
     
@@ -94,6 +86,22 @@ class Header extends Component {
         // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
         this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
         this.props.PortalActionsCreator.changeToPage('search');
+    };
+    
+    onProfileDropdownClick = (itemKey) => {
+        switch (itemKey) {
+            case 'on-my-channel':
+                // this.props.PortalActionsCreator.changeToPage('channel');
+                return;
+
+            case 'on-logout':
+                WebStorage.removeSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+                this.props.PortalActionsCreator.changeToPage('auth');
+                return;
+
+            default:
+                return;
+        }
     };
     
     render() {
@@ -125,7 +133,7 @@ class Header extends Component {
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
                         btnConfig={btnConfig}
-                        itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                        itemClickAction={profileItem => this.onProfileDropdownClick(profileItem.key)}
                     />
                 </div>
             </HeaderView>

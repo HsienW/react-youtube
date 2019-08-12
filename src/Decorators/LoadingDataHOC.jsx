@@ -4,18 +4,20 @@ import {SpinStyle} from '../Common/Style';
 
 export const LoadingDataHOC = (WrappedComponent) => {
     return class loadingDataHOC extends Component {
-
-        constructor(props) {
-            super(props);
+        
+        constructor() {
+            super();
             this.state = {
                 showLoading: true
             };
         }
-
+        
         toggleShowLoading = (toggleState) => {
-            this.setState({
-                showLoading: toggleState,
-            });
+            if(this.state.showLoading) {
+                this.setState({
+                    showLoading: toggleState,
+                });
+            }
         };
 
         render() {
