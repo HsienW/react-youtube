@@ -9,6 +9,7 @@ import {Header} from '../../Components/Layout/index';
 import {LoadingDataHOC} from '../../Decorators/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+import {homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
     padding: 0 8%;
@@ -36,6 +37,17 @@ class Home extends Component {
         };
     }
     
+    componentDidMount() {
+        const homeRecommendRequest = homeApi.createRecommendRequest(
+            'snippet, contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            20,
+            'mostPopular',
+        );
+        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
+    }
+    
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
@@ -48,12 +60,19 @@ class Home extends Component {
         return null;
     }
     
-    componentDidUpdate() {
-        if (this.state.getHomeStatus) {
-            console.log('vvvvvvvvvvvvvvvvvvvvv');
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState.getHomeStatus) {
             this.props.toggleShowLoading(false);
         }
     }
+    
+    // componentDidUpdate() {
+    //     console.log('vvvvvvvvvvvvvvvvvvvvv');
+    //     console.log(this.state.getHomeStatus);
+    //     if (this.state.getHomeStatus) {
+    //         this.props.toggleShowLoading(false);
+    //     }
+    // }
     
     videoItemClick = (videoItemInfo) => {
         WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));
