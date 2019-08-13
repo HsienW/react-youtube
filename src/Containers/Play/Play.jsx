@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PlayRedux} from '../../Redux/Modules';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
+import {CheckAuthHOC} from '../../Decorators/index';
 import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
 import {VideoPlayer} from '../../Components/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
-import {checkState, formatCurry} from '../../Common/BasicService';
+import {formatCurry} from '../../Common/BasicService';
+import {Spin} from 'antd';
+import {SpinStyle} from '../../Common/Style';
 
 const PlayView = styled.div`
     width: 100%;
@@ -50,7 +51,6 @@ const videoListItemConfig = {
 };
 
 @CheckAuthHOC
-@LoadingDataHOC
 class Play extends Component {
     
     constructor(props) {
@@ -99,12 +99,6 @@ class Play extends Component {
         return null;
     }
     
-    componentDidUpdate(prevProps, prevState) {
-        if (checkState.allStateTruthy(prevState)) {
-            this.props.toggleShowLoading(false);
-        }
-    }
-    
     render() {
         return (
             <div>
@@ -129,7 +123,9 @@ class Play extends Component {
                                 videoListItemConfig={videoListItemConfig}
                             />
                         </PlayView>
-                        : <div>No-Data</div>
+                        : <PlayView>
+                            <Spin size='large' style={SpinStyle}/>
+                        </PlayView>
                 }
             </div>
         );
