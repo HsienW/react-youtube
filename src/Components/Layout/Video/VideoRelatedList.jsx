@@ -16,7 +16,7 @@ const VideoRelatedListView = styled.div`
 export default class VideoRelatedList extends Component {
     
     render() {
-        const {videoRelatedData, videoListItemConfig} = {...this.props};
+        const {videoRelatedData, videoListItemConfig, itemClickAction} = {...this.props};
         return (
             <VideoRelatedListView>
                 {
@@ -26,6 +26,7 @@ export default class VideoRelatedList extends Component {
                                 key={item.id.videoId}
                                 videoListItemData={item}
                                 videoListItemConfig={videoListItemConfig}
+                                itemClickAction={itemClickAction}
                             />
                         );
                     })
@@ -37,5 +38,6 @@ export default class VideoRelatedList extends Component {
 
 VideoRelatedList.propTypes = {
     videoRelatedData: PropTypes.object.isRequired,
-    videoListItemConfig: PropTypes.object.isRequired
+    videoListItemConfig: PropTypes.object.isRequired,
+    itemClickAction: PropTypes.func.isRequired
 };

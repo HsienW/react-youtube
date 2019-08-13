@@ -29,10 +29,18 @@ const textOverStyle = {
 };
 
 export default class VideoListItem extends Component {
+    
+    videoListItemClick = () => {
+        this.props.itemClickAction(this.props.videoListItemData);
+    };
+    
     render() {
         const {videoListItemConfig, videoListItemData} = {...this.props};
         return (
-            <div style={videoListItemConfig}>
+            <div
+                style={videoListItemConfig}
+                onClick={this.videoListItemClick}
+            >
                 <Card
                     hoverable
                     style={ItemStyle}
@@ -66,5 +74,6 @@ export default class VideoListItem extends Component {
 
 VideoListItem.propTypes = {
     videoListItemConfig: PropTypes.object.isRequired,
-    videoListItemData: PropTypes.object.isRequired
+    videoListItemData: PropTypes.object.isRequired,
+    itemClickAction: PropTypes.func.isRequired
 };

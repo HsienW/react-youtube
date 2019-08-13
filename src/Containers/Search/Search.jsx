@@ -147,6 +147,10 @@ class Search extends Component {
         }
     }
     
+    componentWillUnmount() {
+        this.searchContainerScroll.current.removeEventListener('scroll');
+    }
+    
     getNextLoadSearchData = () => {
         // const request = searchApi.createRequest(
         //     'snippet',

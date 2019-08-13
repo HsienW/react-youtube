@@ -15,6 +15,15 @@ const formatData = {
         });
         return newData;
     },
+    videoItemInfo(item) {
+        const newItemInfo = {
+            id: item.id.videoId,
+            title: item.title,
+            description: item.description,
+            imgURL: item.imgURL,
+        };
+        return newItemInfo;
+    },
     videoListItemRespond(data) {
         const newData = [];
         data.forEach((item) => {
@@ -132,8 +141,6 @@ const formatCurry = {
 const checkState = {
     allStateTruthy(state) {
         let allState = Object.values(state);
-        console.log('ppppppppppppppp');
-        console.log(allState);
         return is.all.truthy(allState);
     }
 };

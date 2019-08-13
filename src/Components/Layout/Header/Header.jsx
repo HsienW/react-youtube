@@ -96,6 +96,7 @@ class Header extends Component {
 
             case 'on-logout':
                 WebStorage.removeSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+                WebStorage.removeSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
                 this.props.PortalActionsCreator.changeToPage('auth');
                 return;
 

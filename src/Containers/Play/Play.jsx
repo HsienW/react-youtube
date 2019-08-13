@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PlayRedux} from '../../Redux/Modules';
+import {PortalRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC} from '../../Decorators/index';
 import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
 import {VideoPlayer} from '../../Components/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
-import {formatCurry} from '../../Common/BasicService';
+import {formatData, formatCurry} from '../../Common/BasicService';
 import {Spin} from 'antd';
 import {SpinStyle} from '../../Common/Style';
 
@@ -68,14 +68,7 @@ class Play extends Component {
     }
     
     componentDidMount() {
-        const getVideoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
-        const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(getVideoItemInfo).id);
-        const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(getVideoItemInfo).id);
-        const relatedRequest = searchApi.createRelatedRequest('', 'video', 10, formatCurry.objToParse(getVideoItemInfo).id);
-        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(getVideoItemInfo));
-        this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
-        this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
-        this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
+        this.getPlayAllData();
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -99,6 +92,34 @@ class Play extends Component {
         return null;
     }
     
+    getPlayAllData = () => {
+        const getVideoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
+        const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(getVideoItemInfo).id);
+        const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(getVideoItemInfo).id);
+        const relatedRequest = searchApi.createRelatedRequest('', 'video', 20, formatCurry.objToParse(getVideoItemInfo).id);
+        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(getVideoItemInfo));
+        this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
+        this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
+        this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
+    };
+    
+    relatedListItemClick = (clickItemInfo) => {
+        const relatedListItemInfo = formatData.videoItemInfo(clickItemInfo);
+        WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(relatedListItemInfo));
+        this.setState({
+            getVideoDataStatus: false,
+            getDetailDataStatus: false,
+            getCommentDataStatus: false,
+            getRelatedDataStatus: false,
+            playVideoData: {},
+            playDetailData: {},
+            playCommentData: {},
+            playRelatedData: {}
+        }, () => {
+            this.getPlayAllData();
+        });
+    };
+    
     render() {
         return (
             <div>
@@ -121,6 +142,7 @@ class Play extends Component {
                             <VideoRelatedList
                                 videoRelatedData={this.state.playRelatedData}
                                 videoListItemConfig={videoListItemConfig}
+                                itemClickAction={this.relatedListItemClick}
                             />
                         </PlayView>
                         : <PlayView>
@@ -135,6 +157,7 @@ class Play extends Component {
 Play.propTypes = {
     history: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
+    PortalActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func
 };
 
@@ -144,6 +167,7 @@ export default connect(
     },
     (dispatch) => {
         return {
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
             PlayActionsCreator: bindActionCreators(PlayRedux.PlayActionsCreator, dispatch),
         };
     }
