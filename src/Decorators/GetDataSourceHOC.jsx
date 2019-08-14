@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {callApi} from '../ApiCenter/Api/callApi';
+import {callApi} from '../ApiCenter/Api/CallApi';
 
 export const GetDataSourceHOC = (WrappedComponent) => {
     return class getDataSourceHOC extends Component {

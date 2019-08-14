@@ -4,8 +4,8 @@ import ReduxStore from './Redux/ReduxStore';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {HashRouter, Router, Switch, Route} from 'react-router-dom';
-import {Auth, Home, Upload, Search, Play, Channel, Portal} from '../src/Containers/index';
-// import Header from './Components/Layout/Header/Header';
+import {Auth, Home, Upload, Search, Play, Channel} from './page-loadable';
+import {Portal} from '../src/Containers/index';
 import 'antd/dist/antd.css';
 import './Common/CoverStyle.css';
 

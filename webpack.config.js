@@ -18,6 +18,8 @@ module.exports = {
             'redux',
             'redux-actions',
             'redux-thunk',
+            'react-final-form',
+            'react-player',
         ],
     },
     output: {
