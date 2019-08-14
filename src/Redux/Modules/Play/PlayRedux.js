@@ -26,10 +26,16 @@ export const PlayRelatedActions = {
     getPlayRelatedFailed: 'GET_PLAY_RELATED_FAILED',
 };
 
-const getPlayVideoData = (videoItemInfo) => {
+const getPlayVideoData = (request) => {
     return (dispatch) => {
         dispatch(createAction(PlayVideoActions.getPlayVideoStart)());
-        dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(videoItemInfo));
+        callApi.get(apiData.videoURL, request)
+            .then((respond) => {
+                dispatch(createAction(PlayVideoActions.getPlayVideoSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(PlayVideoActions.getPlayVideoFailed)(error));
+            });
     };
 };
 

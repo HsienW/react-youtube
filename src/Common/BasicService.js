@@ -15,15 +15,6 @@ const formatData = {
         });
         return newData;
     },
-    videoItemInfo(item) {
-        const newItemInfo = {
-            id: item.id.videoId,
-            title: item.title,
-            description: item.description,
-            imgURL: item.imgURL,
-        };
-        return newItemInfo;
-    },
     videoListItemRespond(data) {
         const newData = [];
         data.forEach((item) => {
@@ -101,6 +92,9 @@ const formatData = {
         searchResult.currentSearchDataIndex = searchDataIndex + 1;
         return searchResult;
     },
+};
+
+const formatComponentData = {
     advancedSearchDate(timeCondition) {
         switch (timeCondition) {
             case 'All':
@@ -138,15 +132,29 @@ const formatCurry = {
     },
 };
 
-const checkState = {
-    allStateTruthy(state) {
-        let allState = Object.values(state);
-        return is.all.truthy(allState);
-    }
+const formatItem = {
+    selectVideoListItemInfo(item) {
+        return {
+            id: item.id.videoId,
+            title: item.title,
+            description: item.description,
+            imgURL: item.imgURL,
+        };
+    },
+    playVideoItemInfo(items) {
+        return {
+            id: items[0].id,
+            title: items[0].snippet.title,
+            description: items[0].snippet.description,
+            imgURL: items[0].snippet.thumbnails.medium.url,
+            totalTime: formatData.isoTimeToSecondData(items[0].contentDetails.duration)
+        };
+    },
 };
 
 export {
     formatData,
+    formatComponentData,
     formatCurry,
-    checkState
+    formatItem
 };

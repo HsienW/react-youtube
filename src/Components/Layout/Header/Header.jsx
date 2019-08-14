@@ -66,19 +66,36 @@ const data = [
 ];
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
+    
+    constructor() {
+        super();
+        this.state = {
+            currentSearchKey: '',
+        };
     }
+    
+    componentDidMount() {
+        this.setState({currentSearchKey: WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY)});
+    }
+    
+    onSearchKeyChange = (searchKeyChange) => {
+        this.setState({currentSearchKey: searchKeyChange.target.value});
+    };
     
     onGoHome = () => {
         this.props.PortalActionsCreator.changeToPage('home');
     };
     
     onSearch = (searchKey) => {
+        WebStorage.setSessionStorage(WebStorageKeys.SEARCH_KEY, searchKey);
+        this.getSearchAllData();
+    };
+    
+    getSearchAllData() {
         const request = searchApi.createRequest(
             'snippet',
             10,
-            searchKey,
+            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
             '',
             '',
             '',
@@ -86,20 +103,21 @@ class Header extends Component {
         // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
         this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
         this.props.PortalActionsCreator.changeToPage('search');
-    };
+    }
     
     onProfileDropdownClick = (itemKey) => {
         switch (itemKey) {
             case 'on-my-channel':
                 // this.props.PortalActionsCreator.changeToPage('channel');
                 return;
-
+            
             case 'on-logout':
                 WebStorage.removeSessionStorage(WebStorageKeys.ACCESS_TOKEN);
                 WebStorage.removeSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
+                WebStorage.removeSessionStorage(WebStorageKeys.SEARCH_KEY);
                 this.props.PortalActionsCreator.changeToPage('auth');
                 return;
-
+            
             default:
                 return;
         }
@@ -116,8 +134,10 @@ class Header extends Component {
                 </Button>
                 <Search
                     placeholder="Search"
-                    onSearch={searchKey => this.onSearch(searchKey)}
+                    value={this.state.currentSearchKey}
                     style={searchBarStyle}
+                    onChange={this.onSearchKeyChange}
+                    onSearch={searchKey => this.onSearch(searchKey)}
                 />
                 <div style={profileArea}>
                     <ListDropdown

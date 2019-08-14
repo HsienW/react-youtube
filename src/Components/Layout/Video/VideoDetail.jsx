@@ -14,6 +14,7 @@ const VideoDetailView = styled.div`
 const VideoTitle = styled.div`
     width: 100%;
     height: 10vh;
+    margin-bottom: 2rem;
     font-size: 2.4rem;
     display: flex;
     flex-wrap: wrap;

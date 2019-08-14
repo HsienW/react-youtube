@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import is from 'is_js';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
@@ -52,8 +53,8 @@ const VideoListPlayItemConfig = {
 @LoadingDataHOC
 class Search extends Component {
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.searchContainerScroll = React.createRef();
         this.state = {
             searchStatus: false,
@@ -67,14 +68,7 @@ class Search extends Component {
     }
     
     componentDidMount() {
-        this.searchContainerScroll.current.addEventListener('scroll', () => {
-            if (this.searchContainerScroll.current.scrollTop
-                + this.searchContainerScroll.current.clientHeight
-                >= this.searchContainerScroll.current.scrollHeight
-            ) {
-                this.getNextLoadSearchData();
-            }
-        });
+        this.searchContainerScroll.current.addEventListener('scroll', this.lazyLoadingScroll);
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -127,6 +121,10 @@ class Search extends Component {
     }
     
     componentDidUpdate(prevProps, prevState) {
+        if (is.all.truthy(prevState)) {
+            this.props.toggleShowLoading(false);
+        }
+
         if (!this.state.searchStatus) {
             this.setState({
                 searchStatus: false,
@@ -136,6 +134,7 @@ class Search extends Component {
                 searchResult: []
             });
         }
+
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
                 searchStatus: true,
@@ -148,8 +147,17 @@ class Search extends Component {
     }
     
     componentWillUnmount() {
-        this.searchContainerScroll.current.removeEventListener('scroll');
+        this.searchContainerScroll.current.removeEventListener('scroll', this.nextLoadingScroll, false);
     }
+    
+    lazyLoadingScroll = () => {
+        if (this.searchContainerScroll.current.scrollTop
+            + this.searchContainerScroll.current.clientHeight
+            >= this.searchContainerScroll.current.scrollHeight
+        ) {
+            this.getNextLoadSearchData();
+        }
+    };
     
     getNextLoadSearchData = () => {
         // const request = searchApi.createRequest(
@@ -211,6 +219,7 @@ Search.propTypes = {
     action: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired,
+    toggleShowLoading: PropTypes.func
 };
 
 export default connect(

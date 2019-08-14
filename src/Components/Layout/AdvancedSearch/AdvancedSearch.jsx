@@ -4,7 +4,7 @@ import {SelectDropdown} from '../../Modules';
 import {SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {formatData} from '../../../Common/BasicService';
+import {formatComponentData} from '../../../Common/BasicService';
 // import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as Style from '../../../Common/Style';
@@ -38,7 +38,7 @@ class AdvancedSearch extends Component {
     
     onDateSearchCondition = (conditionValue) => {
         this.setState({
-            dateCondition: formatData.advancedSearchDate(conditionValue)
+            dateCondition: formatComponentData.advancedSearchDate(conditionValue)
         }, () => {
             this.onAdvancedSearch();
         });
@@ -46,7 +46,7 @@ class AdvancedSearch extends Component {
     
     onTypeSearchCondition = (conditionValue) => {
         this.setState({
-            typeCondition: formatData.advancedSearchType(conditionValue)
+            typeCondition: formatComponentData.advancedSearchType(conditionValue)
         }, () => {
             this.onAdvancedSearch();
         });

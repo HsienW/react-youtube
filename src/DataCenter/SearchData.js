@@ -1,5 +1,0 @@
-let searchResult = [];
-
-export {
-    searchResult
-}

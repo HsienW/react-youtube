@@ -39,15 +39,7 @@ class Home extends Component {
     }
     
     componentDidMount() {
-        const homeRecommendRequest = homeApi.createRecommendRequest(
-            'snippet, contentDetails',
-            true,
-            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
-            20,
-            'mostPopular',
-        );
-        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
-        // this.props.HomeActionsCreator.getHomeData(homeDefaultRequest);
+        this.getHomeAllData();
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -67,6 +59,18 @@ class Home extends Component {
             this.props.toggleShowLoading(false);
         }
     }
+    
+    getHomeAllData = () => {
+        const homeRecommendRequest = homeApi.createRecommendRequest(
+            'snippet, contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            20,
+            'mostPopular',
+        );
+        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
+    };
     
     videoItemClick = (videoItemInfo) => {
         WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));

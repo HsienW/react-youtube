@@ -9,7 +9,7 @@ import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Com
 import {VideoPlayer} from '../../Components/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
-import {formatData, formatCurry} from '../../Common/BasicService';
+import {formatCurry, formatItem} from '../../Common/BasicService';
 import {Spin} from 'antd';
 import {SpinStyle} from '../../Common/Style';
 
@@ -53,8 +53,8 @@ const videoListItemConfig = {
 @CheckAuthHOC
 class Play extends Component {
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             getVideoDataStatus: false,
             getDetailDataStatus: false,
@@ -74,7 +74,7 @@ class Play extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case PlayRedux.PlayVideoActions.getPlayVideoSuccess:
-                return {getVideoDataStatus: true, playVideoData: nextProps.action.payload};
+                return {getVideoDataStatus: true, playVideoData: nextProps.action.payload.data.items};
             
             case PlayRedux.PlayDetailActions.getPlayDetailSuccess:
                 return {getDetailDataStatus: true, playDetailData: nextProps.action.payload.data.items[0]};
@@ -94,17 +94,26 @@ class Play extends Component {
     
     getPlayAllData = () => {
         const getVideoItemInfo = WebStorage.getSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
+        const videoPlayRequest = videoApi.createPlayVideoRequest(
+            '',
+            '',
+            '',
+            1,
+            '',
+            formatCurry.objToParse(getVideoItemInfo).id
+        );
         const detailRequest = videoApi.createDetailRequest('', formatCurry.objToParse(getVideoItemInfo).id);
         const commentRequest = commentApi.createGetCommentRequest('', formatCurry.objToParse(getVideoItemInfo).id);
         const relatedRequest = searchApi.createRelatedRequest('', 'video', 20, formatCurry.objToParse(getVideoItemInfo).id);
-        this.props.PlayActionsCreator.getPlayVideoData(formatCurry.objToParse(getVideoItemInfo));
+        
+        this.props.PlayActionsCreator.getPlayVideoData(videoPlayRequest);
         this.props.PlayActionsCreator.getPlayDetailData(detailRequest);
         this.props.PlayActionsCreator.getPlayCommentData(commentRequest);
         this.props.PlayActionsCreator.getPlayRelatedData(relatedRequest);
     };
     
     relatedListItemClick = (clickItemInfo) => {
-        const relatedListItemInfo = formatData.videoItemInfo(clickItemInfo);
+        const relatedListItemInfo = formatItem.selectVideoListItemInfo(clickItemInfo);
         WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(relatedListItemInfo));
         this.setState({
             getVideoDataStatus: false,
@@ -132,7 +141,7 @@ class Play extends Component {
                         ? <PlayView>
                             <PlayInfo>
                                 <VideoPlayer
-                                    playerData={this.state.playVideoData}
+                                    playerData={formatItem.playVideoItemInfo(this.state.playVideoData)}
                                     playerConfig={playerConfig}
                                     playerInlineConfig={playerInlineConfig}
                                 />
