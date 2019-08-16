@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -62,16 +63,31 @@ module.exports = {
                 cache: true,
                 parallel: true,
                 uglifyOptions: {
-                    compress: false,
+                    compress: {
+                        unused: true,
+                        warnings: false,
+                    },
                     ecma: 8,
                     warnings: false,
-                    mangle: true
+                    mangle: true,
                 },
                 sourceMap: false
             })
         ],
+        runtimeChunk: 'single',
         splitChunks: {
-            chunks: 'all'
+            chunks: 'all',
+            maxInitialRequests: Infinity,
+            minSize: 0,
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                        return `npm.${packageName.replace('@', '')}`;
+                    },
+                },
+            }
         }
     },
     plugins: [
@@ -83,7 +99,8 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'index.bundle.css',
         }),
-        new CompressionPlugin()
+        new CompressionPlugin(),
+        new HardSourceWebpackPlugin()
     ],
     devServer: {
         port: 8080,
