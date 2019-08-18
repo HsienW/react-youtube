@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -100,7 +100,7 @@ module.exports = {
             filename: 'index.bundle.css',
         }),
         new CompressionPlugin(),
-        new HardSourceWebpackPlugin()
+        // new HardSourceWebpackPlugin()
     ],
     devServer: {
         port: 8080,

@@ -11,7 +11,7 @@ import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
 import {formatCurry, formatItem} from '../../Common/BasicService';
 import {Spin} from 'antd';
-import {SpinStyle} from '../../Common/Style';
+import {SpinStyle} from '../../Common/StyleConfig';
 
 const PlayView = styled.div`
     width: 100%;

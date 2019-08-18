@@ -147,7 +147,7 @@ class Search extends Component {
     }
     
     componentWillUnmount() {
-        this.searchContainerScroll.current.removeEventListener('scroll', this.nextLoadingScroll, false);
+        this.searchContainerScroll.current.removeEventListener('scroll', this.lazyLoadingScroll, false);
     }
     
     lazyLoadingScroll = () => {
@@ -160,7 +160,7 @@ class Search extends Component {
     };
     
     getNextLoadSearchData = () => {
-        // const request = searchApi.createRequest(
+        // const nextLoadSearchRequest = searchApi.createRequest(
         //     'snippet',
         //     10,
         //     this.state.searchKey,
@@ -169,7 +169,7 @@ class Search extends Component {
         //     this.state.publishedAfter,
         // );
         // this.props.SearchActionsCreator.getNextSearchResultData(
-        //     request,
+        //     nextLoadSearchRequest,
         //     this.state.currentSearchDataIndex
         // );
         this.props.SearchActionsCreator.testNextSearchResultData(

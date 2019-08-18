@@ -5,7 +5,7 @@ import {VideoPlayerConfig} from '../../../Common/ComponentConfig';
 import {Button, Slider} from 'antd';
 import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
-// import * as Style from '../../../Common/Style';
+// import * as StyleConfig from '../../../Common/StyleConfig';
 
 const PlayerControl = styled.div`
     height: 10%;

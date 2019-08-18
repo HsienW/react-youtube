@@ -8,7 +8,7 @@ import {GoogleAuthorize} from 'react-google-authorize';
 import {AuthRedux, PortalRedux, HomeRedux} from  '../../Redux/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import * as Config from '../../../config';
-import * as Style from '../../Common/Style';
+import * as StyleConfig from '../../Common/StyleConfig';
 
 const AuthView = styled.div`
     width: 280px;
@@ -16,15 +16,15 @@ const AuthView = styled.div`
     margin: 10% auto 0;
     padding: 30px 30px;
     font-size: 30px;
-    color: ${Style.FontMinorColor}
-    border: ${Style.FontMinorColor} 1px solid;
+    color: ${StyleConfig.FontMinorColor}
+    border: ${StyleConfig.FontMinorColor} 1px solid;
     border-radius: 5px;
 `;
 
 const btnStyle = {
     width: '100%',
-    color: `${Style.FontMainColor}`,
-    backgroundColor: `${Style.MinorColor}`
+    color: `${StyleConfig.FontMainColor}`,
+    backgroundColor: `${StyleConfig.MinorColor}`
 };
 
 class Auth extends Component {

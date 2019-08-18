@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {UserAvatar} from '../../../Components/Modules';
 import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
-import * as Style from '../../../Common/Style';
+import * as StyleConfig from '../../../Common/StyleConfig';
 
 const VideoDetailView = styled.div`
     width: 100%;
@@ -60,7 +60,7 @@ const DescTitle = styled.div`
 `;
 
 const DescRelease = styled.div`
-    color: ${Style.FontStressColor}
+    color: ${StyleConfig.FontStressColor}
 `;
 
 const DescInfo = styled.div`

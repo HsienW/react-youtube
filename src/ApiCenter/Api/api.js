@@ -1,6 +1,18 @@
 import {googleApiKey} from './ApiConfig';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 
+const headerApi = {
+    createSubscribeRequest(part, mine, maxResults, accessToken) {
+        return {
+            part: part ? part : 'snippet,contentDetails',
+            mine: mine ? mine : true,
+            maxResults: maxResults ? maxResults : 5,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+        };
+    }
+};
+
+
 const homeApi = {
     createRecommendRequest(part, mine, accessToken, maxResults, chart, videoId) {
         return {
@@ -68,6 +80,7 @@ const commentApi = {
 
 export {
     homeApi,
+    headerApi,
     searchApi,
     videoApi,
     commentApi

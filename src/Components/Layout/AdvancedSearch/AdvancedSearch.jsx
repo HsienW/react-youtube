@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {formatComponentData} from '../../../Common/BasicService';
 // import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
-import * as Style from '../../../Common/Style';
+import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 
 const AdvancedView = styled.div`
@@ -23,7 +23,7 @@ const AdvancedCondition = styled.div`
 
 const btnConfig = {
     width: 100,
-    color: `${Style.FontStressColor}`,
+    color: `${StyleConfig.FontStressColor}`,
     border: 0,
     marginRight: 8
 };

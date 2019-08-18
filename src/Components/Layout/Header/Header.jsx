@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Input} from 'antd';
-import {ContentDropdown, ListDropdown} from '../../Modules';
-import {PortalRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
+import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
+import {ListDropdown, SubscribeNotice} from '../../Modules';
+import {PortalRedux, HeaderRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {searchApi} from '../../../ApiCenter/Api/Api';
-import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
+import {headerApi, searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
-import * as Style from '../../../Common/Style';
+import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 
 const Search = Input.Search;
@@ -21,11 +21,11 @@ const HeaderView = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: ${Style.MainColor}
+    background-color: ${StyleConfig.MainColor}
 `;
 
 const profileArea = {
-    width: '16%',
+    width: '18%',
     minWidth: '300px',
     display: 'flex',
     alignItems: 'center',
@@ -38,16 +38,9 @@ const searchBarStyle = {
 };
 
 const btnConfig = {
-    color: `${Style.FontMainColor}`,
-    backgroundColor: `${Style.MainColor}`,
+    color: `${StyleConfig.FontMainColor}`,
+    backgroundColor: `${StyleConfig.MainColor}`,
     marginRight: 8
-};
-
-const contentBodyStyle = {
-    padding: '20px',
-    maxWidth: '30vw',
-    maxHeight: '50vh',
-    overflow: 'auto'
 };
 
 const data = [
@@ -71,11 +64,28 @@ class Header extends Component {
         super();
         this.state = {
             currentSearchKey: '',
+            getSubscribeStatus: false,
+            subscribeData: []
         };
     }
     
     componentDidMount() {
+        this.getSubscribeAllData();
         this.setState({currentSearchKey: WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY)});
+    }
+    
+    static getDerivedStateFromProps(nextProps) {
+        console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+        console.log(nextProps.action);
+        switch (nextProps.action.type) {
+            case HeaderRedux.SubscribeActions.getSubscribeSuccess:
+                return {getSubscribeStatus: true, homeData: nextProps.action.payload};
+            
+            default:
+                break;
+        }
+        
+        return null;
     }
     
     onSearchKeyChange = (searchKeyChange) => {
@@ -90,20 +100,6 @@ class Header extends Component {
         WebStorage.setSessionStorage(WebStorageKeys.SEARCH_KEY, searchKey);
         this.getSearchAllData();
     };
-    
-    getSearchAllData() {
-        const request = searchApi.createRequest(
-            'snippet',
-            10,
-            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
-            '',
-            '',
-            '',
-        );
-        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
-        this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
-        this.props.PortalActionsCreator.changeToPage('search');
-    }
     
     onProfileDropdownClick = (itemKey) => {
         switch (itemKey) {
@@ -121,6 +117,30 @@ class Header extends Component {
             default:
                 return;
         }
+    };
+    
+    getSearchAllData = () => {
+        const request = searchApi.createRequest(
+            'snippet',
+            10,
+            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
+            '',
+            '',
+            '',
+        );
+        // this.props.SearchActionsCreator.getInitialSearchResultData(request, 0);
+        this.props.SearchActionsCreator.testInitialSearchResultData(request, 'video', 0);
+        this.props.PortalActionsCreator.changeToPage('search');
+    };
+    
+    getSubscribeAllData = () => {
+        const request = headerApi.createSubscribeRequest(
+            '',
+            true,
+            5,
+            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
+        );
+        this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
     };
     
     render() {
@@ -145,11 +165,10 @@ class Header extends Component {
                         btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
-                    <ContentDropdown
+                    <SubscribeNotice
                         configData={ComponentConfig.NoticeDropdown}
                         btnConfig={btnConfig}
-                        contentBodyStyle={contentBodyStyle}
-                        contentData={data}
+                        subscribeNoticeData={data}
                     />
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
@@ -164,6 +183,7 @@ class Header extends Component {
 
 Header.propTypes = {
     PortalActionsCreator: PropTypes.object.isRequired,
+    HeaderActionsCreator: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired
 };
@@ -175,8 +195,9 @@ export default connect(
     (dispatch) => {
         return {
             PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
+            HeaderActionsCreator: bindActionCreators(HeaderRedux.HeaderActionsCreator, dispatch),
+            HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch),
             SearchActionsCreator: bindActionCreators(SearchRedux.SearchActionsCreator, dispatch),
-            HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch)
         };
     }
 )(Header);

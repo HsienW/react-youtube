@@ -3,6 +3,7 @@ import ContentDropdown from './Dropdown/ContentDropdown';
 import ListDropdown from './Dropdown/ListDropdown';
 import SelectDropdown from './Dropdown/SelectDropdown';
 import PageHeader from './Navigation/PageHeader';
+import SubscribeNotice from './Navigation/SubscribeNotice';
 import InfiniteScroll from './Scroll/InfiniteScroll';
 import VideoItem from './Video/VideoItem';
 import VideoListItem from './Video/VideoListItem';
@@ -15,6 +16,7 @@ export {
     ListDropdown,
     SelectDropdown,
     PageHeader,
+    SubscribeNotice,
     VideoItem,
     VideoListItem,
     VideoListPlayItem,
