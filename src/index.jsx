@@ -23,7 +23,7 @@ render((
                         <Route path='/upload' component={Upload}/>
                         <Route path='/search' component={Search}/>
                         <Route path='/play' component={Play}/>
-                        <Route path='/channel' component={Channel}/>
+                        <Route path='/my-channel' component={Channel}/>
                     </Switch>
                 </div>
             </Router>

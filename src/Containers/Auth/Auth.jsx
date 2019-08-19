@@ -42,7 +42,7 @@ class Auth extends Component {
     render() {
         return (
             <AuthView>
-                <div>Youtube</div>
+                <div>React-Youtube</div>
                 <Input placeholder="Account"/>
                 <Input type="password" placeholder="Password"/>
                 <Button style={btnStyle}>Login</Button>

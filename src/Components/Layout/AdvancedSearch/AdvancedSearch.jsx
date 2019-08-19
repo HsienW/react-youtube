@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import {SelectDropdown} from '../../Modules';
 import {SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {formatComponentData} from '../../../Common/BasicService';
 // import {searchApi} from '../../../ApiCenter/Api/Api';
-import styled from 'styled-components';
 import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 

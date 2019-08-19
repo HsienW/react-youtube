@@ -14,7 +14,7 @@ import {homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
     padding: 0 8%;
-    height: 90vh;
+    height: 100vh;
     width: 100%;
 `;
 

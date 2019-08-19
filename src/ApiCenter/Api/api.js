@@ -12,7 +12,6 @@ const headerApi = {
     }
 };
 
-
 const homeApi = {
     createRecommendRequest(part, mine, accessToken, maxResults, chart, videoId) {
         return {
@@ -22,6 +21,17 @@ const homeApi = {
             maxResults: maxResults ? maxResults : 20,
             chart: chart ? chart : 'mostPopular',
             id: videoId ? videoId : ''
+        };
+    }
+};
+
+const channelApi = {
+    createMyChannelRequest(part, mine, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails,statistics',
+            maxResults: maxResults ? maxResults : 20,
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
     }
 };
@@ -81,6 +91,7 @@ const commentApi = {
 export {
     homeApi,
     headerApi,
+    channelApi,
     searchApi,
     videoApi,
     commentApi

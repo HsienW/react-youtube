@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Input} from 'antd';
 import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
-import {ListDropdown, SubscribeNotice} from '../../Modules';
-import {PortalRedux, HeaderRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
+import {ListDropdown, ContentDropdown} from '../../Modules';
+import {PortalRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {headerApi, searchApi} from '../../../ApiCenter/Api/Api';
+import {searchApi} from '../../../ApiCenter/Api/Api';
 import styled from 'styled-components';
 import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
@@ -43,6 +43,13 @@ const btnConfig = {
     marginRight: 8
 };
 
+const contentBodyStyle = {
+    padding: '20px',
+    maxWidth: '30vw',
+    maxHeight: '50vh',
+    overflow: 'auto'
+};
+
 const data = [
     {
         title: 'Title 1',
@@ -70,23 +77,23 @@ class Header extends Component {
     }
     
     componentDidMount() {
-        this.getSubscribeAllData();
+        // this.getSubscribeAllData();
         this.setState({currentSearchKey: WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY)});
     }
     
-    static getDerivedStateFromProps(nextProps) {
-        console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-        console.log(nextProps.action);
-        switch (nextProps.action.type) {
-            case HeaderRedux.SubscribeActions.getSubscribeSuccess:
-                return {getSubscribeStatus: true, homeData: nextProps.action.payload};
-            
-            default:
-                break;
-        }
-        
-        return null;
-    }
+    // static getDerivedStateFromProps(nextProps) {
+    //     console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+    //     console.log(nextProps.action);
+    //     switch (nextProps.action.type) {
+    //         case HeaderRedux.SubscribeActions.getSubscribeSuccess:
+    //             return {getSubscribeStatus: true, homeData: nextProps.action.payload};
+    //
+    //         default:
+    //             break;
+    //     }
+    //
+    //     return null;
+    // }
     
     onSearchKeyChange = (searchKeyChange) => {
         this.setState({currentSearchKey: searchKeyChange.target.value});
@@ -104,7 +111,7 @@ class Header extends Component {
     onProfileDropdownClick = (itemKey) => {
         switch (itemKey) {
             case 'on-my-channel':
-                // this.props.PortalActionsCreator.changeToPage('channel');
+                this.props.PortalActionsCreator.changeToPage('my-channel');
                 return;
             
             case 'on-logout':
@@ -133,16 +140,16 @@ class Header extends Component {
         this.props.PortalActionsCreator.changeToPage('search');
     };
     
-    getSubscribeAllData = () => {
-        const request = headerApi.createSubscribeRequest(
-            '',
-            true,
-            5,
-            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
-        );
-        this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
-    };
-    
+    // getSubscribeAllData = () => {
+    //     const request = headerApi.createSubscribeRequest(
+    //         '',
+    //         true,
+    //         5,
+    //         WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
+    //     );
+    //     this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
+    // };
+    //
     render() {
         return (
             <HeaderView>
@@ -165,10 +172,11 @@ class Header extends Component {
                         btnConfig={btnConfig}
                         itemClickAction={this.props.PortalActionsCreator.changeToPage}
                     />
-                    <SubscribeNotice
+                    <ContentDropdown
                         configData={ComponentConfig.NoticeDropdown}
                         btnConfig={btnConfig}
-                        subscribeNoticeData={data}
+                        contentBodyStyle={contentBodyStyle}
+                        contentData={data}
                     />
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
@@ -184,7 +192,7 @@ class Header extends Component {
 Header.propTypes = {
     PortalActionsCreator: PropTypes.object.isRequired,
     HeaderActionsCreator: PropTypes.object.isRequired,
-    HomeActionsCreator: PropTypes.object.isRequired,
+    // HomeActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired
 };
 
@@ -195,7 +203,7 @@ export default connect(
     (dispatch) => {
         return {
             PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
-            HeaderActionsCreator: bindActionCreators(HeaderRedux.HeaderActionsCreator, dispatch),
+            // HeaderActionsCreator: bindActionCreators(HeaderRedux.HeaderActionsCreator, dispatch),
             HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch),
             SearchActionsCreator: bindActionCreators(SearchRedux.SearchActionsCreator, dispatch),
         };
