@@ -70,6 +70,20 @@ const formatData = {
         });
         return newData;
     },
+    subscribeNoticeDetailRespond(data) {
+        const newData = [];
+        data.forEach((item) => {
+            newData.push({
+                id: item.id,
+                channelId: item.channelId,
+                title: item.snippet.title,
+                description: item.snippet.description,
+                imgURL: item.snippet.thumbnails.medium.url,
+                publishedAt: item.snippet.publishedAt
+            });
+        });
+        return newData;
+    },
     videoPlayerTime(seconds) {
         if (seconds > 3600) {
             return moment().startOf('day').seconds(seconds).format('H:mm:ss');

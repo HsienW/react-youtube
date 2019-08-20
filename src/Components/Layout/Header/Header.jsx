@@ -43,20 +43,20 @@ const btnConfig = {
     marginRight: 8
 };
 
-const data = [
-    {
-        title: 'Title 1',
-    },
-    {
-        title: 'Title 2',
-    },
-    {
-        title: 'Title 3',
-    },
-    {
-        title: 'Title 4',
-    }
-];
+// const data = [
+//     {
+//         title: 'Title 1',
+//     },
+//     {
+//         title: 'Title 2',
+//     },
+//     {
+//         title: 'Title 3',
+//     },
+//     {
+//         title: 'Title 4',
+//     }
+// ];
 
 class Header extends Component {
     
@@ -75,11 +75,9 @@ class Header extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
-        console.log(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-        console.log(nextProps.action);
         switch (nextProps.action.type) {
             case HeaderRedux.SubscribeActions.getSubscribeSuccess:
-                return {getSubscribeStatus: true, homeData: nextProps.action.payload};
+                return {getSubscribeStatus: true, subscribeData: nextProps.action.payload.data.items};
             
             default:
                 break;
@@ -135,10 +133,10 @@ class Header extends Component {
     
     getSubscribeAllData = () => {
         const request = headerApi.createSubscribeRequest(
-            '',
+            'snippet,contentDetails',
             true,
             5,
-            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         );
         this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
     };
@@ -168,7 +166,7 @@ class Header extends Component {
                     <SubscribeNotice
                         configData={ComponentConfig.NoticeDropdown}
                         btnConfig={btnConfig}
-                        subscribeNoticeData={data}
+                        subscribeNoticeData={this.state.subscribeData}
                     />
                     <ListDropdown
                         configData={ComponentConfig.ProfileDropdown}
@@ -190,7 +188,7 @@ Header.propTypes = {
 
 export default connect(
     (state) => {
-        return {action: state.PortalReducer.action};
+        return {action: state.HeaderReducer.action};
     },
     (dispatch) => {
         return {

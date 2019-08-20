@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import {Dropdown, Button, Icon, Card, List, Avatar} from 'antd';
 
 export default class ContentDropdown extends Component {
+    
+    state = {
+        visible: false,
+    };
+    
+    handleVisibleChange = showState => {
+        this.setState({visible: showState});
+    };
+    
     render() {
-        const {configData, contentData ,btnConfig, contentBodyStyle} = {...this.props};
+        const {configData, contentData, btnConfig, contentBodyStyle} = {...this.props};
         const list = (
             <Card style={contentBodyStyle}>
                 <List
@@ -13,8 +22,9 @@ export default class ContentDropdown extends Component {
                     renderItem={item => (
                         <List.Item>
                             <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                                title={<a href="https://">{item.title}</a>}
+                                avatar={<Avatar
+                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                                title={<a>{item.title}</a>}
                                 description="The trade talks between Beijing and Washington appear to have unraveled."
                             />
                         </List.Item>
@@ -23,7 +33,11 @@ export default class ContentDropdown extends Component {
             </Card>
         );
         return (
-            <Dropdown overlay={list}>
+            <Dropdown
+                overlay={list}
+                visible={this.state.visible}
+                onVisibleChange={this.handleVisibleChange}
+            >
                 <Button style={btnConfig}>
                     {configData.dropdownName} <Icon type={configData.iconType}/>
                 </Button>
