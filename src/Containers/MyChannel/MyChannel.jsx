@@ -8,16 +8,12 @@ import {MyChannelRedux} from '../../Redux/Modules';
 import {Header, MyChannelBanner} from '../../Components/Layout';
 import {channelApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+// import {Menu, Icon} from 'antd';
 
 const MyChannelView = styled.div`
     padding: 0 8%;
     height: 100vh;
     width: 100%;
-`;
-
-const ContentArea = styled.div`
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -35,7 +31,8 @@ class MyChannel extends Component {
         super();
         this.state = {
             getMyChannelStatus: false,
-            myChannelData: []
+            myChannelData: [],
+            current: 'mail',
         };
     }
     
@@ -65,6 +62,13 @@ class MyChannel extends Component {
         this.props.MyChannelActionsCreator.getMyChannelData(myChannelRequest);
     };
     
+    // handleClick = (e) => {
+    //     console.log('click ', e);
+    //     this.setState({
+    //         current: e.key,
+    //     });
+    // };
+    
     render() {
         return (
             <div>
@@ -72,12 +76,10 @@ class MyChannel extends Component {
                 {
                     this.state.getMyChannelStatus
                         ? <MyChannelView>
-                            <ContentArea>
-                                <MyChannelBanner
-                                    myChannelBannerData={this.state.myChannelData}
-                                    myChannelBannerConfig={myChannelBannerConfig}
-                                />
-                            </ContentArea>
+                            <MyChannelBanner
+                                myChannelBannerData={this.state.myChannelData}
+                                myChannelBannerConfig={myChannelBannerConfig}
+                            />
                         </MyChannelView>
                         : <div>No-Data</div>
                 }

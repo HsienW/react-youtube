@@ -26,8 +26,6 @@ export const MyChannelActionsCreator = {
 };
 
 export default function MyChannelReducer(state = {action: ''}, action) {
-    console.log('pppppppppppppppppp');
-    console.log(action);
     switch (action.type) {
         case MyChannelActions.getMyChannelSuccess:
         case MyChannelActions.getMyChannelFailed:
