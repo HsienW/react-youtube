@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {PageHeader, VideoItem} from '../../Components/Modules/index';
+import {PageDivider, VideoItem} from '../../Components/Modules/index';
 import {Header} from '../../Components/Layout/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
@@ -25,6 +25,10 @@ const ContentArea = styled.div`
     flex-wrap: wrap;
     justify-content: center;
 `;
+
+const recommendDividerData = {
+    title: 'Recommend'
+};
 
 @CheckAuthHOC
 @LoadingDataHOC
@@ -82,7 +86,7 @@ class Home extends Component {
             <div>
                 <Header/>
                 <HomeView>
-                    <PageHeader/>
+                    <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
                         {
                             this.state.homeData.length !== 0

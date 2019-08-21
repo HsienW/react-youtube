@@ -1,19 +1,26 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import is from 'is_js';
 import styled from 'styled-components';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {MyChannelRedux} from '../../Redux/Modules';
-// import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
+import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, MyChannelBanner} from '../../Components/Layout';
-import {channelApi} from '../../ApiCenter/Api/Api';
+import {PageDivider, VideoItem} from '../../Components/Modules/index';
+import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
-// import {Menu, Icon} from 'antd';
+import {formatCurry, formatData} from '../../Common/BasicService';
 
 const MyChannelView = styled.div`
     padding: 0 8%;
     height: 100vh;
     width: 100%;
+`;
+
+const ContentArea = styled.div`
+    width: 100%;
+    min-height: 280px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -23,16 +30,27 @@ const myChannelBannerConfig = {
     avatarSize: 80,
 };
 
-// @CheckAuthHOC
-// @LoadingDataHOC
+const uploadVideoDividerData = {
+    title: 'My Upload Video'
+};
+
+const likeVideoDividerData = {
+    title: 'My Like Video'
+};
+
+@CheckAuthHOC
+@LoadingDataHOC
 class MyChannel extends Component {
     
     constructor() {
         super();
         this.state = {
             getMyChannelStatus: false,
+            getMyUploadListStatus: false,
+            getMyLikeListStatus: false,
             myChannelData: [],
-            current: 'mail',
+            myUploadListData: [],
+            myLikeListData: []
         };
     }
     
@@ -45,11 +63,23 @@ class MyChannel extends Component {
             case MyChannelRedux.MyChannelActions.getMyChannelSuccess:
                 return {getMyChannelStatus: true, myChannelData: nextProps.action.payload.data.items};
             
+            case MyChannelRedux.MyUploadListActions.getMyUploadListSuccess:
+                return {getMyUploadListStatus: true, myUploadListData: nextProps.action.payload.data.items};
+    
+            case MyChannelRedux.MyLikeListActions.getMyLikeListSuccess:
+                return {getMyLikeListStatus: true, myLikeListData: nextProps.action.payload.data.items};
+            
             default:
                 break;
         }
         
         return null;
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (is.all.truthy(prevState)) {
+            this.props.toggleShowLoading(false);
+        }
     }
     
     getMyChannelAllData = () => {
@@ -59,15 +89,27 @@ class MyChannel extends Component {
             WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
             20,
         );
+        const myUploadListRequest = channelApi.createMyUploadListRequest(
+            'snippet,contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            20,
+        );
+        const myLikeListRequest = videoApi.createMyLikeVideoListRequest(
+            'snippet,contentDetails,statistics',
+            'like',
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            6,
+        );
         this.props.MyChannelActionsCreator.getMyChannelData(myChannelRequest);
+        this.props.MyChannelActionsCreator.getMyUploadListData(myUploadListRequest);
+        this.props.MyChannelActionsCreator.getMyLikeListData(myLikeListRequest);
     };
     
-    // handleClick = (e) => {
-    //     console.log('click ', e);
-    //     this.setState({
-    //         current: e.key,
-    //     });
-    // };
+    videoItemClick = (videoItemInfo) => {
+        WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));
+        this.props.PortalActionsCreator.changeToPage('play');
+    };
     
     render() {
         return (
@@ -80,6 +122,38 @@ class MyChannel extends Component {
                                 myChannelBannerData={this.state.myChannelData}
                                 myChannelBannerConfig={myChannelBannerConfig}
                             />
+                            <PageDivider dividerData={uploadVideoDividerData}/>
+                            <ContentArea>
+                                {
+                                    this.state.myUploadListData.length !== 0
+                                        ? formatData.videoItemRespond(this.state.myUploadListData).map((item) => {
+                                            return (
+                                                <VideoItem
+                                                    key={item.id}
+                                                    videoItemData={item}
+                                                    itemClickAction={this.videoItemClick}
+                                                />
+                                            );
+                                        })
+                                        : <div>No-Data</div>
+                                }
+                            </ContentArea>
+                            <PageDivider dividerData={likeVideoDividerData}/>
+                            <ContentArea>
+                                {
+                                    this.state.myLikeListData.length !== 0
+                                        ? formatData.videoItemRespond(this.state.myLikeListData).map((item) => {
+                                            return (
+                                                <VideoItem
+                                                    key={item.id}
+                                                    videoItemData={item}
+                                                    itemClickAction={this.videoItemClick}
+                                                />
+                                            );
+                                        })
+                                        : <div>No-Data</div>
+                                }
+                            </ContentArea>
                         </MyChannelView>
                         : <div>No-Data</div>
                 }
@@ -88,12 +162,11 @@ class MyChannel extends Component {
     }
 }
 
-// myChannelData: PropTypes.object.isRequired,
-//     myChannelConfig: PropTypes.object.isRequired
-
 MyChannel.propTypes = {
     history: PropTypes.object.isRequired,
     MyChannelActionsCreator: PropTypes.object.isRequired,
+    PortalActionsCreator: PropTypes.object.isRequired,
+    toggleShowLoading: PropTypes.func
 };
 
 export default connect(
@@ -102,7 +175,8 @@ export default connect(
     },
     (dispatch) => {
         return {
-            MyChannelActionsCreator: bindActionCreators(MyChannelRedux.MyChannelActionsCreator, dispatch)
+            MyChannelActionsCreator: bindActionCreators(MyChannelRedux.MyChannelActionsCreator, dispatch),
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
         };
     }
 )(MyChannel);

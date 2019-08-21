@@ -7,20 +7,20 @@ const MyChannelBannerView = styled.div`
     min-height: 200px;
     width: 100%;
     height: 12vh;
-    padding: 2rem 0;
+    padding: 3rem 0 0 0;
 `;
 
 const UserProfileImg = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 0 0 1rem 0;
 `;
 
 const UserName = styled.div`
     width: 100%;
     font-size: 2rem;
     text-align: center;
+    padding: 1rem 0 0 0;
 `;
 
 export default class MyChannelBanner extends Component {
@@ -37,7 +37,7 @@ export default class MyChannelBanner extends Component {
                         }
                     }/>
                 </UserProfileImg>
-                <UserName>123</UserName>
+                <UserName>{myChannelBannerData[0].snippet.title}</UserName>
             </MyChannelBannerView>
         );
     }

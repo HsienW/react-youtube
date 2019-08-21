@@ -57,7 +57,7 @@ class Search extends Component {
         super();
         this.searchContainerScroll = React.createRef();
         this.state = {
-            searchStatus: false,
+            getSearchStatus: false,
             searchKey: '',
             searchType: '',
             nextPageToken: '',
@@ -76,7 +76,7 @@ class Search extends Component {
         switch (nextProps.action.type) {
             // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
             //     return {
-            //         searchStatus: true,
+            //         getSearchStatus: true,
             //         searchKey: nextProps.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -84,7 +84,7 @@ class Search extends Component {
             //     };
             // case SearchRedux.NextSearchActions.getNextSearchSuccess:
             //     return {
-            //         searchStatus: true,
+            //         getSearchStatus: true,
             //         searchKey: nextProps.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -92,7 +92,7 @@ class Search extends Component {
             //     };
             case SearchRedux.ClearSearchActions.clearSearchData:
                 return {
-                    searchStatus: false,
+                    getSearchStatus: false,
                     searchKey: '',
                     nextPageToken: '',
                     currentSearchDataIndex: 0,
@@ -100,7 +100,7 @@ class Search extends Component {
                 };
             case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
                 return {
-                    searchStatus: true,
+                    getSearchStatus: true,
                     searchKey: 'you',
                     nextPageToken: Math.random().toString(36).substring(7),
                     currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -108,7 +108,7 @@ class Search extends Component {
                 };
             case SearchRedux.NextSearchActions.getNextSearchSuccess:
                 return {
-                    searchStatus: true,
+                    getSearchStatus: true,
                     searchKey: 'you',
                     nextPageToken: Math.random().toString(36).substring(7),
                     currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -125,9 +125,9 @@ class Search extends Component {
             this.props.toggleShowLoading(false);
         }
 
-        if (!this.state.searchStatus) {
+        if (!this.state.getSearchStatus) {
             this.setState({
-                searchStatus: false,
+                getSearchStatus: false,
                 searchKey: '',
                 nextPageToken: 0,
                 currentSearchDataIndex: 0,
@@ -137,7 +137,7 @@ class Search extends Component {
 
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
-                searchStatus: true,
+                getSearchStatus: true,
                 searchKey: 'you',
                 nextPageToken: prevProps.action.payload.nextPageToken,
                 currentSearchDataIndex: this.state.currentSearchDataIndex,
@@ -190,7 +190,7 @@ class Search extends Component {
                         >
                             <AdvancedSearch searchKey={this.state.searchKey}/>
                             {
-                                this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
+                                this.state.getSearchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (
                                         <VideoListPlayItem
                                             key={item.id}
