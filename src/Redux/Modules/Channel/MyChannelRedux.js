@@ -33,7 +33,7 @@ const getMyChannelData = (request) => {
     };
 };
 
-const getMyUploadListData = (request) => {
+const getMyUploadVideoListData = (request) => {
     return (dispatch) => {
         dispatch(createAction(MyUploadListActions.getMyUploadListStart)());
         callApi.get(apiData.activitiesURL, request)
@@ -46,7 +46,7 @@ const getMyUploadListData = (request) => {
     };
 };
 
-const getMyLikeListData = (request) => {
+const getMyLikeVideoListData = (request) => {
     return (dispatch) => {
         dispatch(createAction(MyLikeListActions.getMyLikeListStart)());
         callApi.get(apiData.videoURL, request)
@@ -61,8 +61,8 @@ const getMyLikeListData = (request) => {
 
 export const MyChannelActionsCreator = {
     getMyChannelData,
-    getMyUploadListData,
-    getMyLikeListData
+    getMyUploadVideoListData,
+    getMyLikeVideoListData
 };
 
 export default function MyChannelReducer(state = {action: ''}, action) {

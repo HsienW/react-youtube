@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, SearchRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, AdvancedSearch} from '../../Components/Layout';
-import {VideoListPlayItem} from '../../Components/Modules';
+import {VideoListPlayItem, GetDataErrorNotice} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
 // import {searchApi} from '../../ApiCenter/Api/Api';
 // import * as ComponentConfig from '../../Common/ComponentConfig';
@@ -124,7 +124,7 @@ class Search extends Component {
         if (is.all.truthy(prevState)) {
             this.props.toggleShowLoading(false);
         }
-
+        
         if (!this.state.getSearchStatus) {
             this.setState({
                 getSearchStatus: false,
@@ -134,7 +134,7 @@ class Search extends Component {
                 searchResult: []
             });
         }
-
+        
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
                 getSearchStatus: true,
@@ -205,7 +205,7 @@ class Search extends Component {
                                             }
                                         />
                                     );
-                                }) : <div>No-Data</div>
+                                }) : <GetDataErrorNotice/>
                             }
                         </div>
                     </SearchContent>

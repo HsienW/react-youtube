@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {PageDivider, VideoItem} from '../../Components/Modules/index';
+import {PageDivider, VideoItem, GetDataErrorNotice} from '../../Components/Modules';
 import {Header} from '../../Components/Layout/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
@@ -89,7 +89,7 @@ class Home extends Component {
                     <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
                         {
-                            this.state.homeData.length !== 0
+                            this.state.getHomeStatus
                                 ? formatData.videoItemRespond(this.state.homeData).map((item) => {
                                     return (
                                         <VideoItem
@@ -99,7 +99,7 @@ class Home extends Component {
                                         />
                                     );
                                 })
-                                : <div>No-Data</div>
+                                : <GetDataErrorNotice />
                         }
                     </ContentArea>
                 </HomeView>

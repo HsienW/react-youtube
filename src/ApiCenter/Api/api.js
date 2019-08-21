@@ -33,6 +33,14 @@ const channelApi = {
             mine: mine ? mine : true,
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
+    },
+    createMyUploadListRequest(part, mine, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 20,
+        };
     }
 };
 
@@ -67,6 +75,14 @@ const videoApi = {
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
             maxResults: maxResults ? maxResults : 1,
             id: videoId ? videoId : ''
+        };
+    },
+    createMyLikeVideoListRequest(part, myRating, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails,statistics',
+            myRating: myRating ? myRating : 'like',
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 5,
         };
     },
     createDetailRequest(part, id) {
