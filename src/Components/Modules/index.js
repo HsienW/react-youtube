@@ -4,7 +4,8 @@ import ListDropdown from './Dropdown/ListDropdown';
 import SelectDropdown from './Dropdown/SelectDropdown';
 import PageDivider from './Navigation/PageDivider';
 import SubscribeNotice from './Notice/SubscribeNotice';
-import GetDataErrorNotice from './Notice/GetDataErrorNotice';
+import UserActionResult from './Notice/UserActionResult';
+import ActionAlert from './Notice/ActionAlert';
 import InfiniteScroll from './Scroll/InfiniteScroll';
 import VideoItem from './Video/VideoItem';
 import VideoListItem from './Video/VideoListItem';
@@ -18,7 +19,8 @@ export {
     SelectDropdown,
     PageDivider,
     SubscribeNotice,
-    GetDataErrorNotice,
+    ActionAlert,
+    UserActionResult,
     VideoItem,
     VideoListItem,
     VideoListPlayItem,

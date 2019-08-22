@@ -11,10 +11,12 @@ export const callApi = {
     get(url, request) {
         return axios.get(url, {params: request})
             .then((response) => {
+                console.log('thenthenthenthenthenthenthen');
+                console.log(response);
                 return response;
             })
             .catch((error) => {
-                console.log(error);
+                console.log('catchcatchcatchcatchcatchcatchcatch');
                 return error;
             });
 
@@ -22,11 +24,9 @@ export const callApi = {
     post(url, request) {
         axios.post(url, request)
             .then((response) => {
-                console.log(response);
                 return response;
             })
             .catch((error) => {
-                console.log(error);
                 return error;
             });
     }

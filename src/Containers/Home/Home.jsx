@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {PageDivider, VideoItem, GetDataErrorNotice} from '../../Components/Modules';
+import {PageDivider, VideoItem, UserActionResult, ActionAlert} from '../../Components/Modules';
 import {Header} from '../../Components/Layout/index';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
@@ -30,15 +30,25 @@ const recommendDividerData = {
     title: 'Recommend'
 };
 
+const userActionResultData = {
+    title: 'Loading...'
+};
+
+const errorAlertConfigData = {
+    type: 'error'
+};
+
 @CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             getHomeStatus: false,
-            homeData: []
+            showDataErrorAlert: false,
+            homeData: [],
+            getErrorAlertData: {}
         };
     }
     
@@ -49,7 +59,20 @@ class Home extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
-                return {getHomeStatus: true, homeData: nextProps.action.payload.items};
+                return {
+                    getHomeStatus: true,
+                    showDataErrorAlert: false,
+                    homeData: nextProps.action.payload.items,
+                    getErrorAlertData: {}
+                };
+            
+            case HomeRedux.HomeActions.getHomeFailed:
+                return {
+                    getHomeStatus: false,
+                    showDataErrorAlert: true,
+                    homeData: [],
+                    getErrorAlertData: nextProps.action.payload
+                };
             
             default:
                 break;
@@ -72,8 +95,8 @@ class Home extends Component {
             20,
             'mostPopular',
         );
-        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
-        // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
+        this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
     };
     
     videoItemClick = (videoItemInfo) => {
@@ -99,7 +122,15 @@ class Home extends Component {
                                         />
                                     );
                                 })
-                                : <GetDataErrorNotice />
+                                : <UserActionResult userActionResultData={userActionResultData}/>
+                        }
+                        {
+                            this.state.showDataErrorAlert
+                                ? <ActionAlert
+                                    configData={errorAlertConfigData}
+                                    userActionNoticeData={this.state.getErrorAlertData}
+                                />
+                                : null
                         }
                     </ContentArea>
                 </HomeView>
@@ -113,7 +144,8 @@ Home.propTypes = {
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
-    toggleShowLoading: PropTypes.func
+    toggleShowLoading: PropTypes.func,
+    toggleShowAlert: PropTypes.func
 };
 
 export default connect(

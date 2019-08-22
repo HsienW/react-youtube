@@ -19,6 +19,10 @@
     border-color: #02BEC4 !important;
 }
 
+.ant-result-info .ant-result-icon > .anticon {
+    color: #02BEC4 !important;
+}
+
 .related-video-list-item > .ant-card-meta-detail {
     height: 100% !important;
 }

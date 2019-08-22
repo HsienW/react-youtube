@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
-import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
+// import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
 export const HomeActions = {
     getHomeStart: 'GET_HOME_START',
@@ -25,7 +25,8 @@ const getHomeData = (request) => {
 const testGetHomeData = () => {
     return (dispatch) => {
         dispatch(createAction(HomeActions.getHomeStart)());
-        dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));
+        dispatch(createAction(HomeActions.getHomeFailed)('error-error-error'));
+        // dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));
     };
 };
 
@@ -35,6 +36,8 @@ export const HomeActionsCreator = {
 };
 
 export default function HomeReducer(state = {action: ''}, action) {
+    console.log('mmmmmmmmmmmmmmmmmmmmmmmmmm');
+    console.log(action);
     switch (action.type) {
         case HomeActions.getHomeSuccess:
         case HomeActions.getHomeFailed:

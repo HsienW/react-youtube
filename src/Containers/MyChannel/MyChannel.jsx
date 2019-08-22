@@ -31,11 +31,11 @@ const myChannelBannerConfig = {
 };
 
 const uploadVideoDividerData = {
-    title: 'My Upload Video'
+    title: 'Upload Videos'
 };
 
 const likeVideoDividerData = {
-    title: 'My Like Video'
+    title: 'Like Videos'
 };
 
 @CheckAuthHOC
