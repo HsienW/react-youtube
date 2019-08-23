@@ -6,6 +6,7 @@ import * as HeaderRedux from './Header/HeaderRedux';
 import * as PlayRedux from './Play/PlayRedux';
 import * as SearchRedux from './Search/SearchRedux';
 import * as UploadRedux from './Upload/UploadRedux';
+import * as ActionAlertRedux from './Notice/ActionAlertRedux';
 
 export {
     PortalRedux,
@@ -15,5 +16,6 @@ export {
     HeaderRedux,
     PlayRedux,
     SearchRedux,
-    UploadRedux
+    UploadRedux,
+    ActionAlertRedux
 };

@@ -4,12 +4,6 @@ import {formatData} from '../../../Common/BasicService';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
-// export const SearchActions = {
-//     getSearchStart: 'GET_SEARCH_START',
-//     getSearchSuccess: 'GET_SEARCH_SUCCESS',
-//     getSearchFailed: 'GET_SEARCH_FAILED',
-// };
-
 export const ClearSearchActions = {
     clearSearchData: 'CLEAR_SEARCH_DATA',
 };
@@ -25,19 +19,6 @@ export const NextSearchActions = {
     getNextSearchSuccess: 'GET_NEXT_SEARCH_SUCCESS',
     getNextSearchFailed: 'GET_NEXT_SEARCH_FAILED',
 };
-
-// const getSearchResultData = (request) => {
-//     return (dispatch) => {
-//         dispatch(createAction(SearchActions.getSearchStart)());
-//         callApi.get(apiData.searchURL, request)
-//             .then((respond) => {
-//                 dispatch(createAction(SearchActions.getSearchSuccess)(respond));
-//             })
-//             .catch((error) => {
-//                 dispatch(createAction(SearchActions.getSearchFailed)(error));
-//             });
-//     };
-// };
 
 const getInitialSearchResultData = (request, searchDataIndex) => {
     return (dispatch) => {

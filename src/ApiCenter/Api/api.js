@@ -13,15 +13,13 @@ const headerApi = {
 };
 
 const homeApi = {
-    createRecommendRequest(part, mine, accessToken, maxResults, chart, videoId) {
+    createRecommendRequest(part, mine, accessToken, maxResults, chart) {
         return {
             part: part ? part : 'snippet,contentDetails',
             mine: mine ? mine : true,
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
             maxResults: maxResults ? maxResults : 20,
             chart: chart ? chart : 'mostPopular',
-            id: videoId ? videoId : '',
-            pageToken: '123456789'
         };
     }
 };

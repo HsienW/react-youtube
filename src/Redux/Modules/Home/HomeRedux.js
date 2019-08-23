@@ -25,7 +25,7 @@ const getHomeData = (request) => {
 const testGetHomeData = () => {
     return (dispatch) => {
         dispatch(createAction(HomeActions.getHomeStart)());
-        dispatch(createAction(HomeActions.getHomeFailed)('error-error-error'));
+        dispatch(createAction(HomeActions.getHomeFailed)({code: '400', message: 'error-error-error'}));
         // dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));
     };
 };
@@ -36,8 +36,6 @@ export const HomeActionsCreator = {
 };
 
 export default function HomeReducer(state = {action: ''}, action) {
-    console.log('mmmmmmmmmmmmmmmmmmmmmmmmmm');
-    console.log(action);
     switch (action.type) {
         case HomeActions.getHomeSuccess:
         case HomeActions.getHomeFailed:
