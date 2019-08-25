@@ -6,8 +6,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {Header, MyChannelBanner} from '../../Components/Layout';
-import {PageDivider, VideoItem, GetDataErrorNotice} from '../../Components/Modules';
+import {Header, MyChannelBanner, ActionAlert} from '../../Components/Layout';
+import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {formatCurry, formatData} from '../../Common/BasicService';
@@ -36,6 +36,14 @@ const uploadVideoDividerData = {
 
 const likeVideoDividerData = {
     title: 'Like Videos'
+};
+
+const userActionResultData = {
+    title: 'Loading...'
+};
+
+const errorAlertConfigData = {
+    type: 'error'
 };
 
 @CheckAuthHOC
@@ -158,9 +166,10 @@ class MyChannel extends Component {
                         </MyChannelView>
                         :
                         <MyChannelView>
-                            <GetDataErrorNotice/>
+                            <UserActionResult userActionResultData={userActionResultData}/>
                         </MyChannelView>
                 }
+                <ActionAlert configData={errorAlertConfigData}/>
             </div>
         );
     }

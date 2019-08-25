@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
-import {Header, ActionAlert} from '../../Components/Layout/index';
+import {Header, ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {homeApi} from '../../ApiCenter/Api/Api';
@@ -55,8 +55,6 @@ class Home extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
-        console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
-        console.log(nextProps.action);
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
                 return {
