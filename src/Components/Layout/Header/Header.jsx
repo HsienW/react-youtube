@@ -95,6 +95,7 @@ class Header extends Component {
                 WebStorage.removeSessionStorage(WebStorageKeys.ACCESS_TOKEN);
                 WebStorage.removeSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
                 WebStorage.removeSessionStorage(WebStorageKeys.SEARCH_KEY);
+                WebStorage.removeSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
                 this.props.PortalActionsCreator.changeToPage('auth');
                 return;
             

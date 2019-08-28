@@ -1,5 +1,6 @@
 import * as PortalRedux from './Portal/PortalRedux';
 import * as AuthRedux from './Auth/AuthRedux';
+import * as ProfileRedux from './Profile/ProfileRedux';
 import * as MyChannelRedux from './Channel/MyChannelRedux';
 import * as HomeRedux from './Home/HomeRedux';
 import * as HeaderRedux from './Header/HeaderRedux';
@@ -17,5 +18,6 @@ export {
     PlayRedux,
     SearchRedux,
     UploadRedux,
-    ActionAlertRedux
+    ActionAlertRedux,
+    ProfileRedux
 };

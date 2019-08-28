@@ -4,13 +4,13 @@ import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
+import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {Header, ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
-import {homeApi} from '../../ApiCenter/Api/Api';
+import {homeApi, channelApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
     padding: 0 8%;
@@ -46,21 +46,24 @@ class Home extends Component {
         super();
         this.state = {
             getHomeStatus: false,
+            getProfileChannelStatus: false,
             homeData: [],
+            profileChannelData: [],
         };
     }
     
     componentDidMount() {
         this.getHomeAllData();
+        this.getProfileAllData();
     }
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
-                return {
-                    getHomeStatus: true,
-                    homeData: nextProps.action.payload.items,
-                };
+                return {getHomeStatus: true, homeData: nextProps.action.payload.items};
+    
+            case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
+                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.items};
             
             default:
                 break;
@@ -85,6 +88,15 @@ class Home extends Component {
         );
         this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
         // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
+    };
+    
+    getProfileAllData = () => {
+        const profileChannelRequest = channelApi.createProfileChannelRequest(
+            'contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+        );
+        this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
     };
     
     videoItemClick = (videoItemInfo) => {
@@ -124,6 +136,7 @@ Home.propTypes = {
     history: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
+    ProfileActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func,
     toggleShowAlert: PropTypes.func
@@ -137,7 +150,8 @@ export default connect(
         return {
             HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch),
             PlayActionsCreator: bindActionCreators(PlayRedux.PlayActionsCreator, dispatch),
-            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
+            ProfileActionsCreator: bindActionCreators(ProfileRedux.ProfileActionsCreator, dispatch),
         };
     }
 )(Home);

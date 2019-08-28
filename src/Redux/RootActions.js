@@ -1,4 +1,5 @@
 import {AuthActions} from '../Redux/Modules/Auth/AuthRedux';
+import {ProfileChannelActions} from '../Redux/Modules/Profile/ProfileRedux';
 import {MyChannelActions, MyUploadListActions, MyLikeListActions} from '../Redux/Modules/Channel/MyChannelRedux';
 import {SubscribeActions} from '../Redux/Modules/Header/HeaderRedux';
 import {HomeActions} from '../Redux/Modules/Home/HomeRedux';
@@ -12,6 +13,7 @@ export {
     MyLikeListActions,
     SubscribeActions,
     HomeActions,
+    ProfileChannelActions,
     PlayVideoActions,
     PlayDetailActions,
     PlayCommentActions,
