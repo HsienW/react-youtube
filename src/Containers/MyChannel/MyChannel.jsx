@@ -6,8 +6,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {Header, MyChannelBanner} from '../../Components/Layout';
-import {PageDivider, VideoItem, GetDataErrorNotice} from '../../Components/Modules';
+import {Header, MyChannelBanner, ActionAlert} from '../../Components/Layout';
+import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {formatCurry, formatData} from '../../Common/BasicService';
@@ -38,6 +38,14 @@ const likeVideoDividerData = {
     title: 'Like Videos'
 };
 
+const userActionResultData = {
+    title: 'Loading...'
+};
+
+const errorAlertConfigData = {
+    type: 'error'
+};
+
 @CheckAuthHOC
 @LoadingDataHOC
 class MyChannel extends Component {
@@ -50,7 +58,7 @@ class MyChannel extends Component {
             getMyLikeListStatus: false,
             myChannelData: [],
             myUploadVideoListData: [],
-            myLikeVideoListData: []
+            myLikeVideoListData: [],
         };
     }
     
@@ -64,11 +72,13 @@ class MyChannel extends Component {
                 return {getMyChannelStatus: true, myChannelData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyUploadListActions.getMyUploadListSuccess:
+                console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+                console.log(nextProps.action.payload.data.items);
                 return {getMyUploadListStatus: true, myUploadVideoListData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyLikeListActions.getMyLikeListSuccess:
                 return {getMyLikeListStatus: true, myLikeVideoListData: nextProps.action.payload.data.items};
-            
+    
             default:
                 break;
         }
@@ -84,6 +94,7 @@ class MyChannel extends Component {
     
     getMyChannelAllData = () => {
         const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+        const userUploadId = WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
         const myChannelRequest = channelApi.createMyChannelRequest(
             'snippet,contentDetails,statistics',
             true,
@@ -92,9 +103,9 @@ class MyChannel extends Component {
         );
         const myUploadVideoListRequest = channelApi.createMyUploadListRequest(
             'snippet,contentDetails',
-            true,
+            userUploadId,
             userToken,
-            20,
+            6,
         );
         const myLikeVideoListRequest = videoApi.createMyLikeVideoListRequest(
             'snippet,contentDetails,statistics',
@@ -118,6 +129,8 @@ class MyChannel extends Component {
                 <Header/>
                 {
                     this.state.getMyChannelStatus
+                    && this.state.getMyUploadListStatus
+                    && this.state.getMyLikeListStatus
                         ? <MyChannelView>
                             <MyChannelBanner
                                 myChannelBannerData={this.state.myChannelData}
@@ -156,11 +169,11 @@ class MyChannel extends Component {
                                 }
                             </ContentArea>
                         </MyChannelView>
-                        :
-                        <MyChannelView>
-                            <GetDataErrorNotice/>
+                        : <MyChannelView>
+                            <UserActionResult userActionResultData={userActionResultData}/>
                         </MyChannelView>
                 }
+                <ActionAlert configData={errorAlertConfigData}/>
             </div>
         );
     }

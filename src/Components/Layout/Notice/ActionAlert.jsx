@@ -36,9 +36,8 @@ class ActionAlert extends Component {
             case PlayRedux.PlayCommentActions.getPlayCommentFailed:
             case PlayRedux.PlayRelatedActions.getPlayRelatedFailed:
                 return {showAlert: true, actionNoticeData: nextProps.action.payload};
-    
+            
             case ActionAlertRedux.ActionAlertActions.hideActionAlert:
-                console.log('88888888888888888888888888888');
                 return {showAlert: false, actionNoticeData: {}};
             
             default:
@@ -50,7 +49,14 @@ class ActionAlert extends Component {
     
     getSnapshotBeforeUpdate(prevProps, prevState) {
         if (prevState.showAlert && !this.state.showAlert) {
-            this.setState({showAlert: false});
+            return true;
+        }
+        return null;
+    }
+    
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (snapshot) {
+            this.setState({showAlert: false, actionNoticeData: {}});
         }
     }
     

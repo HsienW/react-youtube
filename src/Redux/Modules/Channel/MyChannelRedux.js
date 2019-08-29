@@ -36,7 +36,7 @@ const getMyChannelData = (request) => {
 const getMyUploadVideoListData = (request) => {
     return (dispatch) => {
         dispatch(createAction(MyUploadListActions.getMyUploadListStart)());
-        callApi.get(apiData.activitiesURL, request)
+        callApi.get(apiData.playListURL, request)
             .then((respond) => {
                 dispatch(createAction(MyUploadListActions.getMyUploadListSuccess)(respond));
             })
@@ -62,7 +62,7 @@ const getMyLikeVideoListData = (request) => {
 export const MyChannelActionsCreator = {
     getMyChannelData,
     getMyUploadVideoListData,
-    getMyLikeVideoListData
+    getMyLikeVideoListData,
 };
 
 export default function MyChannelReducer(state = {action: ''}, action) {

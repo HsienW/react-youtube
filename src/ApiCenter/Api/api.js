@@ -33,6 +33,13 @@ const channelApi = {
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
     },
+    createProfileChannelRequest(part, mine, accessToken) {
+        return {
+            part: part ? part : 'contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+        };
+    },
     createMyUploadListRequest(part, mine, accessToken, maxResults) {
         return {
             part: part ? part : 'snippet,contentDetails',
@@ -103,11 +110,23 @@ const commentApi = {
     },
 };
 
+const playListApi = {
+    createMyPlayListRequest(part, mine, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 5,
+        };
+    },
+};
+
 export {
     homeApi,
     headerApi,
     channelApi,
     searchApi,
     videoApi,
-    commentApi
+    commentApi,
+    playListApi
 };
