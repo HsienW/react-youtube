@@ -10,7 +10,7 @@ import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules
 import {Header, ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
-import {homeApi, channelApi} from '../../ApiCenter/Api/Api';
+import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
     padding: 0 8%;
@@ -63,7 +63,7 @@ class Home extends Component {
                 return {getHomeStatus: true, homeData: nextProps.action.payload.items};
     
             case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
-                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.items};
+                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
             
             default:
                 break;
@@ -136,8 +136,8 @@ Home.propTypes = {
     history: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
-    ProfileActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
+    ProfileActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func,
     toggleShowAlert: PropTypes.func
 };
@@ -151,7 +151,7 @@ export default connect(
             HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch),
             PlayActionsCreator: bindActionCreators(PlayRedux.PlayActionsCreator, dispatch),
             PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
-            ProfileActionsCreator: bindActionCreators(ProfileRedux.ProfileActionsCreator, dispatch),
+            ProfileActionsCreator: bindActionCreators(ProfileRedux.ProfileActionsCreator, dispatch)
         };
     }
 )(Home);

@@ -1,7 +1,7 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
-import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
+import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
 
 export const ProfileChannelActions = {
     getProfileChannelDataStart: 'GET_PROFILE_CHANNEL_DATA_START',
@@ -14,10 +14,7 @@ const getProfileChannelData = (request) => {
         dispatch(createAction(ProfileChannelActions.getProfileChannelDataStart)());
         callApi.get(apiData.channelURL, request)
             .then((respond) => {
-                WebStorage.setSessionStorage(
-                    WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID,
-                    respond.data.items[0].contentDetails.relatedPlaylists.uploads
-                );
+                WebStorage.setSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID, respond.data.items[0].contentDetails.relatedPlaylists.uploads);
                 dispatch(createAction(ProfileChannelActions.getProfileChannelDataSuccess)(respond));
             })
             .catch((error) => {

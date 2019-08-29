@@ -8,7 +8,7 @@ import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, MyChannelBanner, ActionAlert} from '../../Components/Layout';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
-import {channelApi, videoApi, playListApi} from '../../ApiCenter/Api/Api';
+import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {formatCurry, formatData} from '../../Common/BasicService';
 
@@ -30,8 +30,8 @@ const myChannelBannerConfig = {
     avatarSize: 88,
 };
 
-const subscribeContentDividerData = {
-    title: 'Subscribe Content'
+const uploadVideoDividerData = {
+    title: 'Upload Videos'
 };
 
 const likeVideoDividerData = {
@@ -56,11 +56,9 @@ class MyChannel extends Component {
             getMyChannelStatus: false,
             getMyUploadListStatus: false,
             getMyLikeListStatus: false,
-            getMySubscribeListStatus: false,
             myChannelData: [],
             myUploadVideoListData: [],
             myLikeVideoListData: [],
-            mySubscribeListData: []
         };
     }
     
@@ -74,14 +72,13 @@ class MyChannel extends Component {
                 return {getMyChannelStatus: true, myChannelData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyUploadListActions.getMyUploadListSuccess:
+                console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+                console.log(nextProps.action.payload.data.items);
                 return {getMyUploadListStatus: true, myUploadVideoListData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyLikeListActions.getMyLikeListSuccess:
                 return {getMyLikeListStatus: true, myLikeVideoListData: nextProps.action.payload.data.items};
     
-            case MyChannelRedux.MySubscribeListActions.getMySubscribeListSuccess:
-                return {getMySubscribeListStatus: true, mySubscribeListData: nextProps.action.payload.data.items};
-            
             default:
                 break;
         }
@@ -97,6 +94,7 @@ class MyChannel extends Component {
     
     getMyChannelAllData = () => {
         const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+        const userUploadId = WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
         const myChannelRequest = channelApi.createMyChannelRequest(
             'snippet,contentDetails,statistics',
             true,
@@ -105,9 +103,9 @@ class MyChannel extends Component {
         );
         const myUploadVideoListRequest = channelApi.createMyUploadListRequest(
             'snippet,contentDetails',
-            true,
+            userUploadId,
             userToken,
-            20,
+            6,
         );
         const myLikeVideoListRequest = videoApi.createMyLikeVideoListRequest(
             'snippet,contentDetails,statistics',
@@ -115,16 +113,9 @@ class MyChannel extends Component {
             userToken,
             6,
         );
-        const mySubscribeListRequest = playListApi.createMyPlayListRequest(
-            'snippet,contentDetails',
-            true,
-            userToken,
-            6,
-        );
         this.props.MyChannelActionsCreator.getMyChannelData(myChannelRequest);
         this.props.MyChannelActionsCreator.getMyUploadVideoListData(myUploadVideoListRequest);
         this.props.MyChannelActionsCreator.getMyLikeVideoListData(myLikeVideoListRequest);
-        this.props.MyChannelActionsCreator.getMySubscribeListData(mySubscribeListRequest);
     };
     
     videoItemClick = (videoItemInfo) => {
@@ -138,16 +129,18 @@ class MyChannel extends Component {
                 <Header/>
                 {
                     this.state.getMyChannelStatus
+                    && this.state.getMyUploadListStatus
+                    && this.state.getMyLikeListStatus
                         ? <MyChannelView>
                             <MyChannelBanner
                                 myChannelBannerData={this.state.myChannelData}
                                 myChannelBannerConfig={myChannelBannerConfig}
                             />
-                            <PageDivider dividerData={subscribeContentDividerData}/>
+                            <PageDivider dividerData={uploadVideoDividerData}/>
                             <ContentArea>
                                 {
-                                    this.state.mySubscribeListData.length !== 0
-                                        ? formatData.videoItemRespond(this.state.mySubscribeListData).map((item) => {
+                                    this.state.myUploadVideoListData.length !== 0
+                                        ? formatData.videoItemRespond(this.state.myUploadVideoListData).map((item) => {
                                             return (
                                                 <VideoItem
                                                     key={item.id}

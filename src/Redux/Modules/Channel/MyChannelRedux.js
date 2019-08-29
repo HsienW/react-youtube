@@ -1,6 +1,5 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
-// import {channelApi} from '../../../ApiCenter/Api/Api';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 
 export const MyChannelActions = {
@@ -21,19 +20,11 @@ export const MyLikeListActions = {
     getMyLikeListFailed: 'GET_MY_LIKE_LIST_FAILED',
 };
 
-export const MySubscribeListActions = {
-    getMySubscribeListStart: 'GET_MY_SUBSCRIBE_LIST_START',
-    getMySubscribeListSuccess: 'GET_MY_SUBSCRIBE_LIST_SUCCESS',
-    getMySubscribeListFailed: 'GET_MY_SUBSCRIBE_LIST_FAILED',
-};
-
 const getMyChannelData = (request) => {
     return (dispatch) => {
         dispatch(createAction(MyChannelActions.getMyChannelStart)());
         callApi.get(apiData.channelURL, request)
             .then((respond) => {
-                console.log('mmmmmmmmmmmmmmmmmmmmmmmm');
-                console.log(respond);
                 dispatch(createAction(MyChannelActions.getMyChannelSuccess)(respond));
             })
             .catch((error) => {
@@ -42,26 +33,11 @@ const getMyChannelData = (request) => {
     };
 };
 
-// const getMyUploadVideoListData = (request) => {
-//     return (dispatch) => {
-//         dispatch(createAction(MyUploadListActions.getMyUploadListStart)());
-//         callApi.get(apiData.activitiesURL, request)
-//             .then((respond) => {
-//                 dispatch(createAction(MyUploadListActions.getMyUploadListSuccess)(respond));
-//             })
-//             .catch((error) => {
-//                 dispatch(createAction(MyUploadListActions.getMyUploadListFailed)(error));
-//             });
-//     };
-// };
-
 const getMyUploadVideoListData = (request) => {
     return (dispatch) => {
         dispatch(createAction(MyUploadListActions.getMyUploadListStart)());
-        callApi.get(apiData.activitiesURL, request)
+        callApi.get(apiData.playListURL, request)
             .then((respond) => {
-                console.log(',,,,,,,,,,,,,,,,,,,,,,,,');
-                console.log(respond);
                 dispatch(createAction(MyUploadListActions.getMyUploadListSuccess)(respond));
             })
             .catch((error) => {
@@ -83,24 +59,10 @@ const getMyLikeVideoListData = (request) => {
     };
 };
 
-const getMySubscribeListData = (request) => {
-    return (dispatch) => {
-        dispatch(createAction(MySubscribeListActions.getMySubscribeListStart)());
-        callApi.get(apiData.playListURL, request)
-            .then((respond) => {
-                dispatch(createAction(MySubscribeListActions.getMySubscribeListSuccess)(respond));
-            })
-            .catch((error) => {
-                dispatch(createAction(MySubscribeListActions.getMySubscribeListFailed)(error));
-            });
-    };
-};
-
 export const MyChannelActionsCreator = {
     getMyChannelData,
     getMyUploadVideoListData,
     getMyLikeVideoListData,
-    getMySubscribeListData
 };
 
 export default function MyChannelReducer(state = {action: ''}, action) {
@@ -111,8 +73,6 @@ export default function MyChannelReducer(state = {action: ''}, action) {
         case MyUploadListActions.getMyUploadListFailed:
         case MyLikeListActions.getMyLikeListSuccess:
         case MyLikeListActions.getMyLikeListFailed:
-        case MySubscribeListActions.getMySubscribeListSuccess:
-        case MySubscribeListActions.getMySubscribeListFailed:
             return {action: action};
         
         default:

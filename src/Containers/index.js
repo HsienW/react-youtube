@@ -18,5 +18,5 @@ export {
     Play,
     Search,
     Upload,
-    Portal
+    Portal,
 };
