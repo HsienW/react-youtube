@@ -87,6 +87,10 @@ class Header extends Component {
         this.getSearchAllData();
     };
     
+    onGoUpload = () => {
+        this.props.PortalActionsCreator.changeToPage('my-upload');
+    };
+    
     onProfileDropdownClick = (itemKey) => {
         switch (itemKey) {
             case 'on-my-channel':
@@ -94,10 +98,7 @@ class Header extends Component {
                 return;
             
             case 'on-logout':
-                WebStorage.removeSessionStorage(WebStorageKeys.ACCESS_TOKEN);
-                WebStorage.removeSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO);
-                WebStorage.removeSessionStorage(WebStorageKeys.SEARCH_KEY);
-                WebStorage.removeSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
+                WebStorage.clearSessionStorage();
                 this.props.PortalActionsCreator.changeToPage('auth');
                 return;
             
@@ -133,10 +134,7 @@ class Header extends Component {
     render() {
         return (
             <HeaderView>
-                <Button
-                    style={btnConfig}
-                    onClick={this.onGoHome}
-                >
+                <Button style={btnConfig} onClick={this.onGoHome}>
                     Home
                 </Button>
                 <Search
@@ -150,7 +148,7 @@ class Header extends Component {
                     <ListDropdown
                         configData={ComponentConfig.UploadDropdown}
                         btnConfig={btnConfig}
-                        itemClickAction={this.props.PortalActionsCreator.changeToPage}
+                        itemClickAction={this.onGoUpload}
                     />
                     <SubscribeNotice
                         configData={ComponentConfig.NoticeDropdown}

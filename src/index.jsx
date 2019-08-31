@@ -4,7 +4,7 @@ import ReduxStore from './Redux/ReduxStore';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {HashRouter, Router, Switch, Route} from 'react-router-dom';
-import {Auth, Home, Upload, Search, Play, Channel} from './page-loadable';
+import {Auth, Home, MyUpload, Search, Play, MyChannel} from './page-loadable';
 import {Portal} from '../src/Containers/index';
 import 'antd/dist/antd.css';
 import './Common/CoverStyle.css';
@@ -20,10 +20,10 @@ render((
                     <Switch>
                         <Route path='/auth' component={Auth}/>
                         <Route path='/home' component={Home}/>
-                        <Route path='/upload' component={Upload}/>
+                        <Route path='/my-upload' component={MyUpload}/>
                         <Route path='/search' component={Search}/>
                         <Route path='/play' component={Play}/>
-                        <Route path='/my-channel' component={Channel}/>
+                        <Route path='/my-channel' component={MyChannel}/>
                     </Switch>
                 </div>
             </Router>
