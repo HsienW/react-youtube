@@ -22,7 +22,9 @@ const HeaderView = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: ${StyleConfig.MainColor}
+    background-color: ${StyleConfig.MainColor};
+    position: fixed;
+    z-index: 100;
 `;
 
 const profileArea = {

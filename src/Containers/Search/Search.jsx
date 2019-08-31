@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, SearchRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
 import {Header, AdvancedSearch} from '../../Components/Layout';
-import {VideoListPlayItem, GetDataErrorNotice} from '../../Components/Modules';
+import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
 // import {searchApi} from '../../ApiCenter/Api/Api';
 // import * as ComponentConfig from '../../Common/ComponentConfig';
@@ -26,9 +26,9 @@ const SearchContent = styled.div`
 
 const scrollContainerStyle = {
     width: '100%',
-    height: '88vh',
+    height: '100vh',
     overflow: 'auto',
-    padding: '0 8%',
+    padding: '7vh 8vw 0 8vw',
 };
 
 const VideoListPlayItemConfig = {
@@ -205,7 +205,7 @@ class Search extends Component {
                                             }
                                         />
                                     );
-                                }) : <GetDataErrorNotice/>
+                                }) : null
                             }
                         </div>
                     </SearchContent>

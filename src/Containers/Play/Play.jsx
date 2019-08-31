@@ -16,7 +16,7 @@ import {SpinStyle} from '../../Common/StyleConfig';
 const PlayView = styled.div`
     width: 100%;
     height: 90vh;
-    padding: 2% 8% 0 8%;
+    padding: 9vh 8vw 0 8vw;
     display: flex;
     justify-content: center;
     align-content: center;

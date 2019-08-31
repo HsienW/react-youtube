@@ -40,14 +40,14 @@ const channelApi = {
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
     },
-    createMyUploadListRequest(part, mine, accessToken, maxResults) {
+    createMyUploadListRequest(part, userUploadId, accessToken, maxResults) {
         return {
-            part: part ? part : 'snippet,contentDetails',
-            mine: mine ? mine : true,
+            part: part ? part : 'snippet,contentDetails,status,id',
+            id: userUploadId ? userUploadId : WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID),
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
-            maxResults: maxResults ? maxResults : 20,
+            maxResults: maxResults ? maxResults : 5,
         };
-    }
+    },
 };
 
 const searchApi = {

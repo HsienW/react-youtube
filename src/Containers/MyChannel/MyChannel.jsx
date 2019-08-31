@@ -13,7 +13,7 @@ import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {formatCurry, formatData} from '../../Common/BasicService';
 
 const MyChannelView = styled.div`
-    padding: 0 8%;
+    padding: 7vh 8vw 0 8vw;
     height: 100vh;
     width: 100%;
 `;
@@ -72,8 +72,6 @@ class MyChannel extends Component {
                 return {getMyChannelStatus: true, myChannelData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyUploadListActions.getMyUploadListSuccess:
-                console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-                console.log(nextProps.action.payload.data.items);
                 return {getMyUploadListStatus: true, myUploadVideoListData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyLikeListActions.getMyLikeListSuccess:
@@ -102,7 +100,7 @@ class MyChannel extends Component {
             20,
         );
         const myUploadVideoListRequest = channelApi.createMyUploadListRequest(
-            'snippet,contentDetails',
+            'snippet,contentDetails,status',
             userUploadId,
             userToken,
             6,

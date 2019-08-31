@@ -13,7 +13,7 @@ import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
-    padding: 0 8%;
+    padding: 7vh 8vw 0 8vw;
     height: 100vh;
     width: 100%;
 `;
