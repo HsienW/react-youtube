@@ -1,42 +1,24 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Upload, Icon, message} from 'antd';
+import {Upload, Icon} from 'antd';
 
 const {Dragger} = Upload;
 
-const props = {
-    name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    onChange(info) {
-        const {status} = info.file;
-        if (status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (status === 'done') {
-            message.success('file uploaded successfully.');
-        } else if (status === 'error') {
-            message.error('file upload failed.');
-        }
-    },
-};
-
 export default class Uploader extends Component {
     render() {
-        const {configData} = {...this.props};
+        const {configData, uploadDraggerConfigData} = {...this.props};
         return (
             <Dragger
-                {...props}
-                multiple={true}
+                name={uploadDraggerConfigData.name}
+                multiple={uploadDraggerConfigData.multiple}
+                action={uploadDraggerConfigData.action}
+                onChange={uploadDraggerConfigData.onChange}
             >
                 <p className="ant-upload-drag-icon">
-                    <Icon type={configData.iconType} style={configData.iconStyle}/>
+                    <Icon type={configData.icon.type} style={configData.icon.style}/>
                 </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                    band files
-                </p>
+                <p className="ant-upload-text">{configData.title}</p>
+                <p className="ant-upload-hint">{configData.description}</p>
             </Dragger>
         );
     }
@@ -45,5 +27,6 @@ export default class Uploader extends Component {
 Uploader.propTypes = {
     // uploaderData: PropTypes.object.isRequired,
     configData: PropTypes.object.isRequired,
+    uploadDraggerConfigData: PropTypes.object.isRequired,
     // itemClickAction: PropTypes.func.isRequired
 };
