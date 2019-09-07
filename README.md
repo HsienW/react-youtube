@@ -2,9 +2,9 @@
 
 > Technology: React16, Redux, React-Router, Webpack, Babel, ESLint
 
-> UI:[Ant Design](https://ant.design/)
+> UI: [Ant Design](https://ant.design/)
 
-> API: [Youtube V3 API] (https://developers.google.com/youtube/v3/getting-started)
+> API: [Youtube V3 API](https://developers.google.com/youtube/v3/getting-started)
 
 ## Description:
 #### React Youtube is a practice project that simulates Youtube and consists of the following five functions.
