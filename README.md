@@ -7,7 +7,7 @@
 > API: [Youtube V3 API](https://developers.google.com/youtube/v3/getting-started)
 
 ## Description:
-#### React Youtube is a practice project that simulates Youtube and consists of the following five functions.
+#### React Youtube is a practice project that simulates Youtube and consists of the following five features.
 
 - **Auth** : Login related, Youtube to obtain account authorization;
 - **Home** : list of videos, recommended videos, popular videos, etc.
