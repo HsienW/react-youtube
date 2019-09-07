@@ -11,7 +11,7 @@
 
 - **Auth** : Login related, Youtube to obtain account authorization;
 - **Home** : list of videos, recommended videos, popular videos, etc.
-- **Play** : Video player, comments, related video links;
+- **Play** : Video player, comments, video details, related video links;
 - **Search** : Display the display of the movie list and the search content;
 - **Upload** : Upload a personal video;
 
