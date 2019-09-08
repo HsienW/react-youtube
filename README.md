@@ -2,7 +2,7 @@
 
 > **Technology**: React16, Redux, React-Router, Webpack, Babel, ESLint
 
-> **UI**: [Ant Design](https://ant.design/), [Styled Components](https://www.styled-components.com/)
+> **UI**: [Ant-design](https://ant.design/), [Styled-components](https://www.styled-components.com/)
 
 > **API**: [Youtube V3 API](https://developers.google.com/youtube/v3/getting-started)
 
@@ -10,7 +10,7 @@
 #### React Youtube is a practice project that simulates Youtube and consists of the following five features.
 
 - **Auth** : Login related, Youtube to obtain account authorization;
-- **Home** : list of videos, recommended videos, popular videos, etc.
+- **Home** : List of videos, recommended videos, popular videos, etc.
 - **Play** : Video player, comments, video details, related video links;
 - **Search** : Display the display of the movie list and the search content;
 - **Upload** : Upload a personal video;
