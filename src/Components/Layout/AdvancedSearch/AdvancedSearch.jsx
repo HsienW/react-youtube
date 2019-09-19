@@ -6,7 +6,7 @@ import {SearchRedux} from '../../../Redux/Modules';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {formatComponentData} from '../../../Common/BasicService';
-// import {searchApi} from '../../../ApiCenter/Api/Api';
+import {searchApi} from '../../../ApiCenter/Api/Api';
 import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
 
@@ -53,20 +53,20 @@ class AdvancedSearch extends Component {
     };
     
     onAdvancedSearch = () => {
-        // const advancedSearchRequest = searchApi.createRequest(
-        //     'snippet',
-        //     10,
-        //     this.props.searchKey,
-        //     '',
-        //     this.state.typeCondition,
-        //     this.state.dateCondition,
-        // );
-        // this.props.SearchActionsCreator.getInitialSearchResultData(advancedSearchRequest, 0);
-        this.props.SearchActionsCreator.testInitialSearchResultData(
+        const advancedSearchRequest = searchApi.createRequest(
+            'snippet',
+            10,
             this.props.searchKey,
             '',
-            0
+            this.state.typeCondition,
+            this.state.dateCondition,
         );
+        this.props.SearchActionsCreator.getInitialSearchResultData(advancedSearchRequest, 0);
+        // this.props.SearchActionsCreator.testInitialSearchResultData(
+        //     this.props.searchKey,
+        //     '',
+        //     0
+        // );
     };
     
     render() {

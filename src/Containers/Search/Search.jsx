@@ -72,15 +72,14 @@ class Search extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
-        // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
             // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
             //     return {
             //         getSearchStatus: true,
-            //         searchKey: nextProps.payload.config.params.q,
+            //         searchKey: nextProps.action.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
-            //         searchResult: nextProps.ac tion.payload.items
+            //         searchResult: nextProps.action.payload.items
             //     };
             // case SearchRedux.NextSearchActions.getNextSearchSuccess:
             //     return {
