@@ -13,14 +13,13 @@ const headerApi = {
 };
 
 const homeApi = {
-    createRecommendRequest(part, mine, accessToken, maxResults, chart, videoId) {
+    createRecommendRequest(part, mine, accessToken, maxResults, chart) {
         return {
             part: part ? part : 'snippet,contentDetails',
             mine: mine ? mine : true,
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
             maxResults: maxResults ? maxResults : 20,
             chart: chart ? chart : 'mostPopular',
-            id: videoId ? videoId : ''
         };
     }
 };
@@ -33,7 +32,22 @@ const channelApi = {
             mine: mine ? mine : true,
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
-    }
+    },
+    createProfileChannelRequest(part, mine, accessToken) {
+        return {
+            part: part ? part : 'contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+        };
+    },
+    createMyUploadListRequest(part, userUploadId, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails,status,id',
+            id: userUploadId ? userUploadId : WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID),
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 5,
+        };
+    },
 };
 
 const searchApi = {
@@ -69,6 +83,14 @@ const videoApi = {
             id: videoId ? videoId : ''
         };
     },
+    createMyLikeVideoListRequest(part, myRating, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails,statistics',
+            myRating: myRating ? myRating : 'like',
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 5,
+        };
+    },
     createDetailRequest(part, id) {
         return {
             part: part ? part : 'snippet,contentDetails,statistics',
@@ -88,11 +110,23 @@ const commentApi = {
     },
 };
 
+const playListApi = {
+    createMyPlayListRequest(part, mine, accessToken, maxResults) {
+        return {
+            part: part ? part : 'snippet,contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+            maxResults: maxResults ? maxResults : 5,
+        };
+    },
+};
+
 export {
     homeApi,
     headerApi,
     channelApi,
     searchApi,
     videoApi,
-    commentApi
+    commentApi,
+    playListApi
 };

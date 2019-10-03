@@ -26,9 +26,9 @@ const SearchContent = styled.div`
 
 const scrollContainerStyle = {
     width: '100%',
-    height: '88vh',
+    height: '100vh',
     overflow: 'auto',
-    padding: '0 8%',
+    padding: '7vh 8vw 0 8vw',
 };
 
 const VideoListPlayItemConfig = {
@@ -57,7 +57,7 @@ class Search extends Component {
         super();
         this.searchContainerScroll = React.createRef();
         this.state = {
-            searchStatus: false,
+            getSearchStatus: false,
             searchKey: '',
             searchType: '',
             nextPageToken: '',
@@ -72,19 +72,18 @@ class Search extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
-        // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
             // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
             //     return {
-            //         searchStatus: true,
-            //         searchKey: nextProps.payload.config.params.q,
+            //         getSearchStatus: true,
+            //         searchKey: nextProps.action.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
-            //         searchResult: nextProps.ac tion.payload.items
+            //         searchResult: nextProps.action.payload.items
             //     };
             // case SearchRedux.NextSearchActions.getNextSearchSuccess:
             //     return {
-            //         searchStatus: true,
+            //         getSearchStatus: true,
             //         searchKey: nextProps.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -92,7 +91,7 @@ class Search extends Component {
             //     };
             case SearchRedux.ClearSearchActions.clearSearchData:
                 return {
-                    searchStatus: false,
+                    getSearchStatus: false,
                     searchKey: '',
                     nextPageToken: '',
                     currentSearchDataIndex: 0,
@@ -100,7 +99,7 @@ class Search extends Component {
                 };
             case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
                 return {
-                    searchStatus: true,
+                    getSearchStatus: true,
                     searchKey: 'you',
                     nextPageToken: Math.random().toString(36).substring(7),
                     currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -108,7 +107,7 @@ class Search extends Component {
                 };
             case SearchRedux.NextSearchActions.getNextSearchSuccess:
                 return {
-                    searchStatus: true,
+                    getSearchStatus: true,
                     searchKey: 'you',
                     nextPageToken: Math.random().toString(36).substring(7),
                     currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
@@ -124,20 +123,20 @@ class Search extends Component {
         if (is.all.truthy(prevState)) {
             this.props.toggleShowLoading(false);
         }
-
-        if (!this.state.searchStatus) {
+        
+        if (!this.state.getSearchStatus) {
             this.setState({
-                searchStatus: false,
+                getSearchStatus: false,
                 searchKey: '',
                 nextPageToken: 0,
                 currentSearchDataIndex: 0,
                 searchResult: []
             });
         }
-
+        
         if (this.state.currentSearchDataIndex === prevState.currentSearchDataIndex + 1) {
             this.setState({
-                searchStatus: true,
+                getSearchStatus: true,
                 searchKey: 'you',
                 nextPageToken: prevProps.action.payload.nextPageToken,
                 currentSearchDataIndex: this.state.currentSearchDataIndex,
@@ -190,7 +189,7 @@ class Search extends Component {
                         >
                             <AdvancedSearch searchKey={this.state.searchKey}/>
                             {
-                                this.state.searchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
+                                this.state.getSearchStatus ? formatData.videoListPlayItemRespond(this.state.searchResult).map((item) => {
                                     return (
                                         <VideoListPlayItem
                                             key={item.id}
@@ -205,7 +204,7 @@ class Search extends Component {
                                             }
                                         />
                                     );
-                                }) : <div>No-Data</div>
+                                }) : null
                             }
                         </div>
                     </SearchContent>

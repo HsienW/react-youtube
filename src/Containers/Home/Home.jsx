@@ -4,16 +4,16 @@ import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {PortalRedux, HomeRedux, PlayRedux} from '../../Redux/Modules';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {PageHeader, VideoItem} from '../../Components/Modules/index';
-import {Header} from '../../Components/Layout/index';
+import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
+import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
+import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
+import {Header, ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
-import {homeApi} from '../../ApiCenter/Api/Api';
+import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
 
 const HomeView = styled.div`
-    padding: 0 8%;
+    padding: 7vh 8vw 0 8vw;
     height: 100vh;
     width: 100%;
 `;
@@ -26,26 +26,44 @@ const ContentArea = styled.div`
     justify-content: center;
 `;
 
+const recommendDividerData = {
+    title: 'Recommend'
+};
+
+const userActionResultData = {
+    title: 'Loading...'
+};
+
+const errorAlertConfigData = {
+    type: 'error'
+};
+
 @CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             getHomeStatus: false,
-            homeData: []
+            getProfileChannelStatus: false,
+            homeData: [],
+            profileChannelData: [],
         };
     }
     
     componentDidMount() {
         this.getHomeAllData();
+        this.getProfileAllData();
     }
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case HomeRedux.HomeActions.getHomeSuccess:
                 return {getHomeStatus: true, homeData: nextProps.action.payload.items};
+    
+            case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
+                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
             
             default:
                 break;
@@ -72,6 +90,15 @@ class Home extends Component {
         // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
     };
     
+    getProfileAllData = () => {
+        const profileChannelRequest = channelApi.createProfileChannelRequest(
+            'contentDetails',
+            true,
+            WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
+        );
+        this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
+    };
+    
     videoItemClick = (videoItemInfo) => {
         WebStorage.setSessionStorage(WebStorageKeys.VIDEO_ITEM_INFO, formatCurry.objToStringify(videoItemInfo));
         this.props.PortalActionsCreator.changeToPage('play');
@@ -82,10 +109,10 @@ class Home extends Component {
             <div>
                 <Header/>
                 <HomeView>
-                    <PageHeader/>
+                    <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
                         {
-                            this.state.homeData.length !== 0
+                            this.state.getHomeStatus
                                 ? formatData.videoItemRespond(this.state.homeData).map((item) => {
                                     return (
                                         <VideoItem
@@ -95,10 +122,11 @@ class Home extends Component {
                                         />
                                     );
                                 })
-                                : <div>No-Data</div>
+                                : <UserActionResult userActionResultData={userActionResultData}/>
                         }
                     </ContentArea>
                 </HomeView>
+                <ActionAlert configData={errorAlertConfigData}/>
             </div>
         );
     }
@@ -109,7 +137,9 @@ Home.propTypes = {
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
-    toggleShowLoading: PropTypes.func
+    ProfileActionsCreator: PropTypes.object.isRequired,
+    toggleShowLoading: PropTypes.func,
+    toggleShowAlert: PropTypes.func
 };
 
 export default connect(
@@ -120,7 +150,8 @@ export default connect(
         return {
             HomeActionsCreator: bindActionCreators(HomeRedux.HomeActionsCreator, dispatch),
             PlayActionsCreator: bindActionCreators(PlayRedux.PlayActionsCreator, dispatch),
-            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch)
+            PortalActionsCreator: bindActionCreators(PortalRedux.PortalActionsCreator, dispatch),
+            ProfileActionsCreator: bindActionCreators(ProfileRedux.ProfileActionsCreator, dispatch)
         };
     }
 )(Home);

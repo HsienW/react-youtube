@@ -6,6 +6,7 @@ const videoURL = `${basicURL}videos?`;
 const channelURL = `${basicURL}channels?`;
 const commentURL = `${basicURL}commentThreads?`;
 const playListURL = `${basicURL}playlists?`;
+const playlistItemsURL = `${basicURL}playlistItems?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
 
@@ -16,6 +17,7 @@ export {
     channelURL,
     commentURL,
     playListURL,
+    playlistItemsURL,
     searchURL,
     subscriptionURL
 };

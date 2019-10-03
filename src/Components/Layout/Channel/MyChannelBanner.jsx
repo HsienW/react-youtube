@@ -4,10 +4,23 @@ import styled from 'styled-components';
 import {UserAvatar} from '../../Modules';
 
 const MyChannelBannerView = styled.div`
-    min-height: 100px;
+    min-height: 200px;
     width: 100%;
-    height: 140px;
-    padding: 2rem 0;
+    height: 12vh;
+    padding: 3rem 0 0 0;
+`;
+
+const UserProfileImg = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
+const UserName = styled.div`
+    width: 100%;
+    font-size: 2rem;
+    text-align: center;
+    padding: 1rem 0 0 0;
 `;
 
 export default class MyChannelBanner extends Component {
@@ -16,12 +29,15 @@ export default class MyChannelBanner extends Component {
         const {myChannelBannerData, myChannelBannerConfig} = {...this.props};
         return (
             <MyChannelBannerView>
-                <UserAvatar avatarData={
-                    {
-                        imgURL: myChannelBannerData[0].snippet.thumbnails.default.url,
-                        imgSize: myChannelBannerConfig.avatarSize
-                    }
-                }/>
+                <UserProfileImg>
+                    <UserAvatar avatarData={
+                        {
+                            imgURL: myChannelBannerData[0].snippet.thumbnails.default.url,
+                            imgSize: myChannelBannerConfig.avatarSize
+                        }
+                    }/>
+                </UserProfileImg>
+                <UserName>{myChannelBannerData[0].snippet.title}</UserName>
             </MyChannelBannerView>
         );
     }

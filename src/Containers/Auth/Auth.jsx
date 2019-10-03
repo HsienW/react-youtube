@@ -66,7 +66,7 @@ Auth.propTypes = {
 
 export default connect(
     (state) => {
-        return {actionType: state.AuthReducer.actionType};
+        return {action: state.AuthReducer.action};
     },
     (dispatch) => {
         return {
