@@ -5,7 +5,6 @@ import Play from './Play/Play';
 import Search from './Search/Search';
 import MyUpload from './Upload/MyUpload';
 import Portal from './Portal/Portal';
-import 'antd/dist/antd.css';
 
 export {
     Auth,

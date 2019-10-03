@@ -12,7 +12,7 @@ export default class Uploader extends Component {
                 name={uploadDraggerConfigData.name}
                 multiple={uploadDraggerConfigData.multiple}
                 action={uploadDraggerConfigData.action}
-                onChange={uploadDraggerConfigData.onChange}
+                // beforeUpload={uploadDraggerConfigData.previewFile}
             >
                 <p className="ant-upload-drag-icon">
                     <Icon type={configData.icon.type} style={configData.icon.style}/>
