@@ -1,25 +1,34 @@
 import {createAction} from 'redux-actions';
+import axios from 'axios';
 
-export const UploadActions = {
-    getUploadStart: 'GET_UPLOAD_START',
-    getUploadSuccess: 'GET_UPLOAD_SUCCESS',
-    getUploadFailed: 'GET_UPLOAD_FAILED',
+export const UploadVideoActions = {
+    doUploadVideoStart: 'DO_UPLOAD_VIDEO_START',
+    doUploadVideoSuccess: 'DO_UPLOAD_VIDEO_SUCCESS',
+    doUploadVideoFailed: 'DO_UPLOAD_VIDEO_FAILED',
 };
 
-const getUploadSuccess = () => {
+const doUploadVideo = (request) => {
     return (dispatch) => {
-        dispatch(createAction(UploadActions.getUploadStart));
+        dispatch(createAction(UploadVideoActions.doUploadVideoStart));
+        axios(request)
+            .then((respond) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(respond));
+            })
+            .catch((error) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoFailed)(error));
+            });
     };
 };
 
 export const UploadActionsCreator = {
-    getUploadSuccess,
+    doUploadVideo,
 };
 
-export default function UploadReducer(state = {actionType: ''}, action) {
+export default function UploadReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case UploadActions.getUploadStart:
-            return {actionType: action.type};
+        case UploadVideoActions.doUploadVideoSuccess:
+        case UploadVideoActions.doUploadVideoFailed:
+            return {action: action};
 
         default:
             return state;

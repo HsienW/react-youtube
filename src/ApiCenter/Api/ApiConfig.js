@@ -9,6 +9,7 @@ const playListURL = `${basicURL}playlists?`;
 const playlistItemsURL = `${basicURL}playlistItems?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
+const uploadURL = `${basicURL}videos?`;
 
 export {
     googleApiKey,
@@ -19,5 +20,6 @@ export {
     playListURL,
     playlistItemsURL,
     searchURL,
-    subscriptionURL
+    subscriptionURL,
+    uploadURL
 };

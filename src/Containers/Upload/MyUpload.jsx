@@ -7,8 +7,9 @@ import {UploadRedux} from '../../Redux/Modules';
 import {Header} from '../../Components/Layout';
 import {PageDivider} from '../../Components/Modules';
 import {Upload, Icon} from 'antd';
+import {uploadApi} from '../../ApiCenter/Api/Api';
+// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import * as StyleConfig from '../../Common/StyleConfig';
-// import {message} from 'antd';
 
 const {Dragger} = Upload;
 
@@ -35,68 +36,28 @@ const uploaderConfigData = {
         style: {
             color: StyleConfig.MainColor
         }
+    },
+    dragger: {
+        fileName: 'file',
+        multiple: true,
+        previewListType: 'picture',
     }
 };
 
-// const props = {
-//     name: 'file',
-//     multiple: true,
-//     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-//     onChange(info) {
-//         const {status} = info.file;
-//         if (status !== 'uploading') {
-//             console.log('正在正在正在正在正在正在正在正在正在');
-//             console.log(info);
-//         }
-//         if (status === 'done') {
-//             console.log('成功成功成功成功成功成功成功成功成功成功成功');
-//             console.log(info);
-//             message.success('file uploaded successfully.');
-//         } else if (status === 'error') {
-//             console.log('失敗失敗失敗失敗失敗失敗失敗失敗失敗失敗失敗');
-//             message.error('file upload failed.');
-//         }
-//     },
-// };
-
-// const props = {
-//     action: '//jsonplaceholder.typicode.com/posts/',
-//     listType: 'picture',
-//     previewFile(file) {
-//         console.log('Your upload file:', file);
-//         // Your process logic. Here we just mock to the same file
-//         // return fetch('https://next.json-generator.com/api/json/get/4ytyBoLK8', {
-//         //     method: 'POST',
-//         //     body: file,
-//         // })
-//         //     .then(res => res.json())
-//         //     .then(({ thumbnail }) => thumbnail);
-//     },
-// };
-
 class MyUpload extends Component {
-    
-    constructor() {
-        super();
-        this.state = {
-            uploadURL: '',
-            previewType: 'picture',
-            previewStatus: false,
-            uploadVideoData: {
-                name: 'file',
-                multiple: true,
-                action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-            }
-        };
-    }
-    
-    previewUpload = (videoFileInfo) => {
-        console.log(videoFileInfo);
-    };
     
     // doUploadVideos = (videoFileInfo) => {
     //     console.log('8888888888888888888888888888888888');
     //     console.log(videoFileInfo);
+    //     const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+    //     const uploadVideoRequest = uploadApi.createUploadVideoRequest(
+    //         'snippet,statistics,contentDetails',
+    //         true,
+    //         userToken,
+    //         'post',
+    //         videoFileInfo.file
+    //     );
+    //     this.props.UploadActionsCreator.doUploadVideo(uploadVideoRequest);
     // };
     
     render() {
@@ -107,11 +68,11 @@ class MyUpload extends Component {
                     <PageDivider dividerData={uploadDividerData}/>
                     <UploaderArea>
                         <Dragger
-                            name={this.state.uploadVideoData.name}
-                            multiple={this.state.uploadVideoData.multiple}
-                            action={this.state.uploadVideoData.action}
-                            showUploadList={false}
-                            previewFile={this.previewUpload}
+                            name={uploaderConfigData.dragger.fileName}
+                            multiple={uploaderConfigData.dragger.multiple}
+                            listType={uploaderConfigData.dragger.previewListType}
+                            action={uploadApi.getUploadVideoURL()}
+                            // customRequest={this.doUploadVideos}
                         >
                             <p className="ant-upload-drag-icon">
                                 <Icon type={uploaderConfigData.icon.type} style={uploaderConfigData.icon.style}/>
