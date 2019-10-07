@@ -18,7 +18,7 @@ render((
                 <div style={{width: '100%', height: '100%'}}>
                     <Route component={Portal}/>
                     <Switch>
-                        <Route path='/' exact component={Auth}/>
+                        <Route path='*' exact component={Auth}/>
                         <Route path='/auth' component={Auth}/>
                         <Route path='/home' component={Home}/>
                         <Route path='/my-upload' component={MyUpload}/>
