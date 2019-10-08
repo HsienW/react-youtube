@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {Header, MyChannelBanner, ActionAlert} from '../../Components/Layout';
+import {MyChannelBanner, ActionAlert} from '../../Components/Layout';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
@@ -124,7 +124,6 @@ class MyChannel extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 {
                     this.state.getMyChannelStatus
                     && this.state.getMyUploadListStatus

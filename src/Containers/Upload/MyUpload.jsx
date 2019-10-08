@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {UploadRedux} from '../../Redux/Modules';
-import {Header} from '../../Components/Layout';
+// import {Header} from '../../Components/Layout';
 import {PageDivider} from '../../Components/Modules';
 import {Upload, Icon} from 'antd';
 import {uploadApi} from '../../ApiCenter/Api/Api';
@@ -63,7 +63,6 @@ class MyUpload extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 <MyUploadView>
                     <PageDivider dividerData={uploadDividerData}/>
                     <UploaderArea>

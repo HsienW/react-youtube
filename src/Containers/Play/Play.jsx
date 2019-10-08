@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, PlayRedux} from '../../Redux/Modules';
 import {CheckAuthHOC} from '../../Decorators/index';
-import {Header, VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
+import {VideoDetail, VideoCommentList, VideoRelatedList} from '../../Components/Layout/index';
 import {VideoPlayer} from '../../Components/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {videoApi, commentApi, searchApi} from '../../ApiCenter/Api/Api';
@@ -132,7 +132,6 @@ class Play extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 {
                     this.state.getVideoDataStatus
                     && this.state.getDetailDataStatus

@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
-import {Header, ActionAlert} from '../../Components/Layout';
+import {ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
@@ -107,7 +107,6 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 <HomeView>
                     <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
