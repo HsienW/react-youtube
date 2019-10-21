@@ -167,6 +167,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+    location: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     HeaderActionsCreator: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
