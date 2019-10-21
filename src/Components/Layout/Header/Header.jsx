@@ -59,7 +59,6 @@ class Header extends Component {
     
     componentDidMount() {
         this.getSubscribeAllData();
-        this.setState({currentSearchKey: WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY)});
     }
     
     static getDerivedStateFromProps(nextProps) {
@@ -82,8 +81,7 @@ class Header extends Component {
         this.props.PortalActionsCreator.changeToPage('home');
     };
     
-    onSearch = (searchKey) => {
-        WebStorage.setSessionStorage(WebStorageKeys.SEARCH_KEY, searchKey);
+    onSearch = () => {
         this.getSearchAllData();
     };
     
@@ -111,7 +109,7 @@ class Header extends Component {
         const request = searchApi.createRequest(
             'snippet',
             10,
-            WebStorage.getSessionStorage(WebStorageKeys.SEARCH_KEY),
+            this.state.currentSearchKey,
             '',
             '',
             '',
