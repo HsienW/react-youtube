@@ -1,5 +1,6 @@
 import {googleApiKey} from './ApiConfig';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+import * as apiData from '../../ApiCenter/Api/ApiConfig';
 
 const headerApi = {
     createSubscribeRequest(part, mine, maxResults, accessToken) {
@@ -40,14 +41,14 @@ const channelApi = {
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
     },
-    createMyUploadListRequest(part, mine, accessToken, maxResults) {
+    createMyUploadListRequest(part, userUploadId, accessToken, maxResults) {
         return {
-            part: part ? part : 'snippet,contentDetails',
-            mine: mine ? mine : true,
+            part: part ? part : 'snippet,contentDetails,status,id',
+            id: userUploadId ? userUploadId : WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID),
             access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
-            maxResults: maxResults ? maxResults : 20,
+            maxResults: maxResults ? maxResults : 5,
         };
-    }
+    },
 };
 
 const searchApi = {
@@ -121,6 +122,21 @@ const playListApi = {
     },
 };
 
+const uploadApi = {
+    getUploadVideoURL() {
+        return `${apiData.videoURL}part=snippet,statistics,contentDetails&mine=true&access_token=${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`;
+    },
+    createUploadVideoRequest(part, mine, accessToken, method, formDataBody) {
+        return {
+            method: method ? method : 'post',
+            url: `${apiData.videoURL}&part=${part}&mine=${mine}&access_token=${accessToken}`,
+            data: formDataBody,
+            config: {headers: {'Content-Type': 'multipart/form-data'}}
+        };
+    }
+};
+
+
 export {
     homeApi,
     headerApi,
@@ -128,5 +144,6 @@ export {
     searchApi,
     videoApi,
     commentApi,
-    playListApi
+    playListApi,
+    uploadApi
 };

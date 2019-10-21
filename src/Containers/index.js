@@ -1,22 +1,17 @@
 import Auth from './Auth/Auth';
 import Home from './Home/Home';
-import Channel from './MyChannel/MyChannel';
+import MyChannel from './Channel/MyChannel';
 import Play from './Play/Play';
 import Search from './Search/Search';
-import Upload from './Upload/Upload';
+import MyUpload from './Upload/MyUpload';
 import Portal from './Portal/Portal';
-import 'antd/dist/antd.css';
-
-/**
- 統一匯出各功能組件
- **/
 
 export {
     Auth,
     Home,
-    Channel,
+    MyChannel,
     Play,
     Search,
-    Upload,
+    MyUpload,
     Portal,
 };

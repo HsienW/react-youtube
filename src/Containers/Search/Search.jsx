@@ -6,8 +6,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, SearchRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {Header, AdvancedSearch} from '../../Components/Layout';
-import {VideoListPlayItem, GetDataErrorNotice} from '../../Components/Modules';
+import {AdvancedSearch} from '../../Components/Layout';
+import {VideoListPlayItem} from '../../Components/Modules';
 import {formatData} from '../../Common/BasicService';
 // import {searchApi} from '../../ApiCenter/Api/Api';
 // import * as ComponentConfig from '../../Common/ComponentConfig';
@@ -26,9 +26,9 @@ const SearchContent = styled.div`
 
 const scrollContainerStyle = {
     width: '100%',
-    height: '88vh',
+    height: '100vh',
     overflow: 'auto',
-    padding: '0 8%',
+    padding: '7vh 8vw 0 8vw',
 };
 
 const VideoListPlayItemConfig = {
@@ -72,15 +72,14 @@ class Search extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
-        // nextProps.action.payload.config.params.q
         switch (nextProps.action.type) {
             // case SearchRedux.InitialSearchActions.getInitialSearchSuccess:
             //     return {
             //         getSearchStatus: true,
-            //         searchKey: nextProps.payload.config.params.q,
+            //         searchKey: nextProps.action.payload.config.params.q,
             //         nextPageToken: nextProps.action.payload.nextPageToken,
             //         currentSearchDataIndex: nextProps.action.payload.currentSearchDataIndex,
-            //         searchResult: nextProps.ac tion.payload.items
+            //         searchResult: nextProps.action.payload.items
             //     };
             // case SearchRedux.NextSearchActions.getNextSearchSuccess:
             //     return {
@@ -181,7 +180,6 @@ class Search extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 <SearchView>
                     <SearchContent>
                         <div
@@ -205,7 +203,7 @@ class Search extends Component {
                                             }
                                         />
                                     );
-                                }) : <GetDataErrorNotice/>
+                                }) : null
                             }
                         </div>
                     </SearchContent>

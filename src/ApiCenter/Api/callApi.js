@@ -12,7 +12,7 @@ export const callApi = {
 
     },
     post(url, request) {
-        axios.post(url, request)
+        return axios.post(url, request)
             .then((response) => {
                 return response;
             })

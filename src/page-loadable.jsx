@@ -20,8 +20,8 @@ export const Play = Loadable({
     loading: LoadingPage
 });
 
-export const Channel = Loadable({
-    loader: () => import('./Containers/MyChannel/MyChannel'),
+export const MyChannel = Loadable({
+    loader: () => import('./Containers/Channel/MyChannel'),
     loading: LoadingPage
 });
 
@@ -30,7 +30,7 @@ export const Search = Loadable({
     loading: LoadingPage
 });
 
-export const Upload = Loadable({
-    loader: () => import('./Containers/Upload/Upload'),
+export const MyUpload = Loadable({
+    loader: () => import('./Containers/Upload/MyUpload'),
     loading: LoadingPage
 });
