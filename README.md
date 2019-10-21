@@ -19,7 +19,8 @@
 - **Search** : Display the display of the movie list and the search content.
 - **Upload** : Upload a personal video.
 
-## Note:
+## Note: 
 
 - **1** If you want to use, please authorize Youtube account to React Youtube in order to obtain information.
 - **2** In some feature development, and Youtube api daily limit, so use fake data to complete the simulation.
+
