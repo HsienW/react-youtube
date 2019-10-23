@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {notification} from 'antd';
+import notification from 'antd/lib/notification';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Upload, Icon} from 'antd';
+import Upload from 'antd/lib/upload';
+import Icon from 'antd/lib/icon';
 
 const {Dragger} = Upload;
 

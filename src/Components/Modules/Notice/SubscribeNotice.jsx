@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Badge} from 'antd';
+import Badge from 'antd/lib/badge';
 import {ContentDropdown} from '../../Modules';
 
 const contentBodyStyle = {
