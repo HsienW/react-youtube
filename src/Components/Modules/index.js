@@ -10,6 +10,8 @@ import VideoItem from './Video/VideoItem';
 import VideoListItem from './Video/VideoListItem';
 import VideoPlayer from './Video/VideoPlayer';
 import VideoListPlayItem from './Video/VideoListPlayItem';
+import Uploader from './Upload/Uploader';
+import UploadEditor from './Upload/UploadEditor';
 
 export {
     UserAvatar,
@@ -24,4 +26,6 @@ export {
     VideoListPlayItem,
     VideoPlayer,
     InfiniteScroll,
+    Uploader,
+    UploadEditor
 };

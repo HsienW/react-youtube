@@ -6,14 +6,14 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {MyChannelRedux, PortalRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators/index';
-import {Header, MyChannelBanner, ActionAlert} from '../../Components/Layout';
+import {MyChannelBanner, ActionAlert} from '../../Components/Layout';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {channelApi, videoApi} from '../../ApiCenter/Api/Api';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {formatCurry, formatData} from '../../Common/BasicService';
 
 const MyChannelView = styled.div`
-    padding: 0 8%;
+    padding: 7vh 8vw 0 8vw;
     height: 100vh;
     width: 100%;
 `;
@@ -72,8 +72,6 @@ class MyChannel extends Component {
                 return {getMyChannelStatus: true, myChannelData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyUploadListActions.getMyUploadListSuccess:
-                console.log('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-                console.log(nextProps.action.payload.data.items);
                 return {getMyUploadListStatus: true, myUploadVideoListData: nextProps.action.payload.data.items};
             
             case MyChannelRedux.MyLikeListActions.getMyLikeListSuccess:
@@ -102,7 +100,7 @@ class MyChannel extends Component {
             20,
         );
         const myUploadVideoListRequest = channelApi.createMyUploadListRequest(
-            'snippet,contentDetails',
+            'snippet,contentDetails,status',
             userUploadId,
             userToken,
             6,
@@ -126,7 +124,6 @@ class MyChannel extends Component {
     render() {
         return (
             <div>
-                <Header/>
                 {
                     this.state.getMyChannelStatus
                     && this.state.getMyUploadListStatus
