@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Spin} from 'antd';
 import {SpinStyle} from '../Common/StyleConfig';
+import Spin from 'antd/lib/spin';
 
 export const LoadingDataHOC = (WrappedComponent) => {
     return class loadingDataHOC extends Component {

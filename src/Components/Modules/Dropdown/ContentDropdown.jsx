@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Dropdown, Button, Icon, Card, List, Avatar} from 'antd';
+import Dropdown from 'antd/lib/dropdown';
+import Button from 'antd/lib/button';
+import Icon from 'antd/lib/icon';
+import Card from 'antd/lib/card';
+import List from 'antd/lib/list';
+import Avatar from 'antd/lib/avatar';
 
 export default class ContentDropdown extends Component {
     

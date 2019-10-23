@@ -1,5 +1,5 @@
-import is from 'is_js';
-import moment from 'moment';
+import is from 'is_js/';
+import moment from 'moment/min/moment.min';
 
 const formatData = {
     videoItemRespond(data) {
