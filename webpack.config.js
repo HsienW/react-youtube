@@ -58,9 +58,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.json', '.jsx'],
-        // alias: {
-        //     "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/icons.js")
-        // }
+        alias: {
+            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/icons.js"),
+        }
     },
     optimization: {
     //     minimizer: [
@@ -80,15 +80,15 @@ module.exports = {
     //         })
     //     ],
     //     runtimeChunk: 'single',
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             commons: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 name: 'vendors',
+    //                 chunks: 'all'
+    //             }
+    //         }
+    //     }
     },
     plugins: [
         new HtmlWebpackPlugin({

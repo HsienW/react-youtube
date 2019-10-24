@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'antd/lib/dropdown';
 import Button from 'antd/lib/button';
-import Icon from 'antd/lib/icon';
+// import Icon from 'antd/lib/icon';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
 import Avatar from 'antd/lib/avatar';
+import {DownOutline} from '../Icon/IconCenter';
 
 export default class ContentDropdown extends Component {
     
@@ -43,7 +44,7 @@ export default class ContentDropdown extends Component {
                 onVisibleChange={this.handleVisibleChange}
             >
                 <Button style={btnConfig}>
-                    {configData.dropdownName} <Icon type={configData.iconType}/>
+                    {configData.dropdownName} <DownOutline />
                 </Button>
             </Dropdown>
         );
