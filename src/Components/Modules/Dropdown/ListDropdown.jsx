@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Menu from 'antd/lib/menu';
 import Dropdown from 'antd/lib/dropdown';
 import Button from 'antd/lib/button';
-// import Icon from 'antd/lib/icon';
-import {DownOutline} from '../Icon/IconCenter';
+import Icon from 'antd/lib/icon';
 
 export default class ListDropdown extends Component {
 

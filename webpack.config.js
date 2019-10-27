@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     // entry: {
@@ -59,7 +60,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.jsx'],
         alias: {
-            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/icons.js"),
+            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/Common/CoverIcon.js"),
         }
     },
     optimization: {
@@ -106,7 +107,7 @@ module.exports = {
             filename: 'index.bundle.css',
         }),
         new CompressionPlugin(),
+        new MomentLocalesPlugin(),
         new BundleAnalyzerPlugin()
-        // new HardSourceWebpackPlugin()
     ],
 };
