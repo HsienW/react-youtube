@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Badge from 'antd/lib/badge';
 import {ContentDropdown} from '../../Modules';
+// import 'antd/es/Badge/style/css';
 
 const contentBodyStyle = {
     padding: '20px',

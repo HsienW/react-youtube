@@ -60,7 +60,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.json', '.jsx'],
         alias: {
-            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/Common/CoverIcon.js"),
+            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/Common/HandleAntIcons.js"),
         }
     },
     optimization: {

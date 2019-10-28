@@ -6,6 +6,12 @@ import Icon from 'antd/lib/icon';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
 import Avatar from 'antd/lib/avatar';
+// import 'antd/es/Dropdown/style/css';
+// import 'antd/es/Button/style/css';
+// import 'antd/es/Icon/style/css';
+// import 'antd/es/Card/style/css';
+// import 'antd/es/List/style/css';
+// import 'antd/es/Avatar/style/css';
 
 export default class ContentDropdown extends Component {
     

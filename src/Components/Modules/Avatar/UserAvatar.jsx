@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Avatar from 'antd/lib/avatar';
+// import 'antd/es/Avatar/style/css';
 
 export default class UserAvatar extends Component {
 

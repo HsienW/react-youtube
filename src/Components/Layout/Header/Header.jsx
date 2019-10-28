@@ -12,6 +12,8 @@ import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
 import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
+// import 'antd/es/Button/style/css';
+// import 'antd/es/Input/style/css';
 
 const Search = Input.Search;
 

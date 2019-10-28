@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Divider from 'antd/lib/divider';
+// import 'antd/es/Divider/style/css';
 
 const DividerView = styled.div`
     height: 4vh;

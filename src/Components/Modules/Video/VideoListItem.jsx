@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Card from 'antd/lib/card';
+// import 'antd/es/Card/style/css';
 
 const {Meta} = Card;
 
