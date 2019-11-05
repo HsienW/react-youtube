@@ -2,12 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 import {VideoPlayerConfig} from '../../../Common/ComponentConfig';
-import Button from 'antd/lib/button';
-import Slider from 'antd/lib/slider';
+import {Button, Slider} from 'antd';
 import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
-// import 'antd/es/Card/style/css';
-// import * as StyleConfig from '../../../Common/StyleConfig';
 
 const PlayerControl = styled.div`
     height: 10%;

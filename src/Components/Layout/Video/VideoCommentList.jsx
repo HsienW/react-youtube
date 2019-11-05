@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Comment from 'antd/lib/comment';
-import List from 'antd/lib/list';
-import Tooltip from 'antd/lib/tooltip';
+import {Comment, List, Tooltip} from 'antd';
 import moment from 'moment/min/moment.min';
-// import 'antd/es/Comment/style/css';
-// import 'antd/es/List/style/css';
-// import 'antd/es/Tooltip/style/css';
 
 export default class VideoCommentList extends Component {
     

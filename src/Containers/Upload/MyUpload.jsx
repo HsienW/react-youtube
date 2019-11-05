@@ -7,9 +7,8 @@ import {UploadRedux} from '../../Redux/Modules';
 // import {Header} from '../../Components/Layout';
 import {PageDivider} from '../../Components/Modules';
 import {uploadApi} from '../../ApiCenter/Api/Api';
-// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
-import Upload from 'antd/lib/upload';
-import Icon from 'antd/lib/icon';
+// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';'
+import {Upload, Icon} from 'antd';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const {Dragger} = Upload;

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Result from 'antd/lib/result';
-// import 'antd/es/Result/style/css';
+import {Result} from 'antd';
 
 export default class UserActionResult extends Component {
     render() {

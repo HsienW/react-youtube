@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Input from 'antd/lib/input';
-import Button from 'antd/lib/button';
+import {Input, Button} from 'antd';
 import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
 import {ListDropdown, SubscribeNotice} from '../../Modules';
 import {PortalRedux, HeaderRedux, HomeRedux, SearchRedux} from '../../../Redux/Modules';
@@ -12,8 +11,6 @@ import {formatData} from '../../../Common/BasicService';
 import styled from 'styled-components';
 import * as StyleConfig from '../../../Common/StyleConfig';
 import * as ComponentConfig from '../../../Common/ComponentConfig';
-// import 'antd/es/Button/style/css';
-// import 'antd/es/Input/style/css';
 
 const Search = Input.Search;
 
