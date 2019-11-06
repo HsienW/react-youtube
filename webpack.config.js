@@ -26,10 +26,10 @@ module.exports = {
     //         'react-player',
     //     ],
     // },
-    // output: {
-    //     path: path.resolve(__dirname, 'dist'),
-    //     filename: '[name].bundle.js',
-    // },
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js',
+    },
     module: {
         rules: [
             {
@@ -81,15 +81,15 @@ module.exports = {
     //         })
     //     ],
     //     runtimeChunk: 'single',
-    //     splitChunks: {
-    //         cacheGroups: {
-    //             commons: {
-    //                 test: /[\\/]node_modules[\\/]/,
-    //                 name: 'vendors',
-    //                 chunks: 'all'
-    //             }
-    //         }
-    //     }
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({

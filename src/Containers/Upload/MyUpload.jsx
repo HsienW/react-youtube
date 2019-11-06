@@ -8,7 +8,7 @@ import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
 import {uploadApi} from '../../ApiCenter/Api/Api';
 // import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';'
-import {Upload, Icon} from 'antd';
+import {Upload, Icon, Button} from 'antd';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const {Dragger} = Upload;
@@ -46,29 +46,62 @@ const uploaderConfigData = {
 
 class MyUpload extends Component {
     
-    handleUploadVideoType = (videoFileInfo) => {
+    constructor() {
+        super();
+        this.state = {
+            can: false,
+            videoName: '',
+            videoDescription: '',
+            videoLastModifiedTime: ''
+        };
+    }
     
-        if (videoFileInfo.file.status === 'done') {
-            console.log('[[[[[[[[[[[[[[[[[[[[[[[[');
-            // message.success(`${info.file.name} file uploaded successfully.`);
-        }
-
-        if (videoFileInfo.file.status === 'error') {
-            console.log('mmmmmmmmmmmmmmmmm');
-            // message.error(`${info.file.name} file upload failed.`);
-        }
-        
-        // const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
-        // const uploadVideoRequest = uploadApi.createUploadVideoRequest(
-        //     'snippet,statistics,contentDetails',
-        //     true,
-        //     userToken,
-        //     'post',
-        //     videoFileInfo.file
-        // );
-        // this.props.UploadActionsCreator.doUploadVideo(uploadVideoRequest);
+    // handleUploadVideoType = (videoFileInfo) => {
+    //     if (videoFileInfo.file.status === 'done') {
+    //         // message.success(`${info.file.name} file uploaded successfully.`);
+    //     }
+    //
+    //     if (videoFileInfo.file.status === 'error') {
+    //         console.log('mmmmmmmmmmmmmmmmm');
+    //         // message.error(`${info.file.name} file upload failed.`);
+    //     }
+    //
+    //     // const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+    //     // const uploadVideoRequest = uploadApi.createUploadVideoRequest(
+    //     //     'snippet,statistics,contentDetails',
+    //     //     true,
+    //     //     userToken,
+    //     //     'post',
+    //     //     videoFileInfo.file
+    //     // );
+    //     // this.props.UploadActionsCreator.doUploadVideo(uploadVideoRequest);
+    // };
+    
+    handleBeforeUpload = (file, fileList) => {
+        console.log('yyyyyyyyyyyy');
+        console.log(file, fileList);
+        this.setState({
+            can: true,
+            videoName: file.name,
+            videoLastModifiedTime: file.lastModified
+        });
+        return new Promise((resolve, reject) => {
+            if (this.state.can) {
+                console.log('ttttttttttttt');
+                resolve();
+            }
+            console.log('fffffffffffffffffff');
+            reject();
+        });
     };
     
+    open = () => {
+        console.log('openopenopenopenopenopenopen');
+        this.setState({
+            can: true,
+        });
+    };
+
     render() {
         return (
             <div>
@@ -80,8 +113,9 @@ class MyUpload extends Component {
                             multiple={uploaderConfigData.dragger.multiple}
                             listType={uploaderConfigData.dragger.previewListType}
                             action={uploadApi.getUploadVideoURL()}
-                            onChange={this.handleUploadVideoType}
-                            // customRequest={this.doUploadVideos}
+                            // onChange={this.handleUploadVideoType}
+                            beforeUpload={this.handleBeforeUpload}
+                            // customRequest={this.handleUploadVideoType}
                         >
                             <p className="ant-upload-drag-icon">
                                 <Icon type={uploaderConfigData.icon.type} style={uploaderConfigData.icon.style}/>
@@ -90,6 +124,7 @@ class MyUpload extends Component {
                             <p className="ant-upload-hint">{uploaderConfigData.description}</p>
                         </Dragger>
                     </UploaderArea>
+                    <Button onClick={this.open}>Login</Button>
                 </MyUploadView>
             </div>
         );
