@@ -84,13 +84,25 @@ class MyUpload extends Component {
     // };
     
     beforeUploadCheck = (file, fileList) => {
+        const newList = fileList.map((item) => {
+            item.title = item.name;
+            item.desc = '';
+            return item;
+        });
         console.log('58585858585585');
-        console.log(file);
-        console.log(fileList);
+        console.log(newList);
         this.setState({
-            uploadFileList: fileList,
+            uploadFileList: newList,
         });
         return false;
+    };
+    
+    onPreviewUpload = (file) => {
+        const fileReader = new FileReader();
+        const img = fileReader.readAsDataURL(file);
+    
+        console.log('mmmmmmmmmmmmm');
+        console.log(img);
     };
     
     doUpload = () => {
@@ -113,8 +125,9 @@ class MyUpload extends Component {
                             name={uploaderConfigData.dragger.fileName}
                             multiple={uploaderConfigData.dragger.multiple}
                             listType={uploaderConfigData.dragger.previewListType}
-                            action={uploadApi.getUploadVideoURL()}
+                            // action={uploadApi.getUploadVideoURL()}
                             beforeUpload={this.beforeUploadCheck}
+                            previewFile={this.onPreviewUpload}
                         >
                             <p className="ant-upload-drag-icon">
                                 <Icon type={uploaderConfigData.icon.type} style={uploaderConfigData.icon.style}/>
