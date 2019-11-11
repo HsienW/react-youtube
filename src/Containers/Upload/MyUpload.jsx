@@ -20,6 +20,15 @@ const MyUploadView = styled.div`
     width: 100%;
 `;
 
+const PreviewItemTitle = styled.div`
+    font-size: 1.2rem;
+    font-weight: 500;
+`;
+
+const PreviewVideo = styled.div`
+    border: 1px solid rgb(232, 232, 232);
+`;
+
 const UploaderArea = styled.div`
     padding: 0 10vw;
     height: 40vh;
@@ -50,18 +59,14 @@ class MyUpload extends Component {
     state = {
         previewFileList: [],
         uploadFileList: [],
+        previewVideoKey: '',
         previewVideoURL: '',
-        visible: false,
-        loading: false,
+        previewVideoTitle: '',
+        previewVideoDesc: '',
         editingTitle: '',
-        editingDescription: ''
-    };
-    
-    handleOk = () => {
-        this.setState({loading: true});
-        setTimeout(() => {
-            this.setState({loading: false, visible: false});
-        }, 3000);
+        editingDesc: '',
+        visible: false,
+        loading: false
     };
     
     handleCancel = () => {
@@ -74,22 +79,20 @@ class MyUpload extends Component {
             item.desc = '';
             return item;
         });
-        console.log('58585858585585');
-        console.log(newList);
-        // this.setState({
-        //     uploadFileList: newList,
-        // });
+        this.setState({uploadFileList: newList});
         return false;
     };
     
     previewUploadVideo = (file) => {
         console.log('fffffffffffff');
+        console.log(file);
         console.log(URL.createObjectURL(file.originFileObj));
         this.setState({
+            previewVideoKey: file.uid,
+            previewVideoTitle: file.title,
+            previewVideoDesc: file.desc,
+            previewVideoURL: URL.createObjectURL(file.originFileObj),
             visible: true,
-            editingTitle: file.title,
-            editingDescription: file.desc,
-            previewVideoURL: URL.createObjectURL(file.originFileObj)
         });
     };
     
@@ -103,12 +106,47 @@ class MyUpload extends Component {
         callApi.post(uploadApi.getUploadVideoURL(), formData, header);
     };
     
-    onChange = ({target: {value}}) => {
-        this.setState({value});
+    onEditingTitleChange = (titleChange) => {
+        this.setState({editingTitle: titleChange.target.value});
+    };
+    
+    onEditingDescChange = (descChange) => {
+        this.setState({editingDesc: descChange.target.value});
+    };
+    
+    handleOk = () => {
+        this.setState({
+            loading: true,
+            previewVideoTitle: this.state.editingTitle,
+            previewVideoDesc: this.state.editingDesc,
+        }, () => {
+            let newFileList = this.state.uploadFileList.slice(0);
+            newFileList.map((item) => {
+                if (item.uid === this.state.previewVideoKey) {
+                    item.name = this.state.editingTitle;
+                    item.title = this.state.editingTitle;
+                    item.desc = this.state.editingDesc;
+                }
+            });
+            this.setState({
+                uploadFileList: newFileList,
+                previewVideoTitle: '',
+                previewVideoDesc: '',
+                editingTitle: '',
+                editingDesc: '',
+                loading: false,
+                visible: false,
+            });
+        });
+    };
+    
+    uploadListStateSync = (files) => {
+        this.setState({
+            uploadFileList: [...files.fileList]
+        });
     };
     
     render() {
-        console.log('render-render-render-render');
         return (
             <div>
                 <MyUploadView>
@@ -118,7 +156,8 @@ class MyUpload extends Component {
                             name={uploaderConfigData.dragger.fileName}
                             multiple={uploaderConfigData.dragger.multiple}
                             listType={uploaderConfigData.dragger.previewListType}
-                            // action={uploadApi.getUploadVideoURL()}
+                            fileList={this.state.uploadFileList}
+                            onChange={this.uploadListStateSync}
                             beforeUpload={this.beforeUploadCheck}
                             onPreview={this.previewUploadVideo}
                         >
@@ -133,7 +172,7 @@ class MyUpload extends Component {
                 </MyUploadView>
                 <Modal
                     visible={this.state.visible}
-                    title={this.state.editingTitle}
+                    title={this.state.previewVideoTitle}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     footer={[
@@ -145,15 +184,24 @@ class MyUpload extends Component {
                         </Button>,
                     ]}
                 >
-                    <video width="320" height="240" src={this.state.previewVideoURL}/>
-                    <div>Title:</div>
-                    <Input placeholder="Basic usage" />
+                    <PreviewVideo>
+                        <video width="472" height="392" src={this.state.previewVideoURL}/>
+                    </PreviewVideo>
                     <div style={{margin: '24px 0'}}/>
-                    <div>Description:</div>
+                    <PreviewItemTitle>
+                        Title:
+                    </PreviewItemTitle>
+                    <Input
+                        placeholder="Please enter new video title"
+                        onChange={this.onEditingTitleChange}
+                    />
+                    <div style={{margin: '24px 0'}}/>
+                    <PreviewItemTitle>
+                        Description:
+                    </PreviewItemTitle>
                     <TextArea
-                        value={this.state.editingDescription}
-                        onChange={this.onChange}
-                        placeholder="Controlled autosize"
+                        onChange={this.onEditingDescChange}
+                        placeholder="Please enter new video Description"
                         autoSize={{minRows: 3, maxRows: 5}}
                     />
                 </Modal>
