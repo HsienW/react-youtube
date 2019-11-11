@@ -118,20 +118,14 @@ class MyUpload extends Component {
         // // reader.onloadend = function(evt) {
         // //     // const fileBlob = new Blob([evt.target.result], { 'type' : 'fileType' });
         // // };
-        const newFile = new Blob(file, {type: 'contentType'});
+        // const newFile = reader.readAsArrayBuffer(file[0]);
         //
         const formData = new FormData();
-        // const header = {
-        //     'Content-Type': 'multipart/form-data'
-        // };
-        formData.append('file', newFile);
-        
-        axios({
-            method: 'post',
-            url: uploadApi.getUploadVideoURL(),
-            data: formData,
-            config: {headers: {'Content-Type': 'multipart/form-data'}}
-        });
+        const header = {
+            'Content-Type': 'multipart/form-data'
+        };
+        formData.append('file', file[0]);
+        axios.post(uploadApi.getUploadVideoURL(), formData, header);
         // callApi.post(uploadApi.getUploadVideoURL(), formData, header);
     };
     
