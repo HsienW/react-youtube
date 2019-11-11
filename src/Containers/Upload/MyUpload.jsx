@@ -7,8 +7,9 @@ import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
 import {uploadApi} from '../../ApiCenter/Api/Api';
 import {Upload, Icon, Button, Modal, Input} from 'antd';
-import {callApi} from '../../ApiCenter/Api/CallApi';
+// import {callApi} from '../../ApiCenter/Api/CallApi';
 import * as StyleConfig from '../../Common/StyleConfig';
+import axios from 'axios';
 // import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';'
 
 const {Dragger} = Upload;
@@ -49,37 +50,52 @@ const uploaderConfigData = {
     },
     dragger: {
         fileName: 'file',
-        multiple: false,
+        multiple: true,
         previewListType: 'picture',
     }
 };
 
 class MyUpload extends Component {
     
-    state = {
-        previewFileList: [],
-        uploadFileList: [],
-        previewVideoKey: '',
-        previewVideoURL: '',
-        previewVideoTitle: '',
-        previewVideoDesc: '',
-        editingTitle: '',
-        editingDesc: '',
-        visible: false,
-        loading: false
-    };
+    constructor() {
+        super();
+        this.state = {
+            previewFileList: [],
+            uploadFileList: [],
+            previewVideoKey: '',
+            previewVideoURL: '',
+            previewVideoTitle: '',
+            previewVideoDesc: '',
+            editingTitle: '',
+            editingDesc: '',
+            visible: false,
+            loading: false
+        };
+    }
     
     handleCancel = () => {
-        this.setState({visible: false});
+        this.setState({
+            previewVideoKey: '',
+            previewVideoURL: '',
+            previewVideoTitle: '',
+            previewVideoDesc: '',
+            editingTitle: '',
+            editingDesc: '',
+            loading: false,
+            visible: false,
+        });
     };
     
     beforeUploadCheck = (file, fileList) => {
-        const newList = fileList.map((item) => {
-            item.title = item.name;
-            item.desc = '';
-            return item;
-        });
-        this.setState({uploadFileList: newList});
+        console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[');
+        console.log(file);
+        console.log(fileList);
+        // const newList = fileList.map((item) => {
+        //     item.title = item.name;
+        //     item.desc = '';
+        //     return item;
+        // });
+        this.setState({uploadFileList: fileList});
         return false;
     };
     
@@ -98,12 +114,25 @@ class MyUpload extends Component {
     
     doUpload = () => {
         const file = this.state.uploadFileList;
+        // const reader = new FileReader();
+        // // reader.onloadend = function(evt) {
+        // //     // const fileBlob = new Blob([evt.target.result], { 'type' : 'fileType' });
+        // // };
+        const newFile = new Blob(file, {type: 'contentType'});
+        //
         const formData = new FormData();
-        const header = {
-            'Content-Type': 'multipart/form-data'
-        };
-        formData.append('multipartFile', file[0]);
-        callApi.post(uploadApi.getUploadVideoURL(), formData, header);
+        // const header = {
+        //     'Content-Type': 'multipart/form-data'
+        // };
+        formData.append('file', newFile);
+        
+        axios({
+            method: 'post',
+            url: uploadApi.getUploadVideoURL(),
+            data: formData,
+            config: {headers: {'Content-Type': 'multipart/form-data'}}
+        });
+        // callApi.post(uploadApi.getUploadVideoURL(), formData, header);
     };
     
     onEditingTitleChange = (titleChange) => {
@@ -115,6 +144,7 @@ class MyUpload extends Component {
     };
     
     handleOk = () => {
+        console.log('11111111111111111111111');
         this.setState({
             loading: true,
             previewVideoTitle: this.state.editingTitle,
@@ -130,6 +160,8 @@ class MyUpload extends Component {
             });
             this.setState({
                 uploadFileList: newFileList,
+                previewVideoKey: '',
+                previewVideoURL: '',
                 previewVideoTitle: '',
                 previewVideoDesc: '',
                 editingTitle: '',
@@ -141,12 +173,15 @@ class MyUpload extends Component {
     };
     
     uploadListStateSync = (files) => {
+        console.log('Sync-Sync-Sync-Sync-Sync-Sync');
         this.setState({
             uploadFileList: [...files.fileList]
         });
     };
     
     render() {
+        console.log('render-render-render-render-render-render');
+        console.log(this.state);
         return (
             <div>
                 <MyUploadView>
@@ -157,6 +192,7 @@ class MyUpload extends Component {
                             multiple={uploaderConfigData.dragger.multiple}
                             listType={uploaderConfigData.dragger.previewListType}
                             fileList={this.state.uploadFileList}
+                            // action={uploadApi.getUploadVideoURL()}
                             onChange={this.uploadListStateSync}
                             beforeUpload={this.beforeUploadCheck}
                             onPreview={this.previewUploadVideo}
@@ -177,7 +213,7 @@ class MyUpload extends Component {
                     onCancel={this.handleCancel}
                     footer={[
                         <Button key="back" onClick={this.handleCancel}>
-                            Return
+                            Cancel
                         </Button>,
                         <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleOk}>
                             Submit
@@ -193,6 +229,7 @@ class MyUpload extends Component {
                     </PreviewItemTitle>
                     <Input
                         placeholder="Please enter new video title"
+                        value={this.state.editingTitle}
                         onChange={this.onEditingTitleChange}
                     />
                     <div style={{margin: '24px 0'}}/>
@@ -200,9 +237,10 @@ class MyUpload extends Component {
                         Description:
                     </PreviewItemTitle>
                     <TextArea
-                        onChange={this.onEditingDescChange}
-                        placeholder="Please enter new video Description"
+                        placeholder="Please enter new video description"
+                        value={this.state.editingDesc}
                         autoSize={{minRows: 3, maxRows: 5}}
+                        onChange={this.onEditingDescChange}
                     />
                 </Modal>
             </div>
