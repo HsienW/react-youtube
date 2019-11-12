@@ -19,5 +19,14 @@ export const callApi = {
             .catch((error) => {
                 return error;
             });
+    },
+    customPost(url, request, headers) {
+        return axios.post(url, request, headers)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                return error;
+            });
     }
 };

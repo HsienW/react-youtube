@@ -11,7 +11,7 @@ import VideoListItem from './Video/VideoListItem';
 import VideoPlayer from './Video/VideoPlayer';
 import VideoListPlayItem from './Video/VideoListPlayItem';
 import Uploader from './Upload/Uploader';
-import UploadEditor from './Upload/UploadEditor';
+import UploadEditorModal from './Upload/UploadEditorModal';
 
 export {
     UserAvatar,
@@ -27,5 +27,5 @@ export {
     VideoPlayer,
     InfiniteScroll,
     Uploader,
-    UploadEditor
+    UploadEditorModal
 };

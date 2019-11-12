@@ -1,5 +1,5 @@
 import {createAction} from 'redux-actions';
-import axios from 'axios';
+import {callApi} from '../../../ApiCenter/Api/CallApi';
 
 export const UploadVideoActions = {
     doUploadVideoStart: 'DO_UPLOAD_VIDEO_START',
@@ -10,7 +10,7 @@ export const UploadVideoActions = {
 const doUploadVideo = (request) => {
     return (dispatch) => {
         dispatch(createAction(UploadVideoActions.doUploadVideoStart));
-        axios(request)
+        callApi.post(request)
             .then((respond) => {
                 dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(respond));
             })

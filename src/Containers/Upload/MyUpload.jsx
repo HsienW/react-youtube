@@ -6,28 +6,16 @@ import {bindActionCreators} from 'redux';
 import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
 import {uploadApi} from '../../ApiCenter/Api/Api';
-import {Upload, Icon, Button, Modal, Input} from 'antd';
-// import {callApi} from '../../ApiCenter/Api/CallApi';
+import {Button} from 'antd';
+import {Uploader, UploadEditorModal} from '../../Components/Modules';
 import * as StyleConfig from '../../Common/StyleConfig';
 import axios from 'axios';
-// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';'
-
-const {Dragger} = Upload;
-const {TextArea} = Input;
+import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 
 const MyUploadView = styled.div`
     padding: 7vh 8vw 0 8vw;
     height: 100vh;
     width: 100%;
-`;
-
-const PreviewItemTitle = styled.div`
-    font-size: 1.2rem;
-    font-weight: 500;
-`;
-
-const PreviewVideo = styled.div`
-    border: 1px solid rgb(232, 232, 232);
 `;
 
 const UploaderArea = styled.div`
@@ -54,6 +42,16 @@ const uploaderConfigData = {
         previewListType: 'picture',
     }
 };
+const editorModalConfigData = {
+    previewVideoWidth: 472,
+    previewVideoHeight: 392,
+    titleInputPlaceholder: 'Please enter new video title',
+    descInputPlaceholder: 'Please enter new video description',
+    descInputAreaSize: {
+        minRows: 3,
+        maxRows: 5
+    }
+};
 
 class MyUpload extends Component {
     
@@ -68,65 +66,29 @@ class MyUpload extends Component {
             previewVideoDesc: '',
             editingTitle: '',
             editingDesc: '',
-            visible: false,
-            loading: false
+            showPreviewEditor: false,
+            editingLoading: false,
         };
     }
     
-    handleCancel = () => {
+    uploadListStateSync = (files) => {
         this.setState({
-            previewVideoKey: '',
-            previewVideoURL: '',
-            previewVideoTitle: '',
-            previewVideoDesc: '',
-            editingTitle: '',
-            editingDesc: '',
-            loading: false,
-            visible: false,
+            uploadFileList: [...files.fileList]
         });
     };
     
     beforeUploadCheck = (file, fileList) => {
-        console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[');
-        console.log(file);
-        console.log(fileList);
-        // const newList = fileList.map((item) => {
-        //     item.title = item.name;
-        //     item.desc = '';
-        //     return item;
-        // });
         this.setState({uploadFileList: fileList});
-        return false;
     };
     
     previewUploadVideo = (file) => {
-        console.log('fffffffffffff');
-        console.log(file);
-        console.log(URL.createObjectURL(file.originFileObj));
         this.setState({
             previewVideoKey: file.uid,
-            previewVideoTitle: file.title,
-            previewVideoDesc: file.desc,
+            previewVideoTitle: file.name,
+            previewVideoDesc: file.description,
             previewVideoURL: URL.createObjectURL(file.originFileObj),
-            visible: true,
+            showPreviewEditor: true,
         });
-    };
-    
-    doUpload = () => {
-        const file = this.state.uploadFileList;
-        // const reader = new FileReader();
-        // // reader.onloadend = function(evt) {
-        // //     // const fileBlob = new Blob([evt.target.result], { 'type' : 'fileType' });
-        // // };
-        // const newFile = reader.readAsArrayBuffer(file[0]);
-        //
-        const formData = new FormData();
-        const header = {
-            'Content-Type': 'multipart/form-data'
-        };
-        formData.append('file', file[0]);
-        axios.post(uploadApi.getUploadVideoURL(), formData, header);
-        // callApi.post(uploadApi.getUploadVideoURL(), formData, header);
     };
     
     onEditingTitleChange = (titleChange) => {
@@ -137,10 +99,9 @@ class MyUpload extends Component {
         this.setState({editingDesc: descChange.target.value});
     };
     
-    handleOk = () => {
-        console.log('11111111111111111111111');
+    onSaveEditing = () => {
         this.setState({
-            loading: true,
+            editingLoading: true,
             previewVideoTitle: this.state.editingTitle,
             previewVideoDesc: this.state.editingDesc,
         }, () => {
@@ -149,7 +110,7 @@ class MyUpload extends Component {
                 if (item.uid === this.state.previewVideoKey) {
                     item.name = this.state.editingTitle;
                     item.title = this.state.editingTitle;
-                    item.desc = this.state.editingDesc;
+                    item.description = this.state.editingDesc;
                 }
             });
             this.setState({
@@ -160,83 +121,83 @@ class MyUpload extends Component {
                 previewVideoDesc: '',
                 editingTitle: '',
                 editingDesc: '',
-                loading: false,
-                visible: false,
+                editingLoading: false,
+                showPreviewEditor: false,
             });
         });
     };
     
-    uploadListStateSync = (files) => {
-        console.log('Sync-Sync-Sync-Sync-Sync-Sync');
+    onCancelEditing = () => {
         this.setState({
-            uploadFileList: [...files.fileList]
+            previewVideoKey: '',
+            previewVideoURL: '',
+            previewVideoTitle: '',
+            previewVideoDesc: '',
+            editingTitle: '',
+            editingDesc: '',
+            editingLoading: false,
+            showPreviewEditor: false,
         });
     };
     
+    doUpload = () => {
+        const file = this.state.uploadFileList;
+        const blobFile = new Blob(file, {'type': 'video/mp4'});
+        const formData = new FormData();
+        const header = {
+            'Authorization': `Bearer ${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`,
+            'Content-Type': 'video/mp4'
+        };
+        const config = {
+            'snippet': {
+                'title': 'test',
+                'description': 'description-description',
+                'tags': [],
+                'categoryId': '22'
+            },
+            'status': {
+                'privacyStatus': 'public'
+            }
+        };
+        
+        formData.append('file', blobFile);
+        formData.append('uploadType', 'resumable');
+        formData.append('part', JSON.stringify(config));
+        formData.append('key', 'AIzaSyAL3Tp-ilQSP2XDVn0qljXjj5UO801WeOA');
+        
+        axios.post(uploadApi.getUploadVideoURL(), formData, header);
+        // callApi.post(uploadApi.getUploadVideoURL(), formData, header);
+    };
+    
     render() {
-        console.log('render-render-render-render-render-render');
-        console.log(this.state);
         return (
             <div>
                 <MyUploadView>
                     <PageDivider dividerData={uploadDividerData}/>
                     <UploaderArea>
-                        <Dragger
-                            name={uploaderConfigData.dragger.fileName}
-                            multiple={uploaderConfigData.dragger.multiple}
-                            listType={uploaderConfigData.dragger.previewListType}
-                            fileList={this.state.uploadFileList}
-                            // action={uploadApi.getUploadVideoURL()}
-                            onChange={this.uploadListStateSync}
-                            beforeUpload={this.beforeUploadCheck}
-                            onPreview={this.previewUploadVideo}
-                        >
-                            <p className="ant-upload-drag-icon">
-                                <Icon type={uploaderConfigData.icon.type} style={uploaderConfigData.icon.style}/>
-                            </p>
-                            <p className="ant-upload-text">{uploaderConfigData.title}</p>
-                            <p className="ant-upload-hint">{uploaderConfigData.description}</p>
-                        </Dragger>
+                        <Uploader
+                            uploaderConfig={uploaderConfigData}
+                            uploadFileList={this.state.uploadFileList}
+                            stateSyncAction={this.uploadListStateSync}
+                            beforeUploadAction={this.beforeUploadCheck}
+                            previewUploadAction={this.previewUploadVideo}
+                        />
                     </UploaderArea>
                     <Button onClick={this.doUpload}>DoUpload</Button>
                 </MyUploadView>
-                <Modal
-                    visible={this.state.visible}
-                    title={this.state.previewVideoTitle}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    footer={[
-                        <Button key="back" onClick={this.handleCancel}>
-                            Cancel
-                        </Button>,
-                        <Button key="submit" type="primary" loading={this.state.loading} onClick={this.handleOk}>
-                            Submit
-                        </Button>,
-                    ]}
-                >
-                    <PreviewVideo>
-                        <video width="472" height="392" src={this.state.previewVideoURL}/>
-                    </PreviewVideo>
-                    <div style={{margin: '24px 0'}}/>
-                    <PreviewItemTitle>
-                        Title:
-                    </PreviewItemTitle>
-                    <Input
-                        placeholder="Please enter new video title"
-                        value={this.state.editingTitle}
-                        onChange={this.onEditingTitleChange}
-                    />
-                    <div style={{margin: '24px 0'}}/>
-                    <PreviewItemTitle>
-                        Description:
-                    </PreviewItemTitle>
-                    <TextArea
-                        placeholder="Please enter new video description"
-                        value={this.state.editingDesc}
-                        autoSize={{minRows: 3, maxRows: 5}}
-                        onChange={this.onEditingDescChange}
-                    />
-                </Modal>
+                <UploadEditorModal
+                    modalConfig={editorModalConfigData}
+                    showPreviewEditor={this.state.showPreviewEditor}
+                    editingLoading={this.state.editingLoading}
+                    previewVideoTitle={this.state.previewVideoTitle}
+                    previewVideoURL={this.state.previewVideoURL}
+                    editingTitle={this.state.editingTitle}
+                    editingDesc={this.state.editingDesc}
+                    saveClickAction={this.onSaveEditing}
+                    cancelClickAction={this.onCancelEditing}
+                    changeTitleAction={this.onEditingTitleChange}
+                    changeDescAction={this.onEditingDescChange}
+                />
             </div>
         );
     }
