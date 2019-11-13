@@ -82,6 +82,8 @@ class MyUpload extends Component {
     };
     
     previewUploadVideo = (file) => {
+        console.log('nnnnnnnnnnnnnnnnnnnnnnnn');
+        console.log(file);
         this.setState({
             previewVideoKey: file.uid,
             previewVideoTitle: file.name,
@@ -144,6 +146,7 @@ class MyUpload extends Component {
         const file = this.state.uploadFileList;
         const blobFile = new Blob(file, {'type': 'video/mp4'});
         const formData = new FormData();
+    
         const header = {
             'Authorization': `Bearer ${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`,
             'Content-Type': 'video/mp4'

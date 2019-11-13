@@ -9,7 +9,15 @@ export const callApi = {
             .catch((error) => {
                 return error;
             });
-
+    },
+    put(url, request) {
+        return axios.put(url, {params: request})
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                return error;
+            });
     },
     post(url, request) {
         return axios.post(url, request)
