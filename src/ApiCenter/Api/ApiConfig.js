@@ -10,6 +10,8 @@ const playlistItemsURL = `${basicURL}playlistItems?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
 const uploadURL = 'https://www.googleapis.com/upload/youtube/v3/videos?';
+const videoURLUpdate = `${basicURL}videos?part=snippet,status,contentDetails`;
+
 
 export {
     googleApiKey,
@@ -21,5 +23,6 @@ export {
     playlistItemsURL,
     searchURL,
     subscriptionURL,
-    uploadURL
+    uploadURL,
+    videoURLUpdate
 };

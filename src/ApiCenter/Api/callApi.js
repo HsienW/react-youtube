@@ -11,7 +11,7 @@ export const callApi = {
             });
     },
     put(url, request) {
-        return axios.put(url, {params: request})
+        return axios.put(url, request)
             .then((response) => {
                 return response;
             })
@@ -28,8 +28,8 @@ export const callApi = {
                 return error;
             });
     },
-    customPost(url, request, headers) {
-        return axios.post(url, request, headers)
+    customPost(url, request, header) {
+        return axios.post(url, request, header)
             .then((response) => {
                 return response;
             })

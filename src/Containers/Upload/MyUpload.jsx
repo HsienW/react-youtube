@@ -9,8 +9,6 @@ import {uploadApi} from '../../ApiCenter/Api/Api';
 import {Button} from 'antd';
 import {Uploader, UploadEditorModal} from '../../Components/Modules';
 import * as StyleConfig from '../../Common/StyleConfig';
-import axios from 'axios';
-import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 
 const MyUploadView = styled.div`
     padding: 7vh 8vw 0 8vw;
@@ -42,6 +40,7 @@ const uploaderConfigData = {
         previewListType: 'picture',
     }
 };
+
 const editorModalConfigData = {
     previewVideoWidth: 472,
     previewVideoHeight: 392,
@@ -58,8 +57,9 @@ class MyUpload extends Component {
     constructor() {
         super();
         this.state = {
-            previewFileList: [],
             uploadFileList: [],
+            editInfoFileList: [],
+            previewFileList: [],
             previewVideoKey: '',
             previewVideoURL: '',
             previewVideoTitle: '',
@@ -69,6 +69,20 @@ class MyUpload extends Component {
             showPreviewEditor: false,
             editingLoading: false,
         };
+    }
+    
+    static getDerivedStateFromProps(nextProps) {
+        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeee');
+        console.log(nextProps);
+        switch (nextProps.action.type) {
+            case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
+                return {
+                    // uploadFileList: [],
+                };
+            default:
+                break;
+        }
+        return null;
     }
     
     uploadListStateSync = (files) => {
@@ -117,6 +131,7 @@ class MyUpload extends Component {
             });
             this.setState({
                 uploadFileList: newFileList,
+                // editInfoFileList: newFileList,
                 previewVideoKey: '',
                 previewVideoURL: '',
                 previewVideoTitle: '',
@@ -143,33 +158,14 @@ class MyUpload extends Component {
     };
     
     doUpload = () => {
+        const uploadVideoURL = uploadApi.getUploadVideoURL();
         const file = this.state.uploadFileList;
         const blobFile = new Blob(file, {'type': 'video/mp4'});
         const formData = new FormData();
-    
-        const header = {
-            'Authorization': `Bearer ${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`,
-            'Content-Type': 'video/mp4'
-        };
-        const config = {
-            'snippet': {
-                'title': 'test',
-                'description': 'description-description',
-                'tags': [],
-                'categoryId': '22'
-            },
-            'status': {
-                'privacyStatus': 'public'
-            }
-        };
-        
+        const header = {'Content-Type': 'video/mp4'};
+
         formData.append('file', blobFile);
-        formData.append('uploadType', 'resumable');
-        formData.append('part', JSON.stringify(config));
-        formData.append('key', 'AIzaSyAL3Tp-ilQSP2XDVn0qljXjj5UO801WeOA');
-        
-        axios.post(uploadApi.getUploadVideoURL(), formData, header);
-        // callApi.post(uploadApi.getUploadVideoURL(), formData, header);
+        this.props.UploadActionsCreator.doUploadVideo(uploadVideoURL, formData, header, file);
     };
     
     render() {
