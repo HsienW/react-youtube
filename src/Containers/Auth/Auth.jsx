@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Input, Button} from 'antd';
+import {Button, Input} from 'antd';
 import {GoogleAuthorize} from 'react-google-authorize';
 import {AuthRedux, PortalRedux, HomeRedux} from  '../../Redux/Modules';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';

@@ -1,32 +1,35 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    entry: {
-        index: './src/index.jsx',
-        vendor: [
-            'is_js',
-            'axios',
-            'react',
-            'react-dom',
-            'react-redux',
-            'react-router',
-            'react-router-redux',
-            'redux',
-            'redux-actions',
-            'redux-thunk',
-            'react-final-form',
-            'react-player',
-        ],
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js',
-    },
+    // entry: {
+    //     index: './src/index.jsx',
+    //     vendor: [
+    //         'is_js',
+    //         'axios',
+    //         'react',
+    //         'react-dom',
+    //         'react-redux',
+    //         'react-router',
+    //         'react-router-redux',
+    //         'redux',
+    //         'redux-actions',
+    //         'redux-thunk',
+    //         'react-final-form',
+    //         'react-player',
+    //     ],
+    // },
+    // output: {
+    //     path: path.resolve(__dirname, 'dist'),
+    //     filename: '[name].bundle.js',
+    // },
     module: {
         rules: [
             {
@@ -55,40 +58,38 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.json', '.jsx']
+        extensions: ['.js', '.json', '.jsx'],
+        alias: {
+            "@ant-design/icons/lib/dist$": path.resolve(__dirname, "./src/Common/HandleAntIcons.js"),
+        }
     },
     optimization: {
-        minimizer: [
-            new UglifyJSPlugin({
-                cache: true,
-                parallel: true,
-                uglifyOptions: {
-                    compress: {
-                        unused: true,
-                        warnings: false,
-                    },
-                    ecma: 8,
-                    warnings: false,
-                    mangle: true,
-                },
-                sourceMap: false
-            })
-        ],
-        runtimeChunk: 'single',
-        splitChunks: {
-            chunks: 'all',
-            maxInitialRequests: Infinity,
-            minSize: 0,
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module) {
-                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                        return `npm.${packageName.replace('@', '')}`;
-                    },
-                },
-            }
-        }
+    //     minimizer: [
+    //         new UglifyJSPlugin({
+    //             cache: true,
+    //             parallel: true,
+    //             uglifyOptions: {
+    //                 compress: {
+    //                     unused: true,
+    //                     warnings: false,
+    //                 },
+    //                 ecma: 8,
+    //                 warnings: false,
+    //                 mangle: true,
+    //             },
+    //             sourceMap: false
+    //         })
+    //     ],
+    //     runtimeChunk: 'single',
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             commons: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 name: 'vendors',
+    //                 chunks: 'all'
+    //             }
+    //         }
+    //     }
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -96,13 +97,17 @@ module.exports = {
             template: 'src/index.html',
             filename: 'index.html',
         }),
+        new BrotliPlugin({
+            asset: '[path].br[query]',
+            test: /\.(js|css|html|svg)$/,
+            threshold: 10240,
+            minRatio: 0.8
+        }),
         new MiniCssExtractPlugin({
             filename: 'index.bundle.css',
         }),
         new CompressionPlugin(),
-        // new HardSourceWebpackPlugin()
+        new MomentLocalesPlugin(),
+        new BundleAnalyzerPlugin()
     ],
-    devServer: {
-        port: 8080,
-    },
 };

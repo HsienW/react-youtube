@@ -6,9 +6,9 @@ import {bindActionCreators} from 'redux';
 import {UploadRedux} from '../../Redux/Modules';
 // import {Header} from '../../Components/Layout';
 import {PageDivider} from '../../Components/Modules';
-import {Upload, Icon} from 'antd';
 import {uploadApi} from '../../ApiCenter/Api/Api';
-// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+// import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';'
+import {Upload, Icon} from 'antd';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const {Dragger} = Upload;
@@ -39,26 +39,35 @@ const uploaderConfigData = {
     },
     dragger: {
         fileName: 'file',
-        multiple: true,
+        multiple: false,
         previewListType: 'picture',
     }
 };
 
 class MyUpload extends Component {
     
-    // doUploadVideos = (videoFileInfo) => {
-    //     console.log('8888888888888888888888888888888888');
-    //     console.log(videoFileInfo);
-    //     const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
-    //     const uploadVideoRequest = uploadApi.createUploadVideoRequest(
-    //         'snippet,statistics,contentDetails',
-    //         true,
-    //         userToken,
-    //         'post',
-    //         videoFileInfo.file
-    //     );
-    //     this.props.UploadActionsCreator.doUploadVideo(uploadVideoRequest);
-    // };
+    handleUploadVideoType = (videoFileInfo) => {
+    
+        if (videoFileInfo.file.status === 'done') {
+            console.log('[[[[[[[[[[[[[[[[[[[[[[[[');
+            // message.success(`${info.file.name} file uploaded successfully.`);
+        }
+
+        if (videoFileInfo.file.status === 'error') {
+            console.log('mmmmmmmmmmmmmmmmm');
+            // message.error(`${info.file.name} file upload failed.`);
+        }
+        
+        // const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
+        // const uploadVideoRequest = uploadApi.createUploadVideoRequest(
+        //     'snippet,statistics,contentDetails',
+        //     true,
+        //     userToken,
+        //     'post',
+        //     videoFileInfo.file
+        // );
+        // this.props.UploadActionsCreator.doUploadVideo(uploadVideoRequest);
+    };
     
     render() {
         return (
@@ -71,6 +80,7 @@ class MyUpload extends Component {
                             multiple={uploaderConfigData.dragger.multiple}
                             listType={uploaderConfigData.dragger.previewListType}
                             action={uploadApi.getUploadVideoURL()}
+                            onChange={this.handleUploadVideoType}
                             // customRequest={this.doUploadVideos}
                         >
                             <p className="ant-upload-drag-icon">

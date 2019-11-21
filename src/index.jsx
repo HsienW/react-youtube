@@ -7,7 +7,8 @@ import {HashRouter, Router, Switch, Route} from 'react-router-dom';
 import {Auth, Home, MyUpload, Search, Play, MyChannel} from './page-loadable';
 import {Portal} from '../src/Containers/index';
 import {CommonModule} from '../src/Components/common-module';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.min.css';
+import './Common/HandleAntStyle';
 import './Common/CoverStyle.css';
 
 const history = createHistory();

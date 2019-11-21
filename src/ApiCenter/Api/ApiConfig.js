@@ -9,7 +9,7 @@ const playListURL = `${basicURL}playlists?`;
 const playlistItemsURL = `${basicURL}playlistItems?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
-const uploadURL = `${basicURL}videos?`;
+const uploadURL = 'https://www.googleapis.com/upload/youtube/v3/videos?';
 
 export {
     googleApiKey,

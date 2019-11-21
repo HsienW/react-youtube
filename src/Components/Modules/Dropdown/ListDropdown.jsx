@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Menu, Dropdown, Button, Icon} from 'antd';
+import {Dropdown, Button, Icon, Menu} from 'antd';
 
 export default class ListDropdown extends Component {
 
