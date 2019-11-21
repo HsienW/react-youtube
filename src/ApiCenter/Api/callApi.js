@@ -36,5 +36,14 @@ export const callApi = {
             .catch((error) => {
                 return error;
             });
+    },
+    multipleApi(cllApiList) {
+        return axios.all(cllApiList)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                return error;
+            });
     }
 };

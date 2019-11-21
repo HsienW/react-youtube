@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {SpinStyle} from '../Common/StyleConfig';
-import Spin from 'antd/lib/spin';
+import {Spin} from 'antd';
 
 export const LoadingDataHOC = (WrappedComponent) => {
     return class loadingDataHOC extends Component {
@@ -8,16 +8,14 @@ export const LoadingDataHOC = (WrappedComponent) => {
         constructor() {
             super();
             this.state = {
-                showLoading: true
+                showLoading: false
             };
         }
         
         toggleShowLoading = (toggleState) => {
-            if(this.state.showLoading) {
-                this.setState({
-                    showLoading: toggleState,
-                });
-            }
+            this.setState({
+                showLoading: toggleState,
+            });
         };
 
         render() {

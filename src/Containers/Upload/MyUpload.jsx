@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
-import {uploadApi} from '../../ApiCenter/Api/Api';
+import {LoadingDataHOC} from '../../Decorators/index';
 import {Button} from 'antd';
 import {Uploader, UploadEditorModal} from '../../Components/Modules';
 import * as StyleConfig from '../../Common/StyleConfig';
@@ -52,12 +52,14 @@ const editorModalConfigData = {
     }
 };
 
+@LoadingDataHOC
 class MyUpload extends Component {
     
     constructor() {
         super();
         this.state = {
             uploadFileList: [],
+            uploadFileId: '',
             editInfoFileList: [],
             previewFileList: [],
             previewVideoKey: '',
@@ -66,18 +68,19 @@ class MyUpload extends Component {
             previewVideoDesc: '',
             editingTitle: '',
             editingDesc: '',
+            uploadFileLoading: false,
             showPreviewEditor: false,
-            editingLoading: false,
+            showAlert: false,
         };
     }
     
     static getDerivedStateFromProps(nextProps) {
-        console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeee');
-        console.log(nextProps);
         switch (nextProps.action.type) {
+            case UploadRedux.UploadVideoActions.doUploadVideoStart:
+                return {uploadFileLoading: true};
             case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
                 return {
-                    // uploadFileList: [],
+                    // uploadFileLoading: false
                 };
             default:
                 break;
@@ -85,25 +88,41 @@ class MyUpload extends Component {
         return null;
     }
     
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.uploadFileLoading && prevState.uploadFileLoading) {
+            this.props.toggleShowLoading(false);
+        }
+    }
+    
     uploadListStateSync = (files) => {
+        if (this.state.uploadFileList.length >= 3 || files.fileList.length >= 3) {
+            this.setState({
+                showOverloadAlert: true,
+                uploadFileList: [...files.fileList]
+            });
+            return;
+        }
+        
         this.setState({
+            showOverloadAlert: false,
             uploadFileList: [...files.fileList]
         });
     };
     
     beforeUploadCheck = (file, fileList) => {
+        fileList.map((item) => {
+            return item.description = '';
+        });
         this.setState({uploadFileList: fileList});
     };
     
     previewUploadVideo = (file) => {
-        console.log('nnnnnnnnnnnnnnnnnnnnnnnn');
-        console.log(file);
         this.setState({
             previewVideoKey: file.uid,
             previewVideoTitle: file.name,
             previewVideoDesc: file.description,
             previewVideoURL: URL.createObjectURL(file.originFileObj),
-            showPreviewEditor: true,
+            showPreviewEditor: true
         });
     };
     
@@ -125,7 +144,6 @@ class MyUpload extends Component {
             newFileList.map((item) => {
                 if (item.uid === this.state.previewVideoKey) {
                     item.name = this.state.editingTitle;
-                    item.title = this.state.editingTitle;
                     item.description = this.state.editingDesc;
                 }
             });
@@ -158,14 +176,13 @@ class MyUpload extends Component {
     };
     
     doUpload = () => {
-        const uploadVideoURL = uploadApi.getUploadVideoURL();
-        const file = this.state.uploadFileList;
-        const blobFile = new Blob(file, {'type': 'video/mp4'});
-        const formData = new FormData();
-        const header = {'Content-Type': 'video/mp4'};
-
-        formData.append('file', blobFile);
-        this.props.UploadActionsCreator.doUploadVideo(uploadVideoURL, formData, header, file);
+        this.setState({
+            uploadFileLoading: true,
+        }, () => {
+            this.props.toggleShowLoading(this.state.uploadFileLoading);
+            this.props.UploadActionsCreator.simulationDoUploadVideo(this.state.uploadFileList);
+            // this.props.UploadActionsCreator.doUploadVideo(this.state.uploadFileList);
+        });
     };
     
     render() {
@@ -204,6 +221,7 @@ class MyUpload extends Component {
 
 MyUpload.propTypes = {
     UploadActionsCreator: PropTypes.object.isRequired,
+    toggleShowLoading: PropTypes.func
 };
 
 export default connect(

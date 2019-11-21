@@ -1,3 +1,5 @@
+import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
+
 const basicURL = 'https://www.googleapis.com/youtube/v3/';
 const googleApiKey = 'AIzaSyAL3Tp-ilQSP2XDVn0qljXjj5UO801WeOA';
 
@@ -10,7 +12,7 @@ const playlistItemsURL = `${basicURL}playlistItems?`;
 const searchURL = `${basicURL}search?`;
 const subscriptionURL = `${basicURL}subscriptions?`;
 const uploadURL = 'https://www.googleapis.com/upload/youtube/v3/videos?';
-const videoURLUpdate = `${basicURL}videos?part=snippet,status,contentDetails`;
+const videoURLUpdate = `${basicURL}videos?part=snippet,status,contentDetails&access_token=${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`;
 
 
 export {
