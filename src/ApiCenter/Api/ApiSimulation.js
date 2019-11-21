@@ -2748,7 +2748,7 @@ export const uploadVideoSimulation = () => {
         if (success) {
             setTimeout(() => {
                 resolve(ApiSimulation.getUploadVideo());
-            }, 3000);
+            }, 1000);
         } else {
             reject('upload-error');
         }
@@ -2761,7 +2761,7 @@ export const editVideoSimulation = () => {
         if (success) {
             setTimeout(() => {
                 resolve(ApiSimulation.getEditVideo());
-            }, 5000);
+            }, 3000);
         } else {
             reject('edit-error');
         }

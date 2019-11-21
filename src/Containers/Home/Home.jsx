@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
+import {CheckAuthHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
@@ -34,12 +34,7 @@ const userActionResultData = {
     title: 'Loading...'
 };
 
-const errorAlertConfigData = {
-    type: 'error'
-};
-
 @CheckAuthHOC
-@LoadingDataHOC
 class Home extends Component {
     
     constructor() {
@@ -74,7 +69,7 @@ class Home extends Component {
     
     componentDidUpdate(prevProps, prevState) {
         if (is.all.truthy(prevState)) {
-            this.props.toggleShowLoading(false);
+            // this.props.toggleShowLoading(false);
         }
     }
     
@@ -125,7 +120,7 @@ class Home extends Component {
                         }
                     </ContentArea>
                 </HomeView>
-                <ActionAlert configData={errorAlertConfigData}/>
+                <ActionAlert/>
             </div>
         );
     }
@@ -137,7 +132,7 @@ Home.propTypes = {
     PortalActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
     ProfileActionsCreator: PropTypes.object.isRequired,
-    toggleShowLoading: PropTypes.func,
+    // toggleShowLoading: PropTypes.func,
     toggleShowAlert: PropTypes.func
 };
 

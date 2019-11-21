@@ -8,12 +8,28 @@ export const SubscribeActions = {
     getSubscribeFailed: 'GET_SUBSCRIBE_FAILED',
 };
 
+// const aaa = {
+//     'error': {
+//         'errors': [
+//             {
+//                 'domain': 'youtube.video',
+//                 'reason': 'invalidCategoryId',
+//                 'message': 'The method to retrieve supported categories.',
+//                 'locationType': 'other',
+//                 'location': 'body.snippet.categoryId'
+//             }
+//         ],
+//         'message': 'The method to retrieve supported categories.'
+//     }
+// };
+
 const getSubscribeNoticeData = (request) => {
     return (dispatch) => {
         dispatch(createAction(SubscribeActions.getSubscribeStart)());
         callApi.get(apiData.subscriptionURL, request)
             .then((respond) => {
                 dispatch(createAction(SubscribeActions.getSubscribeSuccess)(respond));
+                // dispatch(createAction(SubscribeActions.getSubscribeFailed)(aaa));
             })
             .catch((error) => {
                 dispatch(createAction(SubscribeActions.getSubscribeFailed)(error));

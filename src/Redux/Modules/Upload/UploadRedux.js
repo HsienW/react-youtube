@@ -94,12 +94,12 @@ const doUploadVideo = (uploadFileList) => {
         });
         
         Promise.all(uploadFilePromises)
-        .then((allSuccessRespond) => {
-            dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(allSuccessRespond));
-        })
-        .catch((allError) => {
-            dispatch(createAction(UploadVideoActions.doUploadVideoFailed)(allError));
-        });
+            .then((allSuccessRespond) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(allSuccessRespond));
+            })
+            .catch((allError) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoFailed)(allError));
+            });
     };
 };
 

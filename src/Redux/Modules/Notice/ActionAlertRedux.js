@@ -5,6 +5,7 @@ import {
     HomeRedux,
     MyChannelRedux,
     PlayRedux,
+    UploadRedux
 } from '../../../Redux/Modules';
 
 export const ActionAlertActions = {
@@ -35,6 +36,8 @@ export default function ActionAlertReducer(state = {action: ''}, action) {
         case PlayRedux.PlayDetailActions.getPlayDetailFailed:
         case PlayRedux.PlayCommentActions.getPlayCommentFailed:
         case PlayRedux.PlayRelatedActions.getPlayRelatedFailed:
+        case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
+        case UploadRedux.UploadVideoActions.doUploadVideoFailed:
             return {action: action};
 
         default:

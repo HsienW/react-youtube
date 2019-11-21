@@ -8,6 +8,7 @@ import {PageDivider} from '../../Components/Modules';
 import {LoadingDataHOC} from '../../Decorators/index';
 import {Button} from 'antd';
 import {Uploader, UploadEditorModal} from '../../Components/Modules';
+import {ActionAlert} from '../../Components/Layout';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const MyUploadView = styled.div`
@@ -77,7 +78,9 @@ class MyUpload extends Component {
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case UploadRedux.UploadVideoActions.doUploadVideoStart:
-                return {uploadFileLoading: true};
+                return {
+                    uploadFileLoading: true
+                };
             case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
                 return {
                     // uploadFileLoading: false
@@ -214,6 +217,7 @@ class MyUpload extends Component {
                     changeTitleAction={this.onEditingTitleChange}
                     changeDescAction={this.onEditingDescChange}
                 />
+                <ActionAlert/>
             </div>
         );
     }
