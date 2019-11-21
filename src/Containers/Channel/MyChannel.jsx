@@ -92,7 +92,8 @@ class MyChannel extends Component {
     
     getMyChannelAllData = () => {
         const userToken = WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN);
-        const userUploadId = WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
+        const userUploadId = 'LL5jvFNi4xoq4ri9fb8xF8Tw';
+        // const userUploadId = WebStorage.getSessionStorage(WebStorageKeys.USER_PROFILE_UPLOAD_LIST_ID);
         const myChannelRequest = channelApi.createMyChannelRequest(
             'snippet,contentDetails,statistics',
             true,

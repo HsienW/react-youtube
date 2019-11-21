@@ -5,28 +5,45 @@ import {Upload, Icon} from 'antd';
 const {Dragger} = Upload;
 
 export default class Uploader extends Component {
+    
+    handleChangeSync = (files) => {
+        this.props.stateSyncAction(files);
+    };
+    
+    handleBeforeUpload = (file, fileList) => {
+        this.props.beforeUploadAction(file, fileList);
+        return false;
+    };
+    
+    handlePreviewUpload = (file) => {
+        this.props.previewUploadAction(file);
+    };
+   
     render() {
-        const {configData, uploadDraggerConfigData} = {...this.props};
+        const {uploaderConfig, uploadFileList} = {...this.props};
         return (
             <Dragger
-                name={uploadDraggerConfigData.name}
-                multiple={uploadDraggerConfigData.multiple}
-                action={uploadDraggerConfigData.action}
-                // beforeUpload={uploadDraggerConfigData.previewFile}
+                name={uploaderConfig.dragger.fileName}
+                multiple={uploaderConfig.dragger.multiple}
+                listType={uploaderConfig.dragger.previewListType}
+                fileList={uploadFileList}
+                onChange={this.handleChangeSync}
+                beforeUpload={this.handleBeforeUpload}
+                onPreview={this.handlePreviewUpload}
             >
-                <p className="ant-upload-drag-icon">
-                    <Icon type={configData.icon.type} style={configData.icon.style}/>
+                <p className='ant-upload-drag-icon'>
+                    <Icon type={uploaderConfig.icon.type} style={uploaderConfig.icon.style}/>
                 </p>
-                <p className="ant-upload-text">{configData.title}</p>
-                <p className="ant-upload-hint">{configData.description}</p>
+                <p className='ant-upload-text'>{uploaderConfig.title}</p>
+                <p className='ant-upload-hint'>{uploaderConfig.description}</p>
             </Dragger>
         );
     }
 }
 
 Uploader.propTypes = {
-    // uploaderData: PropTypes.object.isRequired,
-    configData: PropTypes.object.isRequired,
-    uploadDraggerConfigData: PropTypes.object.isRequired,
-    // itemClickAction: PropTypes.func.isRequired
+    uploaderConfig: PropTypes.object.isRequired,
+    stateSyncAction: PropTypes.func.isRequired,
+    beforeUploadAction: PropTypes.func.isRequired,
+    previewUploadAction: PropTypes.func.isRequired
 };

@@ -7,7 +7,7 @@ export class CommonModule extends Component {
     render() {
         return (
             <div>
-                <Header />
+                <Header/>
                 {this.props.children}
             </div>
         );

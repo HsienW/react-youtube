@@ -126,12 +126,11 @@ const uploadApi = {
     getUploadVideoURL() {
         return `${apiData.uploadURL}part=snippet,statistics,contentDetails&mine=true&access_token=${WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN)}`;
     },
-    createUploadVideoRequest(part, mine, accessToken, method, formDataBody) {
+    createUploadVideoRequest(part, mine, accessToken) {
         return {
-            method: method ? method : 'post',
-            url: `${apiData.uploadURL}&part=${part}&mine=${mine}&access_token=${accessToken}`,
-            data: formDataBody,
-            config: {headers: {'Content-Type': 'multipart/form-data'}}
+            part: part ? part : 'snippet,statistics,contentDetails',
+            mine: mine ? mine : true,
+            access_token: accessToken ? accessToken : WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         };
     }
 };
