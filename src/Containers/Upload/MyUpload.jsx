@@ -7,7 +7,7 @@ import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
 import {LoadingDataHOC} from '../../Decorators/index';
 import {Button} from 'antd';
-import {Uploader, UploadEditorModal} from '../../Components/Modules';
+import {Uploader, UploadEditorModal, TextAlert} from '../../Components/Modules';
 import {ActionAlert} from '../../Components/Layout';
 import * as StyleConfig from '../../Common/StyleConfig';
 
@@ -53,6 +53,17 @@ const editorModalConfigData = {
     }
 };
 
+const TextAlertConfigData = {
+    configData: {
+        type: 'warning',
+        margin: '8px 0 0'
+    },
+    contentData: {
+        title: 'Warning',
+        description: 'The number of videos uploaded at one time cannot be greater than three. Please try again!'
+    }
+};
+
 @LoadingDataHOC
 class MyUpload extends Component {
     
@@ -71,7 +82,9 @@ class MyUpload extends Component {
             editingDesc: '',
             uploadFileLoading: false,
             showPreviewEditor: false,
+            showUploadBtn: false,
             showAlert: false,
+            showOverloadAlert: false
         };
     }
     
@@ -83,7 +96,7 @@ class MyUpload extends Component {
                 };
             case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
                 return {
-                    // uploadFileLoading: false
+                    uploadFileList: []
                 };
             default:
                 break;
@@ -93,21 +106,33 @@ class MyUpload extends Component {
     
     componentDidUpdate(prevProps, prevState) {
         if (this.state.uploadFileLoading && prevState.uploadFileLoading) {
+            this.props.UploadActionsCreator.uploadVideoForceUpdate();
             this.props.toggleShowLoading(false);
         }
     }
     
     uploadListStateSync = (files) => {
-        if (this.state.uploadFileList.length >= 3 || files.fileList.length >= 3) {
+        if (files.fileList.length > 3) {
             this.setState({
                 showOverloadAlert: true,
-                uploadFileList: [...files.fileList]
+                showUploadBtn: false,
+                uploadFileList: []
+            });
+            return;
+        }
+    
+        if (files.fileList.length === 0) {
+            this.setState({
+                showOverloadAlert: false,
+                showUploadBtn: false,
+                uploadFileList: []
             });
             return;
         }
         
         this.setState({
             showOverloadAlert: false,
+            showUploadBtn: true,
             uploadFileList: [...files.fileList]
         });
     };
@@ -152,7 +177,6 @@ class MyUpload extends Component {
             });
             this.setState({
                 uploadFileList: newFileList,
-                // editInfoFileList: newFileList,
                 previewVideoKey: '',
                 previewVideoURL: '',
                 previewVideoTitle: '',
@@ -201,8 +225,28 @@ class MyUpload extends Component {
                             beforeUploadAction={this.beforeUploadCheck}
                             previewUploadAction={this.previewUploadVideo}
                         />
+                        {
+                            this.state.showOverloadAlert
+                                ? <TextAlert
+                                    configData={TextAlertConfigData.configData}
+                                    contentData={TextAlertConfigData.contentData}
+                                />
+                                : null
+                        }
+                        {
+                            this.state.showUploadBtn
+                                ? <Button
+                                    type="primary"
+                                    size='large'
+                                    icon="upload"
+                                    style={{margin: '8px 0 0'}}
+                                    onClick={this.doUpload}
+                                >
+                                    Upload
+                                </Button>
+                                : null
+                        }
                     </UploaderArea>
-                    <Button onClick={this.doUpload}>DoUpload</Button>
                 </MyUploadView>
                 <UploadEditorModal
                     modalConfig={editorModalConfigData}
