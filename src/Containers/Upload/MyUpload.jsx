@@ -22,13 +22,18 @@ const UploaderArea = styled.div`
     height: 40vh;
 `;
 
+const UploaderControlArea = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
 const uploadDividerData = {
     title: 'Upload Video'
 };
 
 const uploaderConfigData = {
     title: 'Click or drag file to this area to upload',
-    description: 'Support for a single or bulk video upload.',
+    description: 'Support for a single or bulk video upload, bulk upload videos, limited to three per upload.',
     icon: {
         type: 'plus',
         style: {
@@ -82,7 +87,7 @@ class MyUpload extends Component {
             editingDesc: '',
             uploadFileLoading: false,
             showPreviewEditor: false,
-            showUploadBtn: false,
+            showUploadControlBtn: false,
             showAlert: false,
             showOverloadAlert: false
         };
@@ -115,16 +120,16 @@ class MyUpload extends Component {
         if (files.fileList.length > 3) {
             this.setState({
                 showOverloadAlert: true,
-                showUploadBtn: false,
+                showUploadControlBtn: false,
                 uploadFileList: []
             });
             return;
         }
-    
+        
         if (files.fileList.length === 0) {
             this.setState({
                 showOverloadAlert: false,
-                showUploadBtn: false,
+                showUploadControlBtn: false,
                 uploadFileList: []
             });
             return;
@@ -132,7 +137,7 @@ class MyUpload extends Component {
         
         this.setState({
             showOverloadAlert: false,
-            showUploadBtn: true,
+            showUploadControlBtn: true,
             uploadFileList: [...files.fileList]
         });
     };
@@ -234,16 +239,18 @@ class MyUpload extends Component {
                                 : null
                         }
                         {
-                            this.state.showUploadBtn
-                                ? <Button
-                                    type="primary"
-                                    size='large'
-                                    icon="upload"
-                                    style={{margin: '8px 0 0'}}
-                                    onClick={this.doUpload}
-                                >
-                                    Upload
-                                </Button>
+                            this.state.showUploadControlBtn
+                                ? <UploaderControlArea>
+                                    <Button
+                                        type="primary"
+                                        size='large'
+                                        icon="upload"
+                                        style={{margin: '8px 0 0'}}
+                                        onClick={this.doUpload}
+                                    >
+                                        Upload
+                                    </Button>
+                                </UploaderControlArea>
                                 : null
                         }
                     </UploaderArea>
