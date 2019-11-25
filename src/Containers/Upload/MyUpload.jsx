@@ -8,7 +8,6 @@ import {PageDivider} from '../../Components/Modules';
 import {LoadingDataHOC} from '../../Decorators/index';
 import {Button} from 'antd';
 import {Uploader, UploadEditorModal, TextAlert} from '../../Components/Modules';
-import {ActionAlert} from '../../Components/Layout';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const MyUploadView = styled.div`
@@ -32,7 +31,7 @@ const uploadDividerData = {
 };
 
 const uploaderConfigData = {
-    title: 'Click or drag file to this area to upload',
+    title: 'Click or drag file to this area to upload.',
     description: 'Support for a single or bulk video upload, bulk upload videos, limited to three per upload.',
     icon: {
         type: 'plus',
@@ -67,6 +66,11 @@ const TextAlertConfigData = {
         title: 'Warning',
         description: 'The number of videos uploaded at one time cannot be greater than three. Please try again!'
     }
+};
+
+const UploadBtnConfigData = {
+    backgroundColor: StyleConfig.MainColor,
+    margin: '8px 0 0'
 };
 
 @LoadingDataHOC
@@ -111,7 +115,7 @@ class MyUpload extends Component {
     
     componentDidUpdate(prevProps, prevState) {
         if (this.state.uploadFileLoading && prevState.uploadFileLoading) {
-            this.props.UploadActionsCreator.uploadVideoForceUpdate();
+            // this.props.UploadActionsCreator.uploadVideoForceUpdate();
             this.props.toggleShowLoading(false);
         }
     }
@@ -245,7 +249,7 @@ class MyUpload extends Component {
                                         type="primary"
                                         size='large'
                                         icon="upload"
-                                        style={{margin: '8px 0 0'}}
+                                        style={UploadBtnConfigData}
                                         onClick={this.doUpload}
                                     >
                                         Upload
@@ -268,7 +272,6 @@ class MyUpload extends Component {
                     changeTitleAction={this.onEditingTitleChange}
                     changeDescAction={this.onEditingDescChange}
                 />
-                <ActionAlert/>
             </div>
         );
     }

@@ -24,6 +24,8 @@ class ActionAlert extends Component {
     }
     
     static getDerivedStateFromProps(nextProps) {
+        console.log('uuuuuuuuuuuuuuu');
+        console.log(nextProps.action);
         switch (nextProps.action.type) {
             // simulation call upload api respond
             case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
@@ -80,6 +82,7 @@ class ActionAlert extends Component {
     };
     
     render() {
+        console.log('ffffffffffffffffffffff');
         return (
             <div>
                 {this.state.showAlert ? this.showActionAlert(this.state.actionNoticeData) : null}

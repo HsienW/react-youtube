@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Header} from './Layout';
+import {Header, ActionAlert} from './Layout';
 
 export class CommonModule extends Component {
     
@@ -8,6 +8,7 @@ export class CommonModule extends Component {
         return (
             <div>
                 <Header/>
+                <ActionAlert/>
                 {this.props.children}
             </div>
         );
