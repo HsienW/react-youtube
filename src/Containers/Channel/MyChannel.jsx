@@ -178,7 +178,6 @@ class MyChannel extends Component {
 }
 
 MyChannel.propTypes = {
-    history: PropTypes.object.isRequired,
     MyChannelActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func
