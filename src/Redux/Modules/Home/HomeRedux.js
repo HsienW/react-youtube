@@ -15,42 +15,35 @@ export const HomePageActions = {
     getHomePageFailed: 'GET_HOME_PAGE_FAILED',
 };
 
-export const HomeActions = {
-    getHomeStart: 'GET_HOME_START',
-    getHomeSuccess: 'GET_HOME_SUCCESS',
-    getHomeFailed: 'GET_HOME_FAILED',
-};
-
-const getHomeData = (request) => {
+const getHomeRecommendData = (request) => {
     return (dispatch) => {
-        dispatch(createAction(HomeActions.getHomeStart)());
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendStart)());
         callApi.get(apiData.videoURL, request)
             .then((respond) => {
-                dispatch(createAction(HomeActions.getHomeSuccess)(respond));
+                dispatch(createAction(HomeRecommendActions.getHomeRecommendSuccess)(respond));
             })
             .catch((error) => {
-                dispatch(createAction(HomeActions.getHomeFailed)(error));
+                dispatch(createAction(HomeRecommendActions.getHomeRecommendFailed)(error));
             });
     };
 };
 
-const simulationGetHomeData = () => {
+const simulationGetHomeRecommendData = () => {
     return (dispatch) => {
-        dispatch(createAction(HomeActions.getHomeStart)());
-        dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendStart)());
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendSuccess)(ApiSimulation.getSearchHome()));
     };
 };
 
 export const HomeActionsCreator = {
-    getHomeData,
-    simulationGetHomeData,
-    testGetHomeRecommendData
+    getHomeRecommendData,
+    simulationGetHomeRecommendData,
 };
 
 export default function HomeReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case HomeActions.getHomeSuccess:
-        case HomeActions.getHomeFailed:
+        case HomeRecommendActions.getHomeRecommendSuccess:
+        case HomeRecommendActions.getHomeRecommendFailed:
         case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
         case ProfileRedux.ProfileChannelActions.getProfileChannelDataFailed:
             return {action: action};

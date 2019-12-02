@@ -39,15 +39,15 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            getHomeStatus: false,
+            getHomeRecommendStatus: false,
             getProfileChannelStatus: false,
-            homeData: [],
+            homeRecommendData: [],
             profileChannelData: [],
         };
     }
     
     componentDidMount() {
-        // if (this.state.getHomeStatus && this.state.getProfileChannelStatus) {
+        // if (this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus) {
         //     this.props.toggleShowLoading(false);
         //     return;
         // }
@@ -58,8 +58,8 @@ class Home extends Component {
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
-            case HomeRedux.HomeActions.getHomeSuccess:
-                return {getHomeStatus: true, homeData: nextProps.action.payload.items};
+            case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
+                return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.items};
             
             case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
                 return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
@@ -85,8 +85,8 @@ class Home extends Component {
             20,
             'mostPopular',
         );
-        // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
-        this.props.HomeActionsCreator.simulationGetHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.getHomeRecommendData(homeRecommendRequest);
+        this.props.HomeActionsCreator.simulationGetHomeRecommendData(homeRecommendRequest);
     };
     
     getProfileAllData = () => {
@@ -110,8 +110,8 @@ class Home extends Component {
                     <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
                         {
-                            this.state.getHomeStatus && this.state.getProfileChannelStatus
-                                ? formatData.videoItemRespond(this.state.homeData).map((item) => {
+                            this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus
+                                ? formatData.videoItemRespond(this.state.homeRecommendData).map((item) => {
                                     return (
                                         <VideoItem
                                             key={item.id}
