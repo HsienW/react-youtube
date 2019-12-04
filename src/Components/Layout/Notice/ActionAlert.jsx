@@ -31,7 +31,7 @@ class ActionAlert extends Component {
                 return {showAlert: true, actionNoticeData: nextProps.action.payload};
                 
             case HeaderRedux.SubscribeActions.getSubscribeFailed:
-            case HomeRedux.HomeActions.getHomeFailed:
+            case HomeRedux.HomeRecommendActions.getHomeRecommendFailed:
             case SearchRedux.InitialSearchActions.getInitialSearchFailed:
             case SearchRedux.NextSearchActions.getNextSearchFailed:
             case MyChannelRedux.MyChannelActions.getMyChannelFailed:

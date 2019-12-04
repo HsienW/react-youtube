@@ -26,7 +26,7 @@ export default function ActionAlertReducer(state = {action: ''}, action) {
     switch (action.type) {
         case ActionAlertActions.hideActionAlert:
         case HeaderRedux.SubscribeActions.getSubscribeFailed:
-        case HomeRedux.HomeActions.getHomeFailed:
+        case HomeRedux.HomeRecommendActions.getHomeRecommendFailed:
         case SearchRedux.InitialSearchActions.getInitialSearchFailed:
         case SearchRedux.NextSearchActions.getNextSearchFailed:
         case MyChannelRedux.MyChannelActions.getMyChannelFailed:

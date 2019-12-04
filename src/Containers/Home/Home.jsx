@@ -71,12 +71,14 @@ class Home extends Component {
         return null;
     }
     
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (is.all.truthy(prevState)) {
-    //         this.props.toggleShowLoading(false);
-    //     }
-    // }
-    //
+    componentDidUpdate(prevProps, prevState) {
+        console.log('dddddddddddd');
+        console.log(prevProps, prevState);
+        // if (is.all.truthy(prevState)) {
+        //     this.props.toggleShowLoading(false);
+        // }
+    }
+
     getHomeAllData = () => {
         const homeRecommendRequest = homeApi.createRecommendRequest(
             'snippet, contentDetails',

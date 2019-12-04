@@ -14,6 +14,7 @@ const history = createHistory();
 
 render((
     <Provider store={ReduxStore}>
+        /*to do loading component*/
         <HashRouter>
             <Router history={history}>
                 <div style={{width: '100%', height: '100%'}}>
