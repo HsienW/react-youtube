@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import createHistory from 'history/createHashHistory';
 import ReduxStore from './Redux/ReduxStore';
@@ -14,17 +14,27 @@ import './Common/CoverStyle.css';
 const History = createHistory();
 const CommonLayout = React.createContext({path: ''});
 
-class CommonLayoutProvider extends Component {
-    render() {
-        return (
-            <CommonLayout.Provider>
-                <Header/>
-                <ActionAlert/>
-                {this.props.children}
-            </CommonLayout.Provider>
-        );
-    }
-}
+const CommonLayoutProvider = () => {
+    return (
+        <CommonLayout.Provider>
+            <Header/>
+            <ActionAlert/>
+            {this.props.children}
+        </CommonLayout.Provider>
+    )
+};
+
+// class CommonLayoutProvider extends Component {
+//     render() {
+//         return (
+//             <CommonLayout.Provider>
+//                 <Header/>
+//                 <ActionAlert/>
+//                 {this.props.children}
+//             </CommonLayout.Provider>
+//         );
+//     }
+// }
 
 CommonLayoutProvider.propTypes = {
     children: PropTypes.object.isRequired
