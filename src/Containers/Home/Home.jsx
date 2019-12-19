@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
-import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
+import {CheckAuthHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
@@ -33,7 +33,7 @@ const userActionResultData = {
 };
 
 @CheckAuthHOC
-@LoadingDataHOC
+// @LoadingDataHOC
 class Home extends Component {
     
     constructor() {
@@ -74,11 +74,12 @@ class Home extends Component {
     componentDidUpdate(prevProps, prevState) {
         console.log('dddddddddddd');
         console.log(prevProps, prevState);
+        console.log(prevProps, prevState);
         // if (is.all.truthy(prevState)) {
         //     this.props.toggleShowLoading(false);
         // }
     }
-
+    
     getHomeAllData = () => {
         const homeRecommendRequest = homeApi.createRecommendRequest(
             'snippet, contentDetails',

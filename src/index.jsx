@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import createHistory from 'history/createHashHistory';
 import ReduxStore from './Redux/ReduxStore';
@@ -11,30 +11,37 @@ import {Header, ActionAlert} from './Components/Layout';
 import './Common/HandleAntStyle';
 import './Common/CoverStyle.css';
 
+// CommonLayoutContext.Consumer
 const History = createHistory();
-const CommonLayout = React.createContext({path: ''});
+export const CommonLayoutContext = React.createContext({path: ''});
 
-const CommonLayoutProvider = () => {
-    return (
-        <CommonLayout.Provider>
-            <Header/>
-            <ActionAlert/>
-            {this.props.children}
-        </CommonLayout.Provider>
-    )
-};
-
-// class CommonLayoutProvider extends Component {
-//     render() {
-//         return (
-//             <CommonLayout.Provider>
-//                 <Header/>
-//                 <ActionAlert/>
-//                 {this.props.children}
-//             </CommonLayout.Provider>
-//         );
-//     }
-// }
+class CommonLayoutProvider extends Component {
+    
+    state = {
+        showLoading: false,
+    };
+    
+    toggleShowLoading = (toggleState) => {
+        this.setState({
+            showLoading: toggleState,
+        });
+    };
+    
+    render() {
+        return (
+            <CommonLayoutContext.Provider
+                value={{
+                    showLoading: this.state.showLoading,
+                    toggleShowLoading: this.toggleShowLoading
+                }}
+            >
+                <Header/>
+                <ActionAlert/>
+                {this.props.children}
+            </CommonLayoutContext.Provider>
+        );
+    }
+}
 
 CommonLayoutProvider.propTypes = {
     children: PropTypes.object.isRequired
