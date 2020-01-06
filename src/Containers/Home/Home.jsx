@@ -9,6 +9,7 @@ import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
+import {CommonLayoutContext} from '../../index';
 
 const HomeView = styled.div`
     padding: 7vh 8vw 0 8vw;
@@ -35,6 +36,8 @@ const userActionResultData = {
 @CheckAuthHOC
 // @LoadingDataHOC
 class Home extends Component {
+    
+    static contextType = CommonLayoutContext;
     
     constructor() {
         super();
@@ -71,14 +74,11 @@ class Home extends Component {
         return null;
     }
     
-    componentDidUpdate(prevProps, prevState) {
-        console.log('dddddddddddd');
-        console.log(prevProps, prevState);
-        console.log(prevProps, prevState);
-        // if (is.all.truthy(prevState)) {
-        //     this.props.toggleShowLoading(false);
-        // }
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     // if (is.all.truthy(prevState)) {
+    //     //     this.props.toggleShowLoading(false);
+    //     // }
+    // }
     
     getHomeAllData = () => {
         const homeRecommendRequest = homeApi.createRecommendRequest(
@@ -107,30 +107,38 @@ class Home extends Component {
     };
     
     render() {
+        console.log('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[');
+        console.log(this.context);
         return (
-            <div>
-                <HomeView>
-                    <PageDivider dividerData={recommendDividerData}/>
-                    <ContentArea>
-                        {
-                            this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus
-                                ? formatData.videoItemRespond(this.state.homeRecommendData).map((item) => {
-                                    return (
-                                        <VideoItem
-                                            key={item.id}
-                                            videoItemData={item}
-                                            itemClickAction={this.videoItemClick}
-                                        />
-                                    );
-                                })
-                                : <UserActionResult userActionResultData={userActionResultData}/>
-                        }
-                    </ContentArea>
-                </HomeView>
-            </div>
+            <CommonLayoutContext.Consumer>
+                {
+                    () => (
+                        <HomeView>
+                            <PageDivider dividerData={recommendDividerData}/>
+                            <ContentArea>
+                                {
+                                    this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus
+                                        ? formatData.videoItemRespond(this.state.homeRecommendData).map((item) => {
+                                            return (
+                                                <VideoItem
+                                                    key={item.id}
+                                                    videoItemData={item}
+                                                    itemClickAction={this.videoItemClick}
+                                                />
+                                            );
+                                        })
+                                        : <UserActionResult userActionResultData={userActionResultData}/>
+                                }
+                            </ContentArea>
+                        </HomeView>
+                    )
+                }
+            </CommonLayoutContext.Consumer>
         );
     }
 }
+
+Home.contextType = CommonLayoutContext;
 
 Home.propTypes = {
     HomeActionsCreator: PropTypes.object.isRequired,
