@@ -58,11 +58,19 @@ class Home extends Component {
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
+    
+            // case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
+            //     return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.data.items};
+            
+            // case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
+            //     return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
+
+            // simulation api
             case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
                 return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.items};
-            
+                
             case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
-                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
+                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.items};
             
             default:
                 break;
@@ -97,7 +105,9 @@ class Home extends Component {
             true,
             WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         );
-        this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
+    
+        // this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
+        this.props.ProfileActionsCreator.simulationGetProfileChannelData(profileChannelRequest);
     };
     
     videoItemClick = (videoItemInfo) => {

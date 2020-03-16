@@ -2632,6 +2632,198 @@ const simulationSearch = {
     ]
 };
 
+const simulationSubscribeNotice = {
+    'kind': 'youtube#subscriptionListResponse',
+    'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/wgyitEhkQCUzxZJqwK8JlmOQBg8\'',
+    'nextPageToken': 'CAUQAA',
+    'pageInfo': {
+        'totalResults': 6,
+        'resultsPerPage': 5
+    },
+    'items': [
+        {
+            'kind': 'youtube#subscription',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/7LSMi5Qa8jH7ecmwetVcpHJIzpw\'',
+            'id': 'dBNmebwXpyMxg-lXmf8TpSUBWKdHxC6JkTe8MU_dyPM',
+            'snippet': {
+                'publishedAt': '2019-08-14T14:59:07.070Z',
+                'title': 'Maggie.H',
+                'description': '哈囉，我是Maggie不敢說傳授兩性知識但是對戀愛心事略懂略懂。\n哲學系，家裡有兩隻貓，喜歡美食也喜歡幫朋友解惑。\n被朋友戲稱副業媒婆，單純分享自己所知道的戀愛心法。\n\n商業合作請Email至miscreepy235@gmail.com\nIG搜尋 mischeer',
+                'resourceId': {
+                    'kind': 'youtube#channel',
+                    'channelId': 'UCZD2QqEm8XFn9CjCBuMk4ag'
+                },
+                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+                'thumbnails': {
+                    'default': {
+                        'url': 'https://yt3.ggpht.com/-HVVvigko-mI/AAAAAAAAAAI/AAAAAAAAAAA/ZE6YQuzoBxU/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'medium': {
+                        'url': 'https://yt3.ggpht.com/-HVVvigko-mI/AAAAAAAAAAI/AAAAAAAAAAA/ZE6YQuzoBxU/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'high': {
+                        'url': 'https://yt3.ggpht.com/-HVVvigko-mI/AAAAAAAAAAI/AAAAAAAAAAA/ZE6YQuzoBxU/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    }
+                }
+            },
+            'contentDetails': {
+                'totalItemCount': 35,
+                'newItemCount': 0,
+                'activityType': 'all'
+            }
+        },
+        {
+            'kind': 'youtube#subscription',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/yrnpxc00d9jiAkHvUSRJIaBYpB0\'',
+            'id': 'dBNmebwXpyMxg-lXmf8Tpf8RE1yq8haCguvyCzPKjr0',
+            'snippet': {
+                'publishedAt': '2020-02-23T14:24:28.214Z',
+                'title': '乔壹 Joey',
+                'description': '歡迎大家觀看訂閱，我是乔壹，這個頻道關注世界上各種詭異懸疑的事件，我會努力還原真實的事件和大家分享。',
+                'resourceId': {
+                    'kind': 'youtube#channel',
+                    'channelId': 'UCc2gAzwUk2athzxAuEvIc-w'
+                },
+                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+                'thumbnails': {
+                    'default': {
+                        'url': 'https://yt3.ggpht.com/-5NxpM6KUF10/AAAAAAAAAAI/AAAAAAAAAAA/K_AfcBDPwkE/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'medium': {
+                        'url': 'https://yt3.ggpht.com/-5NxpM6KUF10/AAAAAAAAAAI/AAAAAAAAAAA/K_AfcBDPwkE/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'high': {
+                        'url': 'https://yt3.ggpht.com/-5NxpM6KUF10/AAAAAAAAAAI/AAAAAAAAAAA/K_AfcBDPwkE/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    }
+                }
+            },
+            'contentDetails': {
+                'totalItemCount': 17,
+                'newItemCount': 0,
+                'activityType': 'all'
+            }
+        },
+        {
+            'kind': 'youtube#subscription',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/A2mv9awVuA_-8_o5jmvc61gK_qY\'',
+            'id': 'dBNmebwXpyMDZDXW9O93Zb7Rms18qXK_CcLloCCC0FE',
+            'snippet': {
+                'publishedAt': '2018-09-01T11:38:12.247Z',
+                'title': '上班不要看 NSFW',
+                'description': '那是一個特別寒冷的冬天，呱吉和小火車在下雪的台北成立了一個只有兩人的工作室。\n\n慢慢地，越來越多快樂小夥伴的加入....我們持續在創作有趣影片的道路之上。\n\n如果有任何想要合作的地方，請洽詢: thomas@65535studio.com\n這是小火車的信箱，煩死他。',
+                'resourceId': {
+                    'kind': 'youtube#channel',
+                    'channelId': 'UCj_z-Zeqk8LfwVxx0MUdL-Q'
+                },
+                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+                'thumbnails': {
+                    'default': {
+                        'url': 'https://yt3.ggpht.com/-OAl2QeRgZXM/AAAAAAAAAAI/AAAAAAAAAAA/WB3JFKrq6cY/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'medium': {
+                        'url': 'https://yt3.ggpht.com/-OAl2QeRgZXM/AAAAAAAAAAI/AAAAAAAAAAA/WB3JFKrq6cY/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'high': {
+                        'url': 'https://yt3.ggpht.com/-OAl2QeRgZXM/AAAAAAAAAAI/AAAAAAAAAAA/WB3JFKrq6cY/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    }
+                }
+            },
+            'contentDetails': {
+                'totalItemCount': 460,
+                'newItemCount': 1,
+                'activityType': 'all'
+            }
+        },
+        {
+            'kind': 'youtube#subscription',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/BI9YcKhKarDhtEr3YSfx6ojChDE\'',
+            'id': 'dBNmebwXpyMDZDXW9O93ZWNewrf6711DBbo7X9gMGA0',
+            'snippet': {
+                'publishedAt': '2019-10-04T03:27:06.042Z',
+                'title': '吳先提',
+                'description': '',
+                'resourceId': {
+                    'kind': 'youtube#channel',
+                    'channelId': 'UCFPfojfmKadDR8dGHYrLMsA'
+                },
+                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+                'thumbnails': {
+                    'default': {
+                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'medium': {
+                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'high': {
+                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    }
+                }
+            },
+            'contentDetails': {
+                'totalItemCount': 2,
+                'newItemCount': 0,
+                'activityType': 'all'
+            }
+        },
+        {
+            'kind': 'youtube#subscription',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/1leJkPb1HL6PnqDcodi_hvE9iqY\'',
+            'id': 'dBNmebwXpyMNbUsTZoKrx02x-e6Yvx0NAoj-il_-WHw',
+            'snippet': {
+                'publishedAt': '2019-03-30T12:34:02.383Z',
+                'title': '龍哥頻道LGTV',
+                'description': '大家好，我是龍哥~~\n是一個不知名的馬來西亞實況主~~\n平日喜歡看看動漫，打打遊戲~~\n目前會做一些動漫的介紹與小遊戲影片~~\n希望各位多多支持我的影片，還有別忘了訂閱我哦！ ~~\n每週不定時更新~~\n工商合作请联系：\nloonggorr@gmail.com',
+                'resourceId': {
+                    'kind': 'youtube#channel',
+                    'channelId': 'UCSaKloa8wlTku1fUhWLlWoQ'
+                },
+                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+                'thumbnails': {
+                    'default': {
+                        'url': 'https://yt3.ggpht.com/-nQrifRfWJGE/AAAAAAAAAAI/AAAAAAAAAAA/1FiVoW8vFVQ/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'medium': {
+                        'url': 'https://yt3.ggpht.com/-nQrifRfWJGE/AAAAAAAAAAI/AAAAAAAAAAA/1FiVoW8vFVQ/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    },
+                    'high': {
+                        'url': 'https://yt3.ggpht.com/-nQrifRfWJGE/AAAAAAAAAAI/AAAAAAAAAAA/1FiVoW8vFVQ/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
+                    }
+                }
+            },
+            'contentDetails': {
+                'totalItemCount': 45,
+                'newItemCount': 0,
+                'activityType': 'all'
+            }
+        }
+    ]
+};
+
+const simulationChannels = {
+    'kind': 'youtube#channelListResponse',
+    'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/8FManoW-gCtzSMuuhRmFMN_bva8\'',
+    'pageInfo': {
+        'totalResults': 1,
+        'resultsPerPage': 1
+    },
+    'items': [
+        {
+            'kind': 'youtube#channel',
+            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/ygEHv6vLA9jgyLPvvDLpcQFOZls\'',
+            'id': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
+            'contentDetails': {
+                'relatedPlaylists': {
+                    'likes': 'LL5jvFNi4xoq4ri9fb8xF8Tw',
+                    'favorites': 'FL5jvFNi4xoq4ri9fb8xF8Tw',
+                    'uploads': 'UU5jvFNi4xoq4ri9fb8xF8Tw',
+                    'watchHistory': 'HL',
+                    'watchLater': 'WL'
+                }
+            }
+        }
+    ]
+};
+
 const simulationUploadVideo = {
     'kind': 'youtube#video',
     'etag': '\'j6xRRd8dTPVVptg711_CSPADRfg/vcES-S4ttIrN6xzHGJFWzCJBJKo\'',
@@ -2768,6 +2960,7 @@ export const editVideoSimulation = () => {
     });
 };
 
+
 export default class ApiSimulation {
     static getSearchData() {
         return simulationSearch;
@@ -2775,6 +2968,14 @@ export default class ApiSimulation {
     
     static getSearchHome() {
         return simulationHome;
+    }
+    
+    static getChannels() {
+        return simulationChannels;
+    }
+    
+    static getSubscribeNotice() {
+        return simulationSubscribeNotice;
     }
     
     static getUploadVideo() {

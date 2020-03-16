@@ -63,8 +63,12 @@ class Header extends Component {
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
+            // case HeaderRedux.SubscribeActions.getSubscribeSuccess:
+            //     return {getSubscribeStatus: true, subscribeData: nextProps.action.payload.data.items};
+
+            // simulation api
             case HeaderRedux.SubscribeActions.getSubscribeSuccess:
-                return {getSubscribeStatus: true, subscribeData: nextProps.action.payload.data.items};
+                return {getSubscribeStatus: true, subscribeData: nextProps.action.payload.items};
             
             default:
                 break;
@@ -126,7 +130,8 @@ class Header extends Component {
             5,
             WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         );
-        this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
+        // this.props.HeaderActionsCreator.getSubscribeNoticeData(request);
+        this.props.HeaderActionsCreator.simulationGetSubscribeNoticeData(request);
     };
     
     render() {
