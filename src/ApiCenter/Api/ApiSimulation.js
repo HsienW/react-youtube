@@ -2736,37 +2736,6 @@ const simulationSubscribeNotice = {
         },
         {
             'kind': 'youtube#subscription',
-            'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/BI9YcKhKarDhtEr3YSfx6ojChDE\'',
-            'id': 'dBNmebwXpyMDZDXW9O93ZWNewrf6711DBbo7X9gMGA0',
-            'snippet': {
-                'publishedAt': '2019-10-04T03:27:06.042Z',
-                'title': '吳先提',
-                'description': '',
-                'resourceId': {
-                    'kind': 'youtube#channel',
-                    'channelId': 'UCFPfojfmKadDR8dGHYrLMsA'
-                },
-                'channelId': 'UC5jvFNi4xoq4ri9fb8xF8Tw',
-                'thumbnails': {
-                    'default': {
-                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s88-c-k-no-mo-rj-c0xffffff/photo.jpg'
-                    },
-                    'medium': {
-                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s240-c-k-no-mo-rj-c0xffffff/photo.jpg'
-                    },
-                    'high': {
-                        'url': 'https://yt3.ggpht.com/-RfR1liqKaFw/AAAAAAAAAAI/AAAAAAAAAAA/q-3L1ftsL48/s800-c-k-no-mo-rj-c0xffffff/photo.jpg'
-                    }
-                }
-            },
-            'contentDetails': {
-                'totalItemCount': 2,
-                'newItemCount': 0,
-                'activityType': 'all'
-            }
-        },
-        {
-            'kind': 'youtube#subscription',
             'etag': '\'SJZWTG6xR0eGuCOh2bX6w3s4F94/1leJkPb1HL6PnqDcodi_hvE9iqY\'',
             'id': 'dBNmebwXpyMNbUsTZoKrx02x-e6Yvx0NAoj-il_-WHw',
             'snippet': {

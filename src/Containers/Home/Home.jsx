@@ -58,7 +58,6 @@ class Home extends Component {
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
-    
             // case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
             //     return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.data.items};
             
@@ -79,13 +78,13 @@ class Home extends Component {
         return null;
     }
     
-    componentDidUpdate(prevProps, prevState) {
-        console.log('dddddddddddd');
-        console.log(prevProps, prevState);
-        // if (is.all.truthy(prevState)) {
-        //     this.props.toggleShowLoading(false);
-        // }
-    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     console.log('dddddddddddd');
+    //     console.log(prevProps, prevState);
+    //     // if (is.all.truthy(prevState)) {
+    //     //     this.props.toggleShowLoading(false);
+    //     // }
+    // }
 
     getHomeAllData = () => {
         const homeRecommendRequest = homeApi.createRecommendRequest(
@@ -107,7 +106,9 @@ class Home extends Component {
         );
     
         // this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
-        this.props.ProfileActionsCreator.simulationGetProfileChannelData(profileChannelRequest);
+        setTimeout(() => {
+            this.props.ProfileActionsCreator.simulationGetProfileChannelData(profileChannelRequest);
+        }, 500);
     };
     
     videoItemClick = (videoItemInfo) => {
