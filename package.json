@@ -15,7 +15,7 @@
     "@ant-design/icons": "latest",
     "@types/gapi.client": "^1.0.1",
     "antd": "^3.22.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "final-form": "^4.12.0",
     "gapi-client": "0.0.3",
     "history": "^4.7.2",
