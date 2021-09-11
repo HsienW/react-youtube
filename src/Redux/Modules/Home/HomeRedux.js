@@ -1,43 +1,51 @@
 import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
+import {ProfileRedux} from '../../../Redux/Modules';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
-export const HomeActions = {
-    getHomeStart: 'GET_HOME_START',
-    getHomeSuccess: 'GET_HOME_SUCCESS',
-    getHomeFailed: 'GET_HOME_FAILED',
+export const HomeRecommendActions = {
+    getHomeRecommendStart: 'GET_HOME_RECOMMEND_START',
+    getHomeRecommendSuccess: 'GET_HOME_RECOMMEND_SUCCESS',
+    getHomeRecommendFailed: 'GET_HOME_RECOMMEND_FAILED',
 };
 
-const getHomeData = (request) => {
+export const HomePageActions = {
+    getHomePageSuccess: 'GET_HOME_PAGE_SUCCESS',
+    getHomePageFailed: 'GET_HOME_PAGE_FAILED',
+};
+
+const getHomeRecommendData = (request) => {
     return (dispatch) => {
-        dispatch(createAction(HomeActions.getHomeStart)());
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendStart)());
         callApi.get(apiData.videoURL, request)
             .then((respond) => {
-                dispatch(createAction(HomeActions.getHomeSuccess)(respond));
+                dispatch(createAction(HomeRecommendActions.getHomeRecommendSuccess)(respond));
             })
             .catch((error) => {
-                dispatch(createAction(HomeActions.getHomeFailed)(error));
+                dispatch(createAction(HomeRecommendActions.getHomeRecommendFailed)(error));
             });
     };
 };
 
-const testGetHomeData = () => {
+const simulationGetHomeRecommendData = () => {
     return (dispatch) => {
-        dispatch(createAction(HomeActions.getHomeStart)());
-        dispatch(createAction(HomeActions.getHomeSuccess)(ApiSimulation.getSearchHome()));
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendStart)());
+        dispatch(createAction(HomeRecommendActions.getHomeRecommendSuccess)(ApiSimulation.getSearchHome()));
     };
 };
 
 export const HomeActionsCreator = {
-    getHomeData,
-    testGetHomeData
+    getHomeRecommendData,
+    simulationGetHomeRecommendData,
 };
 
 export default function HomeReducer(state = {action: ''}, action) {
     switch (action.type) {
-        case HomeActions.getHomeSuccess:
-        case HomeActions.getHomeFailed:
+        case HomeRecommendActions.getHomeRecommendSuccess:
+        case HomeRecommendActions.getHomeRecommendFailed:
+        case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
+        case ProfileRedux.ProfileChannelActions.getProfileChannelDataFailed:
             return {action: action};
 
         default:

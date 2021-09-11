@@ -214,7 +214,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-    action: PropTypes.object.isRequired,
+    // action: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     SearchActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func

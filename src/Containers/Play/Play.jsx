@@ -163,7 +163,6 @@ class Play extends Component {
 }
 
 Play.propTypes = {
-    history: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func

@@ -7,7 +7,7 @@ import {UploadRedux} from '../../Redux/Modules';
 import {PageDivider} from '../../Components/Modules';
 import {LoadingDataHOC} from '../../Decorators/index';
 import {Button} from 'antd';
-import {Uploader, UploadEditorModal} from '../../Components/Modules';
+import {Uploader, UploadEditorModal, TextAlert} from '../../Components/Modules';
 import * as StyleConfig from '../../Common/StyleConfig';
 
 const MyUploadView = styled.div`
@@ -21,13 +21,18 @@ const UploaderArea = styled.div`
     height: 40vh;
 `;
 
+const UploaderControlArea = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
 const uploadDividerData = {
     title: 'Upload Video'
 };
 
 const uploaderConfigData = {
-    title: 'Click or drag file to this area to upload',
-    description: 'Support for a single or bulk video upload.',
+    title: 'Click or drag file to this area to upload.',
+    description: 'Support for a single or bulk video upload, bulk upload videos, limited to three per upload.',
     icon: {
         type: 'plus',
         style: {
@@ -52,6 +57,22 @@ const editorModalConfigData = {
     }
 };
 
+const TextAlertConfigData = {
+    configData: {
+        type: 'warning',
+        margin: '8px 0 0'
+    },
+    contentData: {
+        title: 'Warning',
+        description: 'The number of videos uploaded at one time cannot be greater than three. Please try again!'
+    }
+};
+
+const UploadBtnConfigData = {
+    backgroundColor: StyleConfig.MainColor,
+    margin: '8px 0 0'
+};
+
 @LoadingDataHOC
 class MyUpload extends Component {
     
@@ -70,17 +91,21 @@ class MyUpload extends Component {
             editingDesc: '',
             uploadFileLoading: false,
             showPreviewEditor: false,
+            showUploadControlBtn: false,
             showAlert: false,
+            showOverloadAlert: false
         };
     }
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
             case UploadRedux.UploadVideoActions.doUploadVideoStart:
-                return {uploadFileLoading: true};
+                return {
+                    uploadFileLoading: true
+                };
             case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
                 return {
-                    // uploadFileLoading: false
+                    uploadFileList: []
                 };
             default:
                 break;
@@ -90,21 +115,33 @@ class MyUpload extends Component {
     
     componentDidUpdate(prevProps, prevState) {
         if (this.state.uploadFileLoading && prevState.uploadFileLoading) {
+            // this.props.UploadActionsCreator.uploadVideoForceUpdate();
             this.props.toggleShowLoading(false);
         }
     }
     
     uploadListStateSync = (files) => {
-        if (this.state.uploadFileList.length >= 3 || files.fileList.length >= 3) {
+        if (files.fileList.length > 3) {
             this.setState({
                 showOverloadAlert: true,
-                uploadFileList: [...files.fileList]
+                showUploadControlBtn: false,
+                uploadFileList: []
+            });
+            return;
+        }
+        
+        if (files.fileList.length === 0) {
+            this.setState({
+                showOverloadAlert: false,
+                showUploadControlBtn: false,
+                uploadFileList: []
             });
             return;
         }
         
         this.setState({
             showOverloadAlert: false,
+            showUploadControlBtn: true,
             uploadFileList: [...files.fileList]
         });
     };
@@ -149,7 +186,6 @@ class MyUpload extends Component {
             });
             this.setState({
                 uploadFileList: newFileList,
-                // editInfoFileList: newFileList,
                 previewVideoKey: '',
                 previewVideoURL: '',
                 previewVideoTitle: '',
@@ -198,8 +234,30 @@ class MyUpload extends Component {
                             beforeUploadAction={this.beforeUploadCheck}
                             previewUploadAction={this.previewUploadVideo}
                         />
+                        {
+                            this.state.showOverloadAlert
+                                ? <TextAlert
+                                    configData={TextAlertConfigData.configData}
+                                    contentData={TextAlertConfigData.contentData}
+                                />
+                                : null
+                        }
+                        {
+                            this.state.showUploadControlBtn
+                                ? <UploaderControlArea>
+                                    <Button
+                                        type="primary"
+                                        size='large'
+                                        icon="upload"
+                                        style={UploadBtnConfigData}
+                                        onClick={this.doUpload}
+                                    >
+                                        Upload
+                                    </Button>
+                                </UploaderControlArea>
+                                : null
+                        }
                     </UploaderArea>
-                    <Button onClick={this.doUpload}>DoUpload</Button>
                 </MyUploadView>
                 <UploadEditorModal
                     modalConfig={editorModalConfigData}

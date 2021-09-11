@@ -2,6 +2,7 @@ import {createAction} from 'redux-actions';
 import {callApi} from '../../../ApiCenter/Api/CallApi';
 import * as apiData from '../../../ApiCenter/Api/ApiConfig';
 import {WebStorage, WebStorageKeys} from '../../../Common/WebStorage';
+import ApiSimulation from '../../../ApiCenter/Api/ApiSimulation';
 
 export const ProfileChannelActions = {
     getProfileChannelDataStart: 'GET_PROFILE_CHANNEL_DATA_START',
@@ -23,9 +24,17 @@ const getProfileChannelData = (request) => {
     };
 };
 
+const simulationGetProfileChannelData = () => {
+    return (dispatch) => {
+        dispatch(createAction(ProfileChannelActions.getProfileChannelDataStart)());
+        dispatch(createAction(ProfileChannelActions.getProfileChannelDataSuccess)(ApiSimulation.getChannels()));
+    };
+};
+
 
 export const ProfileActionsCreator = {
     getProfileChannelData,
+    simulationGetProfileChannelData
 };
 
 export default function ProfileReducer(state = {action: ''}, action) {

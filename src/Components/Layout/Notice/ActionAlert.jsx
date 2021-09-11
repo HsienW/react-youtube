@@ -9,7 +9,8 @@ import {
     HomeRedux,
     MyChannelRedux,
     PlayRedux,
-    ActionAlertRedux
+    ActionAlertRedux,
+    UploadRedux
 } from '../../../Redux/Modules';
 
 class ActionAlert extends Component {
@@ -24,8 +25,13 @@ class ActionAlert extends Component {
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
+            // simulation call upload api respond
+            case UploadRedux.UploadVideoActions.doUploadVideoSuccess:
+                nextProps.action.payload.status = 200;
+                return {showAlert: true, actionNoticeData: nextProps.action.payload};
+                
             case HeaderRedux.SubscribeActions.getSubscribeFailed:
-            case HomeRedux.HomeActions.getHomeFailed:
+            case HomeRedux.HomeRecommendActions.getHomeRecommendFailed:
             case SearchRedux.InitialSearchActions.getInitialSearchFailed:
             case SearchRedux.NextSearchActions.getNextSearchFailed:
             case MyChannelRedux.MyChannelActions.getMyChannelFailed:
@@ -35,6 +41,7 @@ class ActionAlert extends Component {
             case PlayRedux.PlayDetailActions.getPlayDetailFailed:
             case PlayRedux.PlayCommentActions.getPlayCommentFailed:
             case PlayRedux.PlayRelatedActions.getPlayRelatedFailed:
+            case UploadRedux.UploadVideoActions.doUploadVideoFailed:
                 return {showAlert: true, actionNoticeData: nextProps.action.payload};
             
             case ActionAlertRedux.ActionAlertActions.hideActionAlert:
@@ -60,10 +67,10 @@ class ActionAlert extends Component {
         }
     }
     
-    showActionAlert = (configData, errorData) => {
-        notification[configData.type]({
-            message: errorData.code,
-            description: errorData.message,
+    showActionAlert = (alertData) => {
+        notification[alertData.status === 200 ? 'success' : 'error']({
+            message: alertData.status === 200 ? 'Success' : 'Error',
+            description: alertData.status === 200 ? 'The operation completed successfully.' : 'The operation failed.',
             onClose: this.hideActionAlert
         });
     };
@@ -73,17 +80,15 @@ class ActionAlert extends Component {
     };
     
     render() {
-        const {configData} = {...this.props};
         return (
             <div>
-                {this.state.showAlert ? this.showActionAlert(configData, this.state.actionNoticeData) : null}
+                {this.state.showAlert ? this.showActionAlert(this.state.actionNoticeData) : null}
             </div>
         );
     }
 }
 
 ActionAlert.propTypes = {
-    configData: PropTypes.object.isRequired,
     ActionAlertActionCreator: PropTypes.object.isRequired,
 };
 

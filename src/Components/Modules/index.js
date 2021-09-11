@@ -12,6 +12,7 @@ import VideoPlayer from './Video/VideoPlayer';
 import VideoListPlayItem from './Video/VideoListPlayItem';
 import Uploader from './Upload/Uploader';
 import UploadEditorModal from './Upload/UploadEditorModal';
+import TextAlert from './Notice/TextAlert';
 
 export {
     UserAvatar,
@@ -27,5 +28,6 @@ export {
     VideoPlayer,
     InfiniteScroll,
     Uploader,
-    UploadEditorModal
+    UploadEditorModal,
+    TextAlert
 };

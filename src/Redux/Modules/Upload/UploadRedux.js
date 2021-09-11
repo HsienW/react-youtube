@@ -16,6 +16,10 @@ export const UploadEditVideoDataActions = {
     uploadEditVideoDataFailed: 'UPLOAD_EDIT_VIDEO_DATA_FAILED',
 };
 
+export const ForceUpdateUploadActions = {
+    forceUpdateUpload: 'FORCE_UPDATE_UPLOAD',
+};
+
 const uploadVideo = (uploadURL, fromData, header) => {
     return callApi.customPost(uploadURL, fromData, header)
         .then((respond) => {
@@ -94,12 +98,12 @@ const doUploadVideo = (uploadFileList) => {
         });
         
         Promise.all(uploadFilePromises)
-        .then((allSuccessRespond) => {
-            dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(allSuccessRespond));
-        })
-        .catch((allError) => {
-            dispatch(createAction(UploadVideoActions.doUploadVideoFailed)(allError));
-        });
+            .then((allSuccessRespond) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoSuccess)(allSuccessRespond));
+            })
+            .catch((allError) => {
+                dispatch(createAction(UploadVideoActions.doUploadVideoFailed)(allError));
+            });
     };
 };
 
@@ -149,10 +153,17 @@ const simulationDoUploadVideo = (uploadFileList) => {
     };
 };
 
+const uploadVideoForceUpdate = () => {
+    return (dispatch) => {
+        dispatch(createAction(ForceUpdateUploadActions.forceUpdateUpload)());
+    };
+};
+
 export const UploadActionsCreator = {
     doUploadVideo,
     simulationDoUploadVideo,
-    uploadEditVideoInfo
+    uploadEditVideoInfo,
+    uploadVideoForceUpdate
 };
 
 export default function UploadReducer(state = {action: ''}, action) {
@@ -162,6 +173,7 @@ export default function UploadReducer(state = {action: ''}, action) {
         case UploadVideoActions.doUploadVideoFailed:
         case UploadEditVideoDataActions.uploadEditVideoDataSuccess:
         case UploadEditVideoDataActions.uploadEditVideoDataFailed:
+        case ForceUpdateUploadActions.forceUpdateUpload:
             return {action: action};
         
         default:

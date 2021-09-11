@@ -1,7 +1,7 @@
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 
 const basicURL = 'https://www.googleapis.com/youtube/v3/';
-const googleApiKey = 'AIzaSyAL3Tp-ilQSP2XDVn0qljXjj5UO801WeOA';
+const googleApiKey = 'AIzaSyAQAfX5iYUPP5miusu3lieWrubIi_qS9dA';
 
 const activitiesURL = `${basicURL}activities?`;
 const videoURL = `${basicURL}videos?`;

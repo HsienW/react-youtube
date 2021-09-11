@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import is from 'is_js';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {PortalRedux, HomeRedux, PlayRedux, ProfileRedux} from '../../Redux/Modules';
 import {CheckAuthHOC, LoadingDataHOC} from '../../Decorators';
 import {PageDivider, VideoItem, UserActionResult} from '../../Components/Modules';
-import {ActionAlert} from '../../Components/Layout';
 import {formatData, formatCurry} from '../../Common/BasicService';
 import {WebStorage, WebStorageKeys} from '../../Common/WebStorage';
 import {channelApi, homeApi} from '../../ApiCenter/Api/Api';
@@ -34,10 +32,6 @@ const userActionResultData = {
     title: 'Loading...'
 };
 
-const errorAlertConfigData = {
-    type: 'error'
-};
-
 @CheckAuthHOC
 @LoadingDataHOC
 class Home extends Component {
@@ -45,25 +39,37 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            getHomeStatus: false,
+            getHomeRecommendStatus: false,
             getProfileChannelStatus: false,
-            homeData: [],
+            homeRecommendData: [],
             profileChannelData: [],
         };
     }
     
     componentDidMount() {
+        // if (this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus) {
+        //     this.props.toggleShowLoading(false);
+        //     return;
+        // }
+        // this.props.toggleShowLoading(true);
         this.getHomeAllData();
         this.getProfileAllData();
     }
     
     static getDerivedStateFromProps(nextProps) {
         switch (nextProps.action.type) {
-            case HomeRedux.HomeActions.getHomeSuccess:
-                return {getHomeStatus: true, homeData: nextProps.action.payload.items};
-    
+            // case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
+            //     return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.data.items};
+            
+            // case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
+            //     return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
+
+            // simulation api
+            case HomeRedux.HomeRecommendActions.getHomeRecommendSuccess:
+                return {getHomeRecommendStatus: true, homeRecommendData: nextProps.action.payload.items};
+                
             case ProfileRedux.ProfileChannelActions.getProfileChannelDataSuccess:
-                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.data.items};
+                return {getProfileChannelStatus: true, profileChannelData: nextProps.action.payload.items};
             
             default:
                 break;
@@ -72,12 +78,14 @@ class Home extends Component {
         return null;
     }
     
-    componentDidUpdate(prevProps, prevState) {
-        if (is.all.truthy(prevState)) {
-            this.props.toggleShowLoading(false);
-        }
-    }
-    
+    // componentDidUpdate(prevProps, prevState) {
+    //     console.log('dddddddddddd');
+    //     console.log(prevProps, prevState);
+    //     // if (is.all.truthy(prevState)) {
+    //     //     this.props.toggleShowLoading(false);
+    //     // }
+    // }
+
     getHomeAllData = () => {
         const homeRecommendRequest = homeApi.createRecommendRequest(
             'snippet, contentDetails',
@@ -86,8 +94,8 @@ class Home extends Component {
             20,
             'mostPopular',
         );
-        this.props.HomeActionsCreator.testGetHomeData(homeRecommendRequest);
-        // this.props.HomeActionsCreator.getHomeData(homeRecommendRequest);
+        // this.props.HomeActionsCreator.getHomeRecommendData(homeRecommendRequest);
+        this.props.HomeActionsCreator.simulationGetHomeRecommendData(homeRecommendRequest);
     };
     
     getProfileAllData = () => {
@@ -96,7 +104,11 @@ class Home extends Component {
             true,
             WebStorage.getSessionStorage(WebStorageKeys.ACCESS_TOKEN),
         );
-        this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
+    
+        // this.props.ProfileActionsCreator.getProfileChannelData(profileChannelRequest);
+        setTimeout(() => {
+            this.props.ProfileActionsCreator.simulationGetProfileChannelData(profileChannelRequest);
+        }, 500);
     };
     
     videoItemClick = (videoItemInfo) => {
@@ -111,8 +123,8 @@ class Home extends Component {
                     <PageDivider dividerData={recommendDividerData}/>
                     <ContentArea>
                         {
-                            this.state.getHomeStatus
-                                ? formatData.videoItemRespond(this.state.homeData).map((item) => {
+                            this.state.getHomeRecommendStatus && this.state.getProfileChannelStatus
+                                ? formatData.videoItemRespond(this.state.homeRecommendData).map((item) => {
                                     return (
                                         <VideoItem
                                             key={item.id}
@@ -125,20 +137,17 @@ class Home extends Component {
                         }
                     </ContentArea>
                 </HomeView>
-                <ActionAlert configData={errorAlertConfigData}/>
             </div>
         );
     }
 }
 
 Home.propTypes = {
-    history: PropTypes.object.isRequired,
     HomeActionsCreator: PropTypes.object.isRequired,
     PortalActionsCreator: PropTypes.object.isRequired,
     PlayActionsCreator: PropTypes.object.isRequired,
     ProfileActionsCreator: PropTypes.object.isRequired,
     toggleShowLoading: PropTypes.func,
-    toggleShowAlert: PropTypes.func
 };
 
 export default connect(
