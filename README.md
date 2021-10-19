@@ -20,7 +20,7 @@
 - **Upload** : Upload a personal video.
 
 ## Note: 
-
+- **The Youtube open API has modified the authorization policy. Currently, this app is re-applying for authorization and is temporarily unavailable**
 - If you want to use, please authorize Youtube account to React Youtube in order to obtain information.
 - In some feature development, and Youtube api daily limit, so use fake data to complete the simulation.
 
