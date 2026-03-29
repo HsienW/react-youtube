@@ -8,7 +8,7 @@
 
 ## Demo：
 
-![img](https://github.com/HsienW/demo-repository-/blob/master/react-youtube-demo-v1.gif)
+![img](https://github.com/HsienW/demo-repository-/blob/master/react-youtube-demo-v2.gif)
 
 ## Description:
 #### React Youtube is a practice project that simulates Youtube and consists of the following five features.
